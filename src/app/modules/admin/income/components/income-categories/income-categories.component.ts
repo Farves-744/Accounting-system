@@ -10,15 +10,10 @@ import {
 import { Router } from '@angular/router';
 import { IncomeCategoriesDialogComponent } from '../income-categories-dialog/income-categories-dialog.component';
 import { CommonService } from 'app/shared/services/common.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import {
-    AddIncomeCategory,
-    getIncomeCategory,
-} from 'app/shared/modals/income-category';
+import { getIncomeCategory } from 'app/shared/modals/income-category';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
-
-import { DatePipe } from '@angular/common';
+// import { DatePipe } from '@angular/common';
 import { IncomeService } from 'app/shared/services/income.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -34,21 +29,15 @@ export class IncomeCategoriesComponent {
     dataSource: MatTableDataSource<any>;
     getCategoryModal: getIncomeCategory = new getIncomeCategory();
     displayedColumns: string[] = ['position', 'categoryName', 'actions'];
-
-    incomeCategoryModal: AddIncomeCategory = new AddIncomeCategory();
     incomeResult: any;
     url = environment.BASE_URL;
-
-    // startDate: Date;
-    // endDate: Date;
-    // datePicker: any;
 
     constructor(
         private router: Router,
         private _commonService: CommonService,
         public dialog: MatDialog,
         private changeDetection: ChangeDetectorRef,
-        private datePipe: DatePipe,
+        // private datePipe: DatePipe,
         private _incomeService: IncomeService
     ) {}
 
@@ -97,7 +86,6 @@ export class IncomeCategoriesComponent {
 
     getCategory() {
         console.log(this.getCategoryModal);
-
         this._incomeService
             .getCategory(this.getCategoryModal)
             .subscribe((res) => {
@@ -107,11 +95,9 @@ export class IncomeCategoriesComponent {
                         JSON.stringify(this._commonService.decryptData(res))
                     )
                 );
-
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );
-
                 this.dataSource.paginator = this.paginator;
                 // this.dataSource.sort = this.sort;
                 this.changeDetection.detectChanges();

@@ -7,20 +7,15 @@ import {
     Input,
     EventEmitter,
 } from '@angular/core';
-import {
-    AddIncomeCategory,
-    getIncomeCategory,
-} from 'app/shared/modals/income-category';
 import { CommonService } from 'app/shared/services/common.service';
-import { AES } from 'crypto-js';
+import { getIncomeCategory } from 'app/shared/modals/income-category';
 import {
     MatDialog,
     MatDialogRef,
     MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { IncomeService } from 'app/shared/services/income.service';
-import { take } from 'rxjs';
-import { CompressImageService } from 'app/shared/services/compress-image.service';
+// import { CompressImageService } from 'app/shared/services/compress-image.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from 'environments/environment';
@@ -32,27 +27,21 @@ import { environment } from 'environments/environment';
 })
 export class IncomeCategoriesDialogComponent {
     env = environment;
-    NewCateName = new AddIncomeCategory();
     addCategoryForm: FormGroup;
     updateFormData: any = undefined;
-
-    showAddDialog: boolean = true;
-    showDeleteDialog: boolean = true;
     incomeCategory: getIncomeCategory = new getIncomeCategory();
     imageUrl: any;
     fileToUpload: any;
-    imageData: any;
     formData: any;
     userId: any;
     isEdit: boolean = false; // this is for toggle button text add or edit
     imageId: any;
     file: File;
     url: any;
-    oldId: number = null;
 
     constructor(
         private _commonService: CommonService,
-        private _compressImageService: CompressImageService,
+        // private _compressImageService: CompressImageService,
         private _route: Router,
         private _incomeService: IncomeService,
         private changeDetection: ChangeDetectorRef,
@@ -80,25 +69,18 @@ export class IncomeCategoriesDialogComponent {
     editCategory(data: any) {
         if (data) {
             console.log(data);
-
             this.updateFormData = data;
             this.isEdit = true;
             this.addCategoryForm.patchValue(this.updateFormData);
-
             console.log(this.addCategoryForm.value.image_url);
-
-            // this.addCategoryForm.value.image_url.patchValue(
-            //     this.updateFormData.image_url
-            // );
-
             this.imageUrl = this.env.BASE_URL + '/' + data.image_url;
             console.log(this.updateFormData);
             console.log(this.url);
         }
     }
+
     addOrUpdateCategory() {
         console.log(this.file);
-
         if (this.addCategoryForm.valid) {
             if (this.data) {
                 console.log(this.data);
@@ -133,7 +115,6 @@ export class IncomeCategoriesDialogComponent {
                         console.log(res);
                         let reData = JSON.parse(JSON.stringify(res));
                         this.imageId = reData.imageId;
-
                         this.addCategoryForm.value.imageId = this.imageId;
                         this.addCategory();
                         console.log(this.addCategoryForm.value.imageId);
@@ -166,9 +147,7 @@ export class IncomeCategoriesDialogComponent {
             this.imageUrl = event.target.result;
         };
         reader.readAsDataURL(this.file);
-
         // console.log(this.imageUrl);
-        //
         // console.log(this.fileToUpload);
     }
 
@@ -222,7 +201,6 @@ export class IncomeCategoriesDialogComponent {
             .updateCategory(this.addCategoryForm.value)
             .subscribe((res) => {
                 // console.log(res);
-
                 console.log(this._commonService.decryptData(res));
                 this.addCategoryForm.reset();
                 this.dialogRef.close(true);

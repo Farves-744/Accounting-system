@@ -144,259 +144,15 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
 
         <button
             (click)="goToAddRole()"
-            class="bg-myAccent px-4 text-white py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover justify-between transition-all flex items-center gap-2"
+            class="px-10 border text-textColor hover:border-darkAccent border-accentHover shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
         >
-            <p class="">Add Role</p>
-            <mat-icon
+            <p class="font-semibold">Add Role</p>
+            <!-- <mat-icon
                 class="text-white w-[24px] h-[24px] px-0"
                 svgIcon="heroicons_outline:plus"
-            ></mat-icon>
+            ></mat-icon> -->
         </button>
     </div>
-
-    <!-- Table -->
-    <!-- <div class="subpixel-antialiased py-4 w-full">
-        <div class="container space-y-8 text-md mx-auto">
-            <div class="space-y-2">
-                <div
-                    class="bg-white shadow-lg hover:shadow-xl rounded-md overflow-hidden"
-                >
-                    <table
-                        class="table text-center sm:text-left table-auto w-full leading-normal"
-                    >
-                        <thead
-                            class="uppercase text-center text-black font-bold bg-[#F1F5F9]"
-                        >
-                            <tr class="hidden sm:table-row space-x-10">
-                                <th class="text-left p-3">
-                                    <p>SN</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Role Name</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>No of Users</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Date</p>
-                                </th>
-                                <th class="text-right p-3">
-                                    <p>Actions</p>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="flex-1 sm:flex-none">
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 sm:p-3 sm:table-row flex-col w-full"
-                            >
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">1</p>
-                                </td>
-
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Role Name</label
-                                    >
-                                    <p class="">Manager</p>
-                                </td>
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >No of Users</label
-                                    >
-                                    <p class="">1</p>
-                                </td>
-
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">19/04/2023</p>
-                                </td>
-                                <td class="p-1 sm:p-3 sm:text-right">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Actions</label
-                                    >
-                                    <div
-                                        class="flex gap-2 justify-center sm:justify-end"
-                                    >
-                                        <button>
-                                            <mat-icon
-                                                class="text-green-600"
-                                                matTooltip="Edit Role"
-                                                svgIcon="mat_outline:edit"
-                                            ></mat-icon>
-                                        </button>
-                                        <button>
-                                            <mat-icon
-                                                class="text-red-600"
-                                                matTooltip="Delete Role"
-                                                (click)="openDeleteDialog()"
-                                                svgIcon="mat_outline:delete"
-                                            ></mat-icon>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 sm:p-3 sm:table-row flex-col w-full"
-                            >
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">2</p>
-                                </td>
-
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Role Name</label
-                                    >
-                                    <p class="">Accountant</p>
-                                </td>
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >No of Users</label
-                                    >
-                                    <p class="">3</p>
-                                </td>
-
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">19/04/2023</p>
-                                </td>
-                                <td class="p-1 sm:p-3 sm:text-right">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Actions</label
-                                    >
-                                    <div
-                                        class="flex gap-2 justify-center sm:justify-end"
-                                    >
-                                        <button>
-                                            <mat-icon
-                                                class="text-green-600"
-                                                matTooltip="Edit Role"
-                                                svgIcon="mat_outline:edit"
-                                            ></mat-icon>
-                                        </button>
-                                        <button>
-                                            <mat-icon
-                                                class="text-red-600"
-                                                matTooltip="Delete Role"
-                                                (click)="openDeleteDialog()"
-                                                svgIcon="mat_outline:delete"
-                                            ></mat-icon>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 sm:p-3 sm:table-row flex-col w-full"
-                            >
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">3</p>
-                                </td>
-
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Role Name</label
-                                    >
-                                    <p class="">Super Admin</p>
-                                </td>
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >No of Users</label
-                                    >
-                                    <p class="">1</p>
-                                </td>
-
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">19/04/2023</p>
-                                </td>
-                                <td class="p-1 sm:p-3 sm:text-right">
-                                    <label
-                                        class="text-black uppercase font-bold sm:hidden"
-                                        for=""
-                                        >Actions</label
-                                    >
-                                    <div
-                                        class="flex gap-2 justify-center sm:justify-end"
-                                    >
-                                        <button>
-                                            <mat-icon
-                                                class="text-green-600"
-                                                matTooltip="Edit Role"
-                                                svgIcon="mat_outline:edit"
-                                            ></mat-icon>
-                                        </button>
-                                        <button>
-                                            <mat-icon
-                                                class="text-red-600"
-                                                matTooltip="Delete Role"
-                                                (click)="openDeleteDialog()"
-                                                svgIcon="mat_outline:delete"
-                                            ></mat-icon>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-
-                    <mat-paginator
-                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                        [pageSizeOptions]="[5, 10, 25, 100]"
-                        [showFirstLastButtons]="true"
-                    ></mat-paginator>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
     <!-- Angular Table -->
     <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
@@ -405,9 +161,6 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             [dataSource]="dataSource"
             class="mat-elevation-z8 w-full"
         >
-            <!--- Note that these columns can be defined in any order.
-      The actual rendered columns are set as a property on the row definition" -->
-
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef>SN</th>
                 <td mat-cell *matCellDef="let element">
@@ -443,19 +196,21 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 <td mat-cell *matCellDef="let element">
                     <div class="flex gap-2 justify-center sm:justify-end">
                         <button matTooltip="Edit Category">
-                            <mat-icon
-                                class="text-green-600"
-                                svgIcon="mat_outline:edit"
-                            ></mat-icon>
+                            <img
+                                src="assets/icons/edit.svg"
+                                alt="Edit"
+                                class="w-[24px] h-[24px] cursor-pointer ml-5"
+                            />
                         </button>
                         <button
                             (click)="openDeleteDialog()"
                             matTooltip="Delete Category"
                         >
-                            <mat-icon
-                                class="text-red-600"
-                                svgIcon="mat_outline:delete"
-                            ></mat-icon>
+                            <img
+                                src="assets\images\trash-can.png"
+                                alt="Delete"
+                                class="w-[24px] h-[24px] cursor-pointer"
+                            />
                         </button>
                     </div>
                 </td>

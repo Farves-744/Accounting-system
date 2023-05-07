@@ -3,7 +3,6 @@
 
 /* This injects additional styles into Tailwind's base styles layer. */
 @layer base {
-
     * {
         /* Text rendering */
         text-rendering: optimizeLegibility;
@@ -42,7 +41,7 @@
 
     /* Stylistic alternates for Inter */
     body {
-        font-feature-settings: 'salt';
+        font-feature-settings: "salt";
     }
 
     /* Better spacing and border for horizontal rule */
@@ -63,11 +62,15 @@
         -webkit-text-fill-color: currentColor;
     }
 
-    body, .dark, .light {
-        @apply text-default bg-default #{'!important'};
+    body,
+    .dark,
+    .light {
+        @apply text-textColor bg-default #{'!important'};
     }
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
         --tw-border-opacity: 1 !important;
         border-color: rgba(var(--fuse-border-rgb), var(--tw-border-opacity));
 
@@ -78,9 +81,7 @@
 
     /* Style scrollbars on platforms other than MacOS and iOS */
     @media only screen and (min-width: 960px) {
-
         body:not(.os-mac) {
-
             ::-webkit-scrollbar {
                 width: 8px;
                 height: 8px;
@@ -122,13 +123,14 @@
 
     /* Print styles */
     @media print {
-
         /* Make the base font size smaller for print so everything is scaled nicely */
         html {
             font-size: 12px !important;
         }
 
-        body, .dark, .light {
+        body,
+        .dark,
+        .light {
             background: none !important;
         }
     }

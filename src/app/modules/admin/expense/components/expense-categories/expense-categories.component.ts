@@ -1,34 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    AfterViewInit,
+    ChangeDetectorRef,
+    Input,
+    ElementRef,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { ExpenseCategoriesDialogComponent } from '../expense-categories-dialog/expense-categories-dialog.component';
 import { CommonService } from 'app/shared/services/common.service';
+import { getExpenseCategory } from 'app/shared/modals/expense-category';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
-import { ExpenseCategory } from 'app/shared/modals/expense-category';
-
-export interface ExpenseCategories {
-    position: number;
-    categoryName: string;
-    imgUrl: string;
-}
-
-const ELEMENT_DATA: ExpenseCategories[] = [
-    {
-        position: 1,
-        categoryName: 'Salaries',
-        imgUrl: 'assets/images/salary.png',
-    },
-    {
-        position: 2,
-        categoryName: 'Utilities',
-        imgUrl: 'assets/images/utilities.png',
-    },
-    {
-        position: 3,
-        categoryName: 'Rent',
-        imgUrl: 'assets/images/rent.png',
-    },
-];
+// import { DatePipe } from '@angular/common';
+import { ExpenseService } from 'app/shared/services/expense.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'app-expense-categories',
@@ -36,40 +25,105 @@ const ELEMENT_DATA: ExpenseCategories[] = [
     styleUrls: ['./expense-categories.component.scss'],
 })
 export class ExpenseCategoriesComponent implements OnInit {
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource: MatTableDataSource<any>;
+    getCategoryModal: getExpenseCategory = new getExpenseCategory();
+    displayedColumns: string[] = ['position', 'categoryName', 'actions'];
+    incomeResult: any;
+    url = environment.BASE_URL;
+
     constructor(
-        public dialog: MatDialog,
         private router: Router,
-        private commonService: CommonService
+        private _commonService: CommonService,
+        public dialog: MatDialog,
+        private changeDetection: ChangeDetectorRef,
+        // private datePipe: DatePipe,
+        private _expenseService: ExpenseService
     ) {}
 
-    displayedColumns: string[] = ['position', 'categoryName', 'actions'];
-    dataSource = ELEMENT_DATA;
-
-    expenseCategoryModal: ExpenseCategory = new ExpenseCategory();
-    expenseResult: any;
-
-    openDeleteDialog() {
-        const dialogRef = this.dialog.open(DeleteDialogComponent, {
-            width: '400px',
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
-        });
+    ngOnInit(): void {
+        this.getCategoryModal.userId = this._commonService.getUserId();
+        this.getCategory();
     }
 
-    openAddDialog() {
-        const dialogRef = this.dialog.open(ExpenseCategoriesDialogComponent, {
-            width: '400px',
-            data: {
-                name: this.expenseCategoryModal.categoryName,
-                result: this.expenseResult,
-            },
-        });
+    applyFilter() {
+        this.dataSource.filter = '' + Math.random();
     }
 
     navigateToHome() {
-        this.commonService.navigateToHome();
+        this._commonService.navigateToHome();
     }
 
-    ngOnInit(): void {}
+    addCategory() {
+        const dialogRef = this.dialog.open(ExpenseCategoriesDialogComponent, {
+            width: '400px',
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.getCategory();
+            }
+        });
+    }
+
+    openDeleteDialog(id: number) {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            width: '400px',
+            data: { id },
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.getCategory();
+            }
+        });
+    }
+
+    searchAccount(event: any) {
+        this.getCategoryModal.search =
+            event.target.value === '' ? null : event.target.value;
+        this.getCategory();
+    }
+
+    getCategory() {
+        console.log(this.getCategoryModal);
+        this._expenseService
+            .getCategory(this.getCategoryModal)
+            .subscribe((res) => {
+                // const decryptedData = this._commonService.decryptData(res);
+                console.log(
+                    JSON.parse(
+                        JSON.stringify(this._commonService.decryptData(res))
+                    )
+                );
+                this.dataSource = new MatTableDataSource(
+                    this._commonService.decryptData(res)
+                );
+                this.dataSource.paginator = this.paginator;
+                // this.dataSource.sort = this.sort;
+                this.changeDetection.detectChanges();
+            });
+    }
+
+    editCategory(element: any) {
+        const dialogRef = this.dialog.open(ExpenseCategoriesDialogComponent, {
+            width: '400px',
+            data: element,
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.getCategory();
+            }
+        });
+    }
+
+    clearDate() {
+        (this.getCategoryModal.startDate = null),
+            (this.getCategoryModal.endDate = null),
+            this.getCategory();
+    }
+
+    dateFilter() {
+        this.getCategory();
+    }
 }

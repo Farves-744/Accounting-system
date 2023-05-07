@@ -165,14 +165,14 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
         </mat-form-field>
 
         <button
-            class="bg-myAccent px-4 text-white py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover justify-between transition-all flex items-center gap-2"
+            class="px-10 border text-textColor hover:border-darkAccent border-accentHover shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
             (click)="addTax()"
         >
-            <p class="">Add Tax</p>
-            <mat-icon
+            <p class="font-semibold">Add Tax</p>
+            <!-- <mat-icon
                 class="text-white w-[24px] h-[24px] px-0"
                 svgIcon="heroicons_outline:plus"
-            ></mat-icon>
+            ></mat-icon> -->
         </button>
     </div>
 
@@ -223,19 +223,21 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                             matTooltip="Edit Category"
                             (click)="editTax(element)"
                         >
-                            <mat-icon
-                                class="text-green-600"
-                                svgIcon="mat_outline:edit"
-                            ></mat-icon>
+                            <img
+                                src="assets/icons/edit.svg"
+                                alt="Edit"
+                                class="w-[24px] h-[24px] cursor-pointer ml-5"
+                            />
                         </button>
                         <button
                             (click)="openDeleteDialog(element.id)"
                             matTooltip="Delete Category"
                         >
-                            <mat-icon
-                                class="text-red-600"
-                                svgIcon="mat_outline:delete"
-                            ></mat-icon>
+                            <img
+                                src="assets\images\trash-can.png"
+                                alt="Delete"
+                                class="w-[24px] h-[24px] cursor-pointer"
+                            />
                         </button>
                     </div>
                 </td>

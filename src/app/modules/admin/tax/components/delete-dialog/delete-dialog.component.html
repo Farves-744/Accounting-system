@@ -5,12 +5,12 @@
     <mat-dialog-actions align="end" class="flex gap-4 items-center">
         <button
             mat-dialog-close
-            class="border border-myAccent text-myAccent bg-transparent rounded px-4 py-2"
+            class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2"
         >
             Cancel
         </button>
         <button
-            class="bg-myAccent text-white border border-myAccent hover:bg-accentHover transition rounded px-4 py-2"
+            class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
             [mat-dialog-close]="true"
             cdkFocusInitial
             (click)="deleteTax()"

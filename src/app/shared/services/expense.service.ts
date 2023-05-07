@@ -13,15 +13,14 @@ export class ExpenseService {
         private router: Router,
         private _commonService: CommonService
     ) {}
-    env = environment;
 
     addCategoryImage(value: any) {
-        return this.http.post(this.env.BASE_URL + '/images', value);
+        return this.http.post(environment.BASE_URL + '/images', value);
     }
 
     addCategory(value: any) {
         return this.http.post(
-            this.env.BASE_URL + '/add/category',
+            environment.BASE_URL + '/add/category',
             { data: this._commonService.encryptData(value) },
             this._commonService.httpOptions
         );
@@ -47,7 +46,7 @@ export class ExpenseService {
 
     getCategory(value: any) {
         return this.http.post(
-            this.env.BASE_URL + '/search/category',
+            environment.BASE_URL + '/search/category',
             { data: this._commonService.encryptData(value) },
             this._commonService.httpOptions
         );

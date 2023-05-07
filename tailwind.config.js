@@ -101,8 +101,11 @@ const config = {
             },
             colors: {
                 gray: colors.slate,
-                myAccent: "#863A6F",
-                accentHover: "#62224E",
+                myAccent: "#3588CE", // dark blue
+                darkAccent: "#A2D2FF", // light blue
+                accentHover: "#6FB8FF", // blue
+                textColor: "#000",
+                backgroundColor: "#fff",
             },
             flex: {
                 0: "0 0 auto",

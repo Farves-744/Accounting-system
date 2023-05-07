@@ -3,7 +3,7 @@
 
 <!-- Navigation -->
 <fuse-vertical-navigation
-    class="dark bg-myAccent print:hidden"
+    class="dark bg-darkAccent print:hidden"
     [mode]="isScreenSmall ? 'over' : 'side'"
     [name]="'mainNavigation'"
     [navigation]="navigation.default"
@@ -44,7 +44,7 @@
                     {{ userName }}
                 </div>
                 <div
-                    class="w-full mt-0.5 whitespace-nowrap text-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-white"
+                    class="w-full mt-0.5 whitespace-nowrap text-ellipsis overflow-hidden text-center text-md leading-normal font-medium text-textColor"
                 >
                     {{ userMail }}
                 </div>
@@ -74,11 +74,11 @@
         <button
             mat-icon-button
             (click)="toggleNavigation('mainNavigation')"
-            class="hover:bg-myAccent hover:text-white transition-all group"
+            class="hover:bg-accentHover hover:text-white transition-all group"
         >
             <mat-icon
                 [svgIcon]="'heroicons_outline:menu-alt-1'"
-                class="group-hover:text-white"
+                class="group-hover:text-white text-textColor"
             ></mat-icon>
         </button>
         <!-- Components -->

@@ -19,98 +19,6 @@
         Add Expense
     </h3>
 
-    <!-- Content -->
-    <!-- <form
-        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between"
-    >
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center"
-        >
-            <div class="flex flex-col gap-2">
-                <label class="font-medium" for="amount"
-                    >Amount <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="amount"
-                    type="number"
-                    placeholder="Enter Amount"
-                    class="border border-myAccent p-2 rounded"
-                />
-            </div>
-
-            <mat-form-field appearance="fill" class="w-full mt-7">
-                <input
-                    matInput
-                    [matDatepicker]="picker"
-                    placeholder="Select Date"
-                />
-                <mat-datepicker-toggle
-                    matIconSuffix
-                    [for]="picker"
-                    class="text-myAccent w-7"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <div class="flex flex-col gap-2">
-                <label class="font-medium" for="description">
-                    Description <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="description"
-                    type="text"
-                    placeholder="Enter Description"
-                    class="border border-myAccent p-2 rounded"
-                />
-            </div>
-
-            <div class="flex items-center justify-center w-full">
-                <mat-form-field class="w-full">
-                    <mat-label id="incomeCategory"
-                        >Select Category
-                        <span class="text-red-600">*</span></mat-label
-                    >
-                    <mat-select
-                        matInfix
-                        disableOptionCentering
-                        placeholder="Select Category"
-                    >
-                        <mat-option
-                            *ngFor="let cl of clubsListSlice"
-                            [value]="cl.id"
-                            >{{ cl.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="flex flex-col gap-2">
-                <label class="font-medium" for="description">Tax</label>
-                <input
-                    id="description"
-                    type="number"
-                    placeholder="Enter Tax Amount"
-                    class="border border-myAccent p-2 rounded"
-                />
-            </div>
-            <div class="flex flex-col gap-2 w-fit">
-                <label class="font-medium" for="description"
-                    >Upload Receipt</label
-                >
-                <input
-                    id="description"
-                    type="file"
-                    class="file:border-myAccent file:bg-transparent file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded file:border-[1px] hover:file:bg-myAccent hover:file:text-white file:text-myAccent file:transition-all"
-                />
-            </div>
-        </div>
-        <button
-            type="submit"
-            class="py-2 px-10 rounded text-white transition-all hover:bg-accentHover bg-myAccent w-fit"
-        >
-            Add Expense
-        </button>
-    </form> -->
-
     <form
         class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between"
     >
@@ -140,26 +48,6 @@
                     class="border border-myAccent p-2 rounded"
                 />
             </div>
-            <!-- <div class="flex flex-col gap-2">
-                <label for="date" class="font-medium"
-                    >Date <span class="text-red-600">*</span></label
-                >
-                <mat-form-field appearance="fill" class="w-full">
-                    <input
-                        matInput
-                        [matDatepicker]="picker"
-                        placeholder="Select Date"
-                    />
-
-                    [value]="todayDate"
-                    <mat-datepicker-toggle
-                        matIconSuffix
-                        [for]="picker"
-                        class="text-myAccent w-7"
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-            </div> -->
 
             <div class="flex flex-col gap-2 w-full">
                 <label for="tax" class="font-medium"
@@ -190,18 +78,6 @@
                     </mat-radio-group>
                 </div>
             </div>
-
-            <!-- <div class="flex flex-col gap-2">
-                <label class="font-medium" for="tax-rate"
-                    >Tax Rate <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="tax-rate"
-                    type="number"
-                    placeholder="Enter Tax Rate"
-                    class="border border-myAccent p-2 rounded"
-                />
-            </div> -->
 
             <div class="flex flex-col gap-2 w-full">
                 <label for="tax-type" class="font-medium"
@@ -260,9 +136,9 @@
             </div>
         </div>
         <button
-            type="button"
+            type="submit"
             (click)="openCollectDialog()"
-            class="py-2 px-10 rounded text-white self-end transition-all hover:bg-accentHover bg-myAccent w-fit"
+            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit"
         >
             Add Expense
         </button>

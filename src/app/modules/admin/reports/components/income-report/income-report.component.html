@@ -149,14 +149,14 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 <button
                     mat-menu-item
                     [matMenuTriggerFor]="menu2"
-                    class="hover:bg-myAccent hover:text-white transition"
+                    class="hover:bg-darkAccent hover:text-textColor transition"
                 >
                     Filter By Category Name
                 </button>
                 <button
                     mat-menu-item
                     [matMenuTriggerFor]="menu3"
-                    class="hover:bg-myAccent hover:text-white transition"
+                    class="hover:bg-darkAccent hover:text-textColor transition"
                 >
                     Filter By Account Name
                 </button>
@@ -165,19 +165,19 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <mat-menu #menu2="matMenu" class="max-h-[15rem]">
                 <button
                     mat-menu-item
-                    class="hover:bg-myAccent hover:text-white transition"
+                    class="hover:bg-darkAccent hover:text-textColor transition"
                 >
                     Salary
                 </button>
                 <button
                     mat-menu-item
-                    class="hover:bg-myAccent hover:text-white transition"
+                    class="hover:bg-darkAccent hover:text-textColor transition"
                 >
                     Part Time
                 </button>
                 <button
                     mat-menu-item
-                    class="hover:bg-myAccent hover:text-white transition"
+                    class="hover:bg-darkAccent hover:text-textColor transition"
                 >
                     Travel
                 </button>
@@ -186,19 +186,19 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <mat-menu #menu3="matMenu" class="max-h-[15rem]">
                 <button
                     mat-menu-item
-                    class="hover:bg-myAccent hover:text-white transition"
+                    class="hover:bg-darkAccent hover:text-textColor transition"
                 >
                     Mohamed Ifas
                 </button>
                 <button
                     mat-menu-item
-                    class="hover:bg-myAccent hover:text-white transition"
+                    class="hover:bg-darkAccent hover:text-textColor transition"
                 >
                     Farves
                 </button>
                 <button
                     mat-menu-item
-                    class="hover:bg-myAccent hover:text-white transition"
+                    class="hover:bg-darkAccent hover:text-textColor transition"
                 >
                     Safiyudeen
                 </button>
@@ -237,319 +237,6 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
         </div>
     </div>
 
-    <!-- Table -->
-    <!-- <div class="subpixel-antialiased py-4 w-full">
-        <div class="container space-y-8 text-md mx-auto">
-            <div class="space-y-2">
-                <div
-                    class="bg-white shadow-lg hover:shadow-xl rounded-md overflow-hidden"
-                >
-                    <table
-                        class="table text-center lg:text-left table-auto w-full leading-normal"
-                    >
-                        <thead
-                            class="uppercase text-center text-black font-bold bg-[#F1F5F9]"
-                        >
-                            <tr
-                                class="hidden text-left lg:table-row space-x-10"
-                            >
-                                <th class="text-left p-3">
-                                    <p>SN</p>
-                                </th>
-
-                                <th class="text-left p-3">
-                                    <p>Category name</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Description</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Created Date</p>
-                                </th>
-
-                                <th class="text-left p-3">
-                                    <p>Tax Amount</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Amount</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Receipt</p>
-                                </th>
-                                <th class="text-right p-3">
-                                    <p>Details</p>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="flex-1 lg:flex-none">
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 sm:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">1</p>
-                                </td>
-
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Category Name</label
-                                    >
-                                    <p class="">Salary</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">Salary</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Created Date</label
-                                    >
-                                    <p class="">19/04/2023</p>
-                                </td>
-
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Tax Amount</label
-                                    >
-                                    <p class="">1000</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Amount</label
-                                    >
-                                    <p class="">10000</p>
-                                </td>
-                                <td
-                                    class="p-1 lg:p-3 flex flex-col gap-2 items-center lg:items-start"
-                                >
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Receipt</label
-                                    >
-                                    <button
-                                        (click)="openReceiptDialog()"
-                                        class="bg-transparent border px-2 py-1 border-myAccent rounded transition hover:bg-myAccent text-myAccent hover:text-white"
-                                    >
-                                        View
-                                    </button>
-                                </td>
-
-                                <td class="p-1 lg:p-3 lg:text-right eye">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Details</label
-                                    >
-                                    <mat-icon
-                                        svgIcon="heroicons_outline:eye"
-                                        (click)="openPaymentDialog()"
-                                        class="text-myAccent cursor-pointer lg:mr-4"
-                                    ></mat-icon>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">2</p>
-                                </td>
-
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Category Name</label
-                                    >
-                                    <p class="">Part-time</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >for part-time</label
-                                    >
-                                    <p class="">
-                                        Got salary from part-time work
-                                    </p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Created Date</label
-                                    >
-                                    <p class="">19/04/2023</p>
-                                </td>
-
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Tax Amount</label
-                                    >
-                                    <p class="">500</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Amount</label
-                                    >
-                                    <p class="">15000</p>
-                                </td>
-                                <td
-                                    class="p-1 lg:p-3 flex flex-col gap-2 items-center lg:items-start"
-                                >
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Receipt</label
-                                    >
-                                    <button
-                                        (click)="openReceiptDialog()"
-                                        class="bg-transparent border px-2 py-1 border-myAccent rounded transition hover:bg-myAccent text-myAccent hover:text-white"
-                                    >
-                                        View
-                                    </button>
-                                </td>
-
-                                <td class="p-1 lg:p-3 lg:text-right eye">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Details</label
-                                    >
-                                    <mat-icon
-                                        svgIcon="heroicons_outline:eye"
-                                        (click)="openPaymentDialog()"
-                                        class="text-myAccent cursor-pointer lg:mr-4"
-                                    ></mat-icon>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">3</p>
-                                </td>
-
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Category Name</label
-                                    >
-                                    <p class="">Business</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">from business</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Created Date</label
-                                    >
-                                    <p class="">19/04/2023</p>
-                                </td>
-
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Tax Amount</label
-                                    >
-                                    <p class="">250</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Amount</label
-                                    >
-                                    <p class="">7000</p>
-                                </td>
-                                <td
-                                    class="p-1 lg:p-3 flex flex-col gap-2 items-center lg:items-start"
-                                >
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Receipt</label
-                                    >
-                                    <button
-                                        (click)="openReceiptDialog()"
-                                        class="bg-transparent border px-2 py-1 border-myAccent rounded transition hover:bg-myAccent text-myAccent hover:text-white"
-                                    >
-                                        View
-                                    </button>
-                                </td>
-
-                                <td class="p-1 lg:p-3 lg:text-right eye">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Details</label
-                                    >
-                                    <mat-icon
-                                        svgIcon="heroicons_outline:eye"
-                                        (click)="openPaymentDialog()"
-                                        class="text-myAccent cursor-pointer lg:mr-4"
-                                    ></mat-icon>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-
-                    <mat-paginator
-                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
-                        [pageSizeOptions]="[5, 10, 25, 100]"
-                        [showFirstLastButtons]="true"
-                    ></mat-paginator>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
     <!-- Angular Table -->
     <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
         <table
@@ -557,9 +244,6 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
             [dataSource]="dataSource"
             class="mat-elevation-z8 w-full"
         >
-            <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef>SN</th>
                 <td mat-cell *matCellDef="let element">
@@ -614,7 +298,7 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
                 <td mat-cell *matCellDef="let element">
                     <button
                         (click)="openReceiptDialog()"
-                        class="bg-transparent border px-2 py-1 border-myAccent rounded transition hover:bg-myAccent text-myAccent hover:text-white"
+                        class="shadow-[inset_4px_4px_13px_rgba(0,0,0,0.25)] px-3 py-1 bg-darkAccent rounded transition hover:bg-accentHover text-textColor"
                     >
                         View
                     </button>

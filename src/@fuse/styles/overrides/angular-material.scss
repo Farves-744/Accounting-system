@@ -400,7 +400,7 @@ body.light .mat-calendar-body-cell-content:hover {
 }
 
 .mat-option.mat-selected:not(.mat-option-disabled) {
-    color: var(--myAccent) !important;
+    color: var(--accentHover) !important;
 }
 
 body.light .mat-calendar-body-selected {
@@ -516,7 +516,7 @@ element.style {
             border-radius: 4px;
             padding: 0 16px;
             border-width: 1px;
-            @apply shadow-sm bg-white border-myAccent dark:bg-black dark:bg-opacity-5 dark:border-gray-500 #{'!important'};
+            @apply shadow-sm bg-white border-myAccent  #{'!important'};
 
             .mat-form-field-prefix {
                 > .mat-icon {
@@ -706,7 +706,7 @@ element.style {
 
                         .mat-select-arrow {
                             margin: 0 0 0 8px;
-                            color: var(--myAccent);
+                            color: var(--accentHover);
                         }
                     }
                 }

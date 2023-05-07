@@ -151,7 +151,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
     </div>
 
     <!-- Table -->
-    <div class="subpixel-antialiased py-4 w-full">
+    <!-- <div class="subpixel-antialiased py-4 w-full">
         <div class="container space-y-8 text-md mx-auto">
             <div class="space-y-2">
                 <div
@@ -387,7 +387,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                         </tbody>
                     </table>
 
-                    <!-- Pagination -->
+
                     <mat-paginator
                         class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                         [pageSizeOptions]="[5, 10, 25, 100]"
@@ -396,5 +396,65 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 </div>
             </div>
         </div>
+    </div> -->
+
+    <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
+        <table
+            mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z8 w-full"
+        >
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef>SN</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.position }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.description }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paymentMode">
+                <th mat-header-cell *matHeaderCellDef>Payment Mode</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.paymentMode }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.date }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="creditAmount">
+                <th mat-header-cell *matHeaderCellDef>Credit Amount</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.creditAmount }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="debitAmount">
+                <th mat-header-cell *matHeaderCellDef>Debit Amount</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.debitAmount }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="runningBalance">
+                <th mat-header-cell *matHeaderCellDef>Balance</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.runningBalance }}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
     </div>
 </section>

@@ -1,4 +1,4 @@
-export class ExpenseCategory {
+export class AddExpenseCategory {
     categoryName: string;
     categoryType: number = 1;
     userId: number = 4;
