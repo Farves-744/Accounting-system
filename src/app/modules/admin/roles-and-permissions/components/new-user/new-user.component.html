@@ -19,6 +19,8 @@
 
     <!-- Content -->
     <form
+        [formGroup]="addUserForm"
+        (ngSubmit)="addOrEditUser()"
         class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between"
     >
         <div
@@ -32,6 +34,7 @@
                     id="user-name"
                     type="text"
                     placeholder="Enter Name"
+                    formControlName="name"
                     class="border border-myAccent p-2 rounded"
                 />
             </div>
@@ -42,20 +45,40 @@
                 >
                 <input
                     id="user-email"
-                    type="text"
+                    type="email"
                     placeholder="Enter Email"
+                    formControlName="email"
                     class="border border-myAccent p-2 rounded"
                 />
             </div>
 
-            <div class="flex flex-col gap-2">
+            <div
+                class="flex flex-col gap-2"
+                *ngIf="updateFormData == undefined"
+            >
                 <label class="font-medium" for="user-password"
                     >Password <span class="text-red-600">*</span></label
                 >
                 <input
                     id="user-password"
-                    type="text"
+                    type="password"
                     placeholder="Enter Password"
+                    formControlName="password"
+                    class="border border-myAccent p-2 rounded"
+                />
+            </div>
+            <div
+                class="flex flex-col gap-2"
+                *ngIf="updateFormData != undefined"
+            >
+                <label class="font-medium" for="user-password"
+                    >Password Edit<span class="text-red-600">*</span></label
+                >
+                <input
+                    id="user-password"
+                    type="password"
+                    placeholder="Enter Password"
+                    formControlName="editPassword"
                     class="border border-myAccent p-2 rounded"
                 />
             </div>
@@ -69,10 +92,13 @@
                         #clubs
                         matInfix
                         disableOptionCentering
+                        formControlName="roleId"
                         placeholder="Select User Role"
                     >
-                        <mat-option *ngFor="let role of roles" [value]="role.id"
-                            >{{ role.name }}
+                        <mat-option
+                            *ngFor="let role of rolesData"
+                            [value]="role.id"
+                            >{{ role.roleName }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -82,7 +108,7 @@
             type="submit"
             class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit"
         >
-            Add User
+            {{ updateFormData != undefined ? "Update User" : "Add User" }}
         </button>
     </form>
 </section>

@@ -89,7 +89,7 @@ export class ManageTaxComponent {
 
     editTax(element: any) {
         this.router.navigate(['/tax/add-tax'], {
-            state: { data: element },
+            // state: { data: element },
         });
     }
 

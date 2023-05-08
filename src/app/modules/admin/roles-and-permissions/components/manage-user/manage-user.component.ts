@@ -1,40 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from 'app/shared/services/common.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
-
-export interface ManageTax {
-    position: number;
-    userName: string;
-    userEmail: string;
-    userRole: string;
-    date: string;
-}
-
-const ELEMENT_DATA: ManageTax[] = [
-    {
-        position: 1,
-        userName: 'Farves',
-        userEmail: 'farves@gmail.com',
-        userRole: 'Manager',
-        date: '14/04/2023',
-    },
-    {
-        position: 2,
-        userName: 'Safiyudeen',
-        userEmail: 'safiyudeen@gmail.com',
-        userRole: 'Accountant',
-        date: '14/04/2023',
-    },
-    {
-        position: 3,
-        userName: 'Hanif',
-        userEmail: 'hanif@gmail.com',
-        userRole: 'Super Admin',
-        date: '14/04/2023',
-    },
-];
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { GetUser } from 'app/shared/modals/user';
+import { UserService } from 'app/shared/services/user.service';
 
 @Component({
     selector: 'app-manage-user',
@@ -42,11 +14,9 @@ const ELEMENT_DATA: ManageTax[] = [
     styleUrls: ['./manage-user.component.scss'],
 })
 export class ManageUserComponent implements OnInit {
-    constructor(
-        private commonService: CommonService,
-        public dialog: MatDialog,
-        private router: Router
-    ) {}
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource: MatTableDataSource<any>;
+    getUserModal: GetUser = new GetUser();
 
     displayedColumns: string[] = [
         'position',
@@ -56,19 +26,80 @@ export class ManageUserComponent implements OnInit {
         'date',
         'actions',
     ];
-    dataSource = ELEMENT_DATA;
 
-    navigateToHome() {
-        this.commonService.navigateToHome();
+    constructor(
+        private _commonService: CommonService,
+        private _userService: UserService,
+        public dialog: MatDialog,
+        private router: Router,
+        private changeDetection: ChangeDetectorRef
+    ) {}
+
+    ngOnInit(): void {
+        this.getUserModal.userId = this._commonService.getUserId();
+        this.getUser();
+    }
+    applyFilter() {
+        this.dataSource.filter = '' + Math.random();
     }
 
-    openDeleteDialog() {
+    navigateToHome() {
+        this._commonService.navigateToHome();
+    }
+
+    openDeleteDialog(id: number) {
         const dialogRef = this.dialog.open(DeleteDialogComponent, {
             width: '400px',
+            data: { id },
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+            if (result) {
+                this.getUser();
+            }
         });
+    }
+
+    searchAccount(event: any) {
+        this.getUserModal.search =
+            event.target.value === '' ? null : event.target.value;
+        this.getUser();
+    }
+
+    getUser() {
+        console.log(this.getUserModal);
+
+        this._userService.getUser(this.getUserModal).subscribe((res) => {
+            // const decryptedData = this._commonService.decryptData(res);
+            console.log(this._commonService.decryptData(res));
+
+            this.dataSource = new MatTableDataSource(
+                this._commonService.decryptData(res)
+            );
+
+            this.dataSource.paginator = this.paginator;
+            // this.dataSource.sort = this.sort;
+            this.changeDetection.detectChanges();
+        });
+    }
+
+    addUser() {
+        this.router.navigateByUrl('/roles-and-permissions/new-user');
+    }
+
+    editUser(element: any) {
+        this.router.navigate(['/roles-and-permissions/new-user'], {
+            state: { data: element },
+        });
+    }
+
+    dateFilter() {
+        this.getUser();
+    }
+
+    clearDate() {
+        (this.getUserModal.startDate = null),
+            (this.getUserModal.endDate = null),
+            this.getUser();
     }
 
     // openShowDialog() {
@@ -79,6 +110,4 @@ export class ManageUserComponent implements OnInit {
     //         console.log(`Dialog result: ${result}`);
     //     });
     // }
-
-    ngOnInit(): void {}
 }

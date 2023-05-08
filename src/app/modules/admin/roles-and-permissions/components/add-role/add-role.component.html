@@ -21,474 +21,474 @@
         </div>
     </div>
 
-    <div
-        class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between"
+    <form
+        class="flex flex-col gap-4"
+        [formGroup]="addRoleForm"
+        (ngSubmit)="addOrEditRole()"
     >
-        <!-- <label class="font-medium" for="role-name">Role Name</label> -->
-        <input
-            id="role-name"
-            type="text"
-            placeholder="Enter Role Name"
-            class="border border-myAccent p-2 rounded w-[15rem]"
-        />
-
-        <div class="flex items-center gap-4">
-            <mat-checkbox>Select All</mat-checkbox>
-        </div>
-    </div>
-
-    <!-- Table -->
-    <form class="flex flex-col gap-6">
         <div
-            class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg"
+            class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between"
         >
-            <table class="w-full table-auto">
-                <thead
-                    class="uppercase text-center text-black font-bold bg-[#d9edff]"
+            <div class="flex flex-col items-start gap-2">
+                <label class="font-medium" for="role-name">Role Name</label>
+                <input
+                    id="role-name"
+                    type="text"
+                    formControlName="roleName"
+                    placeholder="Enter Role Name"
+                    class="border border-myAccent p-2 rounded w-[15rem]"
+                />
+            </div>
+
+            <div class="flex items-center gap-4">
+                <mat-checkbox (change)="selectAll($event)"
+                    >Select All</mat-checkbox
                 >
-                    <tr class="thead">
-                        <th class="text-left p-3">
-                            <p>Privileges</p>
-                        </th>
-                        <th class="text-left p-3">
-                            <p>View</p>
-                        </th>
-                        <th class="text-left p-3">
-                            <p>Create</p>
-                        </th>
-                        <th class="text-left p-3">
-                            <p>Edit</p>
-                        </th>
-                        <th class="text-left p-3">
-                            <p>Delete</p>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="border-t">
-                    <tr>
-                        <td class="p-3 font-bold text-black">Dashboard</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 font-bold text-black">Income</td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Add Income</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Manage Income</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Income Categories</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 font-bold text-black">Expense</td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Add Expense</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Manage Expense</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Expense Categories</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 font-bold text-black">Accounts</td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">New Account</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Manage Accounts</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Transactions</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Profit and Loss</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 font-bold text-black">Tax</td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Add Tax</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Manage Tax</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Tax Statement</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 font-bold text-black">Reports</td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Income Report</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Expense Report</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Tax Report</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Account Statement</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 font-bold text-black">
-                            Roles and Permissions
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox disabled></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">New User</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Manage Users</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 text-black">Manage Roles</td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox></mat-checkbox>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            </div>
         </div>
 
-        <div class="flex items-center gap-4 mt-4 self-end">
-            <button
-                type="submit"
-                class="px-10 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2"
+        <!-- Table -->
+        <div class="flex flex-col gap-6">
+            <div
+                class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg"
             >
-                Cancel
-            </button>
-            <button
-                type="submit"
-                class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit"
-            >
-                Add Role
-            </button>
+                <table class="w-full table-auto">
+                    <thead
+                        class="uppercase text-center text-black font-bold bg-[#d9edff]"
+                    >
+                        <tr class="thead">
+                            <th class="text-left p-3">
+                                <p>Privileges</p>
+                            </th>
+                            <th class="text-left p-3">
+                                <p>View</p>
+                            </th>
+                            <th class="text-left p-3">
+                                <p>Create</p>
+                            </th>
+                            <th class="text-left p-3">
+                                <p>Edit</p>
+                            </th>
+                            <th class="text-left p-3">
+                                <p>Delete</p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-t">
+                        <tr>
+                            <td class="p-3 font-bold text-black">Dashboard</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="1"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">Income</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="2"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="3"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                >
+                                </mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="4"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="5"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr class="td">
+                            <td class="p-3 text-black">Income Categories</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="6"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="7"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="8"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="9"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">Expense</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="10"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="11"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="12"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="13"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr class="td">
+                            <td class="p-3 text-black">Expense Categories</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="14"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="15"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="16"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="17"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">Accounts</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="18"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="19"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="20"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="21"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr class="td">
+                            <td class="p-3 text-black">Transactions</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="22"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 text-black">Profit and Loss</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="23"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">Tax</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="24"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="25"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="26"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="27"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr class="td">
+                            <td class="p-3 text-black">Tax Statement</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="28"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">Reports</td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">
+                                Income Reports
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="29"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">
+                                Expense Reports
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="30"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">
+                                Tax Reports
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="31"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">
+                                Account Statement
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="32"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">
+                                Roles and Permissions
+                            </td>
+                        </tr>
+
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">Users</td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="33"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="34"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="35"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="36"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+
+                        <tr class="td">
+                            <td class="p-3 font-bold text-black">
+                                Roles and Permissions
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="37"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="38"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="39"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                            <td class="p-3">
+                                <mat-checkbox
+                                    name="40"
+                                    formControlName="permissions"
+                                    (change)="addPermission($event)"
+                                    [checked]="isDisabled"
+                                ></mat-checkbox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex items-center gap-4 mt-4 self-end">
+                <button
+                    type="submit"
+                    class="px-10 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="submit"
+                    class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit"
+                >
+                    {{
+                        updateFormData != undefined ? "Update Role" : "Add Role"
+                    }}
+                </button>
+            </div>
         </div>
     </form>
 </section>

@@ -10,7 +10,7 @@ import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.
 import { ShowDialogComponent } from './components/show-dialog/show-dialog.component';
 import { AddRoleComponent } from './components/add-role/add-role.component';
 import { DeleteRoleDialogComponent } from './components/delete-role-dialog/delete-role-dialog.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -27,6 +27,7 @@ import { FormsModule } from '@angular/forms';
         RolesAndPermissionsRoutingModule,
         MaterialExampleModule,
         FormsModule,
+        ReactiveFormsModule,
     ],
 })
 export class RolesAndPermissionsModule {}

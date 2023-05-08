@@ -1,74 +1,105 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
 import { DeleteRoleDialogComponent } from '../delete-role-dialog/delete-role-dialog.component';
-
-export interface ManageTax {
-    position: number;
-    roleName: string;
-    noOfUsers: number;
-    date: string;
-}
-
-const ELEMENT_DATA: ManageTax[] = [
-    {
-        position: 1,
-        roleName: 'Super Admin',
-        noOfUsers: 1,
-        date: '14/04/2023',
-    },
-    {
-        position: 2,
-        roleName: 'Accountant',
-        noOfUsers: 2,
-        date: '14/04/2023',
-    },
-    {
-        position: 3,
-        roleName: 'Manager',
-        noOfUsers: 1,
-        date: '14/04/2023',
-    },
-];
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
+import { RoleService } from 'app/shared/services/role.service';
+import { GetRole } from 'app/shared/modals/role';
 
 @Component({
     selector: 'app-manage-roles',
     templateUrl: './manage-roles.component.html',
     styleUrls: ['./manage-roles.component.scss'],
 })
-export class ManageRolesComponent implements OnInit {
+export class ManageRolesComponent {
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource: MatTableDataSource<any>;
+    getRoleModal: GetRole = new GetRole();
+
     constructor(
-        private commonService: CommonService,
+        private _commonService: CommonService,
         public dialog: MatDialog,
-        private router: Router
+        private router: Router,
+        private _roleService: RoleService,
+        private changeDetection: ChangeDetectorRef
     ) {}
 
     displayedColumns: string[] = [
         'position',
         'roleName',
-        'noOfUsers',
-        'date',
+        'createdAt',
+        'updatedAt',
         'actions',
     ];
-    dataSource = ELEMENT_DATA;
 
-    navigateToHome() {
-        this.commonService.navigateToHome();
+    ngOnInit(): void {
+        this.getRoleModal.userId = this._commonService.getUserId();
+        this.getRole();
     }
 
-    goToAddRole() {
+    applyFilter() {
+        this.dataSource.filter = '' + Math.random();
+    }
+
+    navigateToHome() {
+        this._commonService.navigateToHome();
+    }
+
+    openDeleteDialog(id: number) {
+        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+            width: '400px',
+            data: { id },
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.getRole();
+            }
+        });
+    }
+
+    searchRole(event: any) {
+        this.getRoleModal.search =
+            event.target.value === '' ? null : event.target.value;
+        this.getRole();
+    }
+
+    getRole() {
+        console.log(this.getRoleModal);
+
+        this._roleService.getRole(this.getRoleModal).subscribe((res) => {
+            // const decryptedData = this._commonService.decryptData(res);
+            console.log(this._commonService.decryptData(res));
+
+            this.dataSource = new MatTableDataSource(
+                this._commonService.decryptData(res)
+            );
+
+            this.dataSource.paginator = this.paginator;
+            // this.dataSource.sort = this.sort;
+            this.changeDetection.detectChanges();
+        });
+    }
+
+    addRole() {
         this.router.navigateByUrl('/roles-and-permissions/add-role');
     }
 
-    openDeleteDialog() {
-        const dialogRef = this.dialog.open(DeleteRoleDialogComponent, {
-            width: '400px',
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+    editRole(element: any) {
+        this.router.navigate(['/roles-and-permissions/add-role'], {
+            state: { data: element },
         });
     }
 
-    ngOnInit(): void {}
+    dateFilter() {
+        this.getRole();
+    }
+
+    clearDate() {
+        (this.getRoleModal.startDate = null),
+            (this.getRoleModal.endDate = null),
+            this.getRole();
+    }
 }

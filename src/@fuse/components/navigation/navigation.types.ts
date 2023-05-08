@@ -36,6 +36,11 @@ export interface FuseNavigationItem {
     };
     children?: FuseNavigationItem[];
     meta?: any;
+    view?: string;
+    create?: string;
+    edit?: string;
+    delete?: string;
+    isParent?: boolean;
 }
 
 export type FuseVerticalNavigationAppearance =

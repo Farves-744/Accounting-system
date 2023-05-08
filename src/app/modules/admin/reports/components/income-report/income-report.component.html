@@ -118,7 +118,9 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 name="account-search"
                 id="account-search"
                 placeholder="Search "
-                class="px-4 py-2 rounded caret-myAccent"
+                (keyup)="searchAccount($event)"
+
+                class="px-4 py-2 w-full rounded caret-myAccent"
             />
 
             <mat-icon
@@ -132,8 +134,12 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 [rangePicker]="picker"
                 placeholder="Select Date"
             >
-                <input matStartDate placeholder="Start date" />
-                <input matEndDate placeholder="End date" />
+                <input matStartDate placeholder="Start date"
+                
+                />
+                <input matEndDate placeholder="End date" 
+                
+                />
             </mat-date-range-input>
 
             <mat-datepicker-toggle

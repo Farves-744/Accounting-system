@@ -14,6 +14,7 @@ import { ManageIncomeComponent } from './components/manage-income/manage-income.
 import { ReceiptDialogComponent } from './components/receipt-dialog/receipt-dialog.component';
 import { PaymentDialogComponent } from './components/payment-dialog/payment-dialog.component';
 import { DndDirective } from 'app/shared/directives/dnd.directive';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,8 @@ import { DndDirective } from 'app/shared/directives/dnd.directive';
         IncomeRoutingModule,
         SharedModule,
         MaterialExampleModule,
+        ReactiveFormsModule,
+        FormsModule,
     ],
     providers: [DatePipe],
 })
