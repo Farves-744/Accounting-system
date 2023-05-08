@@ -516,7 +516,7 @@ element.style {
             border-radius: 4px;
             padding: 0 16px;
             border-width: 1px;
-            @apply shadow-sm bg-white border-myAccent  #{'!important'};
+            @apply shadow-sm bg-transparent border-myAccent  #{'!important'};
 
             .mat-form-field-prefix {
                 > .mat-icon {

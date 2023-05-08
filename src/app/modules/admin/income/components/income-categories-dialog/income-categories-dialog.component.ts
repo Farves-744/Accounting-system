@@ -139,6 +139,16 @@ export class IncomeCategoriesDialogComponent {
 
     ngAfterViewInit(): void {}
 
+    onFileDropped(event) {
+        this.file = event[0];
+        console.log(this.file);
+        let reader = new FileReader();
+        reader.onload = (event: any) => {
+            this.imageUrl = event.target.result;
+        };
+        reader.readAsDataURL(this.file);
+    }
+
     saveImage(event: any) {
         this.file = event.target.files[0];
         console.log(this.file);

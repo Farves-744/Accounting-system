@@ -13,6 +13,7 @@ import { CollectDialogComponent } from './components/collect-dialog/collect-dial
 import { ManageIncomeComponent } from './components/manage-income/manage-income.component';
 import { ReceiptDialogComponent } from './components/receipt-dialog/receipt-dialog.component';
 import { PaymentDialogComponent } from './components/payment-dialog/payment-dialog.component';
+import { DndDirective } from 'app/shared/directives/dnd.directive';
 
 @NgModule({
     declarations: [

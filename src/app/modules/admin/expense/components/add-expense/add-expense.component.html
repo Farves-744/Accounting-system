@@ -20,7 +20,7 @@
     </h3>
 
     <form
-        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between"
+        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-4 items-center justify-between"
     >
         <div
             class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center"
@@ -98,27 +98,70 @@
                 </mat-form-field>
             </div>
 
-            <div class="flex flex-col gap-2 w-full">
-                <label for="incomeCategory" class="font-medium"
-                    >Expense Category <span class="text-red-600">*</span></label
+            <div
+                class="w-full h-[12rem] p-[2rem] border-[2px] border-opacity-75 mt-2 rounded border-myAccent text-center border-dashed relative"
+                appDnd
+                (fileDropped)="onFileDropped($event)"
+            >
+                <input
+                    type="file"
+                    class="opacity-0 absolute z-10 w-full top-0 left-0 h-full"
+                    #fileDropRef
+                    id="fileDropRef"
+                    (change)="fileBrowseHandler($event.target.files)"
+                />
+                <div
+                    class="flex items-center justify-center flex-col gap-4 mt-4"
                 >
-                <mat-form-field class="w-full mt-1">
-                    <mat-select
-                        #clubs
-                        matInfix
-                        disableOptionCentering
-                        placeholder="Select Category"
+                    <img
+                        src="assets\icons\upload.svg"
+                        alt=""
+                        class="w-[50px] fill-myAccent"
+                    />
+
+                    <label for="fileDropRef" class="font-semibold text-xl"
+                        >Choose an image or drag it here</label
                     >
-                        <mat-option
-                            *ngFor="let category of categories"
-                            [value]="category.id"
-                            >{{ category.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+
+                    <div
+                        *ngIf="imageUrl"
+                        class="w-full bg-backgroundColor absolute top-0 bottom-0 p-4"
+                    >
+                        <img
+                            [src]="imageUrl"
+                            alt=""
+                            class="object-contain w-full h-full"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col gap-8 items-start">
+                <div class="flex flex-col gap-2 w-full">
+                    <label for="incomeCategory" class="font-medium"
+                        >Expense Category
+                        <span class="text-red-600">*</span></label
+                    >
+                    <mat-form-field class="w-full mt-1">
+                        <mat-select
+                            #clubs
+                            matInfix
+                            disableOptionCentering
+                            placeholder="Select Category"
+                        >
+                            <mat-option
+                                *ngFor="let category of categories"
+                                [value]="category.id"
+                                >{{ category.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="text-myAccent font-semibold text-[1.3rem] mb-2">
+                    Total Amount: <span></span>
+                </div>
             </div>
 
-            <div class="flex items-end justify-between w-full">
+            <!-- <div class="flex items-end justify-between w-full">
                 <div class="flex flex-col gap-2 w-fit">
                     <label class="font-medium" for="description"
                         >Upload Receipt</label
@@ -129,11 +172,7 @@
                         class="file:border-myAccent file:bg-transparent file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded file:border-[1px] hover:file:bg-myAccent hover:file:text-white file:text-myAccent file:transition-all"
                     />
                 </div>
-
-                <div class="text-myAccent font-semibold text-[1.3rem] mb-2">
-                    Total Amount: <span></span>
-                </div>
-            </div>
+            </div> -->
         </div>
         <button
             type="submit"

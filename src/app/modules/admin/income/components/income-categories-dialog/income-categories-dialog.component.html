@@ -2,9 +2,9 @@
 <h2 mat-dialog-title class="mb-2">Add Income Category</h2>
 <form [formGroup]="addCategoryForm" (ngSubmit)="addOrUpdateCategory()">
     <mat-dialog-content class="mat-typography mb-2 flex flex-col gap-4">
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
             <label for="category-name" class="text-[1rem] font-medium"
-                >Category Name</label
+                >Category Name <span class="text-red-600">*</span></label
             >
             <input
                 type="text"
@@ -15,7 +15,50 @@
             />
         </div>
 
-        <div class="flex flex-col gap-2 w-fit">
+        <div class="flex flex-col items-start gap-2">
+            <label for="category-icon" class="text-[1rem] font-medium"
+                >Category Icon <span class="text-red-600">*</span></label
+            >
+
+            <div
+                class="w-full h-[12rem] p-[2rem] border-[2px] border-opacity-75 rounded border-myAccent text-center border-dashed relative"
+                appDnd
+                (fileDropped)="onFileDropped($event)"
+            >
+                <input
+                    type="file"
+                    class="opacity-0 absolute z-10 w-full top-0 left-0 h-full"
+                    #fileDropRef
+                    id="fileDropRef"
+                    (change)="saveImage($event)"
+                />
+                <div
+                    class="flex items-center justify-center flex-col gap-4 mt-4"
+                >
+                    <img
+                        src="assets\icons\upload.svg"
+                        alt=""
+                        class="w-[50px] fill-myAccent"
+                    />
+
+                    <label for="fileDropRef" class="font-semibold text-xl"
+                        >Choose an icon or drag it here</label
+                    >
+
+                    <div
+                        *ngIf="imageUrl"
+                        class="w-full bg-backgroundColor absolute top-0 bottom-0 p-4"
+                    >
+                        <img
+                            [src]="imageUrl"
+                            alt=""
+                            class="object-contain w-full h-full"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="flex flex-col gap-2 w-fit">
             <label class="font-medium" for="icon">Add Icon</label>
             <input
                 id="icon"
@@ -27,17 +70,17 @@
         </div>
         <div *ngIf="imageUrl">
             <img [src]="imageUrl" alt="" />
-        </div>
+        </div> -->
     </mat-dialog-content>
     <mat-dialog-actions align="end" class="flex gap-4 items-center">
         <button
-            class="border border-myAccent text-myAccent bg-transparent rounded px-4 py-2"
+            class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2"
             mat-dialog-close
         >
             Cancel
         </button>
         <button
-            class="bg-myAccent text-white border border-myAccent hover:bg-accentHover transition rounded px-4 py-2"
+            class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
             [mat-dialog-close]="true"
             cdkFocusInitial
             type="submit"

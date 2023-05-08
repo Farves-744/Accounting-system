@@ -12,6 +12,7 @@ import { ManageExpenseComponent } from './components/manage-expense/manage-expen
 import { PaymentDialogComponent } from './components/payment-dialog/payment-dialog.component';
 import { ReceiptDialogComponent } from './components/receipt-dialog/receipt-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -30,6 +31,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         MaterialExampleModule,
         ReactiveFormsModule,
         FormsModule,
+        SharedModule,
     ],
 })
 export class ExpenseModule {}

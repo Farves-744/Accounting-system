@@ -1,21 +1,25 @@
 <section
-    class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4 overflow-y-scroll"
+    class="m-5 sm:m-10 p-4 sm:p-6 shadow-[inset_4px_4px_250px_130px_rgba(211,234,255,0.54)] bg-[#EFEFEF] rounded-lg w-full flex flex-col gap-4 overflow-y-scroll"
 >
     <!-- Date Range Filter -->
-    <mat-form-field appearance="fill" class="my-4 w-full sm:w-[25rem]">
-        <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
-            <input matStartDate placeholder="Start date" />
-            <input matEndDate placeholder="End date" />
-        </mat-date-range-input>
+    <div class="bg-transparent">
+        <mat-form-field appearance="fill" class="my-4 w-full sm:w-[25rem]">
+            <mat-date-range-input
+                [rangePicker]="picker"
+                placeholder="Select Date"
+            >
+                <input matStartDate placeholder="Start date" />
+                <input matEndDate placeholder="End date" />
+            </mat-date-range-input>
 
-        <mat-datepicker-toggle
-            class="text-myAccent w-7"
-            matIconSuffix
-            [for]="picker"
-        ></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
-
+            <mat-datepicker-toggle
+                class="text-myAccent w-7"
+                matIconSuffix
+                [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+    </div>
     <!-- Cards -->
     <div class="flex flex-col card-alignment items-center justify-center gap-4">
         <div
@@ -71,7 +75,7 @@
     <!-- Graphs -->
     <div class="grid grid-cols-3 w-full gap-4">
         <div
-            class="w-full flex flex-col col-span-3 lg:col-span-2 p-4 shadow rounded-lg"
+            class="w-full flex flex-col col-span-3 bg-backgroundColor lg:col-span-2 p-4 shadow rounded-lg"
         >
             <h5 class="font-bold">Cashflow</h5>
             <apx-chart
@@ -92,7 +96,7 @@
             ></apx-chart>
         </div>
         <div
-            class="w-full flex flex-col col-span-3 lg:col-span-1 p-4 shadow rounded-lg"
+            class="w-full bg-backgroundColor flex flex-col col-span-3 lg:col-span-1 p-4 shadow rounded-lg"
         >
             <h5 class="font-bold">Profit and Loss</h5>
             <apx-chart
