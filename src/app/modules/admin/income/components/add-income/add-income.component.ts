@@ -77,7 +77,15 @@ export class AddIncomeComponent {
         // console.log(this.fileToUpload);
     }
 
-    fileBrowseHandler(event) {
-        // console.log(event);
+    saveImage(event: any) {
+        this.file = event.target.files[0];
+        console.log(this.file);
+        let reader = new FileReader();
+        reader.onload = (event: any) => {
+            this.imageUrl = event.target.result;
+        };
+        reader.readAsDataURL(this.file);
+        // console.log(this.imageUrl);
+        // console.log(this.fileToUpload);
     }
 }

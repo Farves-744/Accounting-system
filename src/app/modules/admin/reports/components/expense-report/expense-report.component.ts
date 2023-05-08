@@ -74,7 +74,7 @@ export class ExpenseReportComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    openExReceiptDialog() {
+    openReceiptDialog() {
         const dialogRef = this.dialog.open(ExpenseReceiptDialogComponent, {
             width: '900px',
         });
@@ -83,7 +83,7 @@ export class ExpenseReportComponent implements OnInit {
         });
     }
 
-    openExPaymentDialog() {
+    openPaymentDialog() {
         const dialogRef = this.dialog.open(ExpensePaymentDialogComponent, {
             width: '900px',
         });
