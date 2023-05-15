@@ -1,62 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { GetTransactions } from 'app/shared/modals/accounts';
+import { AccountService } from 'app/shared/services/account.service';
 import { CommonService } from 'app/shared/services/common.service';
-
-export interface Transactions {
-    position: number;
-    holderName: string;
-    paymentMode: string;
-    date: string;
-    creditAmount: number | string;
-    debitAmount: number | string;
-    incluExclu: string;
-    taxRate: number | string;
-    taxAmount: number | string;
-    description: string;
-    runningBalance: number;
-}
-
-const ELEMENT_DATA: Transactions[] = [
-    {
-        position: 1,
-        holderName: 'Farves',
-        paymentMode: 'Gpay',
-        date: '25/04/2023',
-        creditAmount: 2000,
-        debitAmount: '-',
-        incluExclu: 'Excluded',
-        taxRate: '18%',
-        taxAmount: 305.04,
-        description: 'This is for Event Organizing',
-        runningBalance: 2000,
-    },
-    {
-        position: 2,
-        holderName: 'Safiyudeen',
-        paymentMode: 'Credit Card',
-        date: '25/04/2023',
-        creditAmount: '-',
-        debitAmount: 423.73,
-        incluExclu: 'Included',
-        taxRate: '18%',
-        taxAmount: 76.27,
-        description: 'This is for Travel',
-        runningBalance: 1500,
-    },
-    {
-        position: 3,
-        holderName: 'Hanif',
-        paymentMode: 'Phone Pe',
-        date: '25/04/2023',
-        creditAmount: 1000,
-        debitAmount: '-',
-        incluExclu: '-',
-        taxRate: '-',
-        taxAmount: '-',
-        description: 'This is for construction material',
-        runningBalance: 2500,
-    },
-];
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'app-transactions',
@@ -64,7 +14,19 @@ const ELEMENT_DATA: Transactions[] = [
     styleUrls: ['./transactions.component.scss'],
 })
 export class TransactionsComponent {
-    constructor(private router: Router, private commonService: CommonService) {}
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource: MatTableDataSource<any>;
+    getTransactionsModal: GetTransactions = new GetTransactions();
+    // categoryData: any;
+    url = environment.BASE_URL;
+
+    constructor(
+        private _commonService: CommonService,
+        private _accountService: AccountService,
+        public dialog: MatDialog,
+        private router: Router,
+        private changeDetection: ChangeDetectorRef
+    ) {}
 
     displayedColumns: string[] = [
         'position',
@@ -79,13 +41,50 @@ export class TransactionsComponent {
         'description',
         'runningBalance',
     ];
-    dataSource = ELEMENT_DATA;
 
     navigateToHome() {
-        this.commonService.navigateToHome();
+        this._commonService.navigateToHome();
     }
 
-    navigateToManageAccount() {
-        this.router.navigateByUrl('/accounts/manage-accounts');
+    ngOnInit(): void {
+        this.getTransactionsModal.userId = this._commonService.getUserId();
+
+        this.getTransactions();
+    }
+
+    applyFilter() {
+        this.dataSource.filter = '' + Math.random();
+    }
+
+    searchTransactions(event: any) {
+        this.getTransactionsModal.search =
+            event.target.value === '' ? null : event.target.value;
+        this.getTransactions();
+    }
+
+    getTransactions() {
+        console.log(this.getTransactionsModal);
+
+        this._accountService
+            .getTransactions(this.getTransactionsModal)
+            .subscribe((res) => {
+                // const decryptedData = this._commonService.decryptData(res);
+                console.log(this._commonService.decryptData(res));
+                this.dataSource = new MatTableDataSource(
+                    this._commonService.decryptData(res)
+                );
+                this.dataSource.paginator = this.paginator;
+                this.changeDetection.detectChanges();
+            });
+    }
+
+    dateFilter() {
+        this.getTransactions();
+    }
+
+    clearDate() {
+        (this.getTransactionsModal.startDate = null),
+            (this.getTransactionsModal.endDate = null),
+            this.getTransactions();
     }
 }

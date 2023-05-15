@@ -1,9 +1,6 @@
 <h2 mat-dialog-title class="mb-0">Receipt</h2>
 <mat-dialog-content class="mat-typography py-3 overflow-y-scroll">
-    <img
-        src="https://files.jotform.com/jotformapps/payroll-receipt-f5a19570274d3f17b9455df288747757_og.png"
-        alt="Receipt"
-    />
+    <img [src]="imageUrl" alt="Receipt" />
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="flex gap-4 items-center">
@@ -15,8 +12,9 @@
     </button>
     <button
         class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
-        [mat-dialog-close]="true"
+        [mat-dialog-close]="false"
         cdkFocusInitial
+        (click)="prinkReceipt()"
     >
         Print
     </button>

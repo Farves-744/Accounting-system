@@ -21,7 +21,7 @@
             <h3 class="font-bold text-[1.3rem]">Tax Report</h3>
         </div>
 
-        <div class="flex items-center gap-4">
+        <!-- <div class="flex items-center gap-4">
             <svg
                 matTooltip="Export as PDF"
                 version="1.0"
@@ -101,7 +101,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                     />
                 </g>
             </svg>
-        </div>
+        </div> -->
     </div>
 
     <!-- Content -->
@@ -114,10 +114,11 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
         >
             <input
                 type="search"
-                name="account-search"
-                id="account-search"
+                name="tax-search"
+                id="tax-search"
+                (keyup)="searchTaxReport($event)"
                 placeholder="Search "
-                class="px-4 py-2 rounded caret-myAccent"
+                class="px-4 py-2 w-full rounded caret-myAccent"
             />
 
             <mat-icon
@@ -131,9 +132,30 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 [rangePicker]="picker"
                 placeholder="Select Date"
             >
-                <input matStartDate placeholder="Start date" />
-                <input matEndDate placeholder="End date" />
+                <input
+                    matStartDate
+                    placeholder="Start date"
+                    [(ngModel)]="getTaxReportsModal.startDate"
+                    (dateChange)="dateFilter()"
+                />
+                <input
+                    matEndDate
+                    placeholder="End date"
+                    [(ngModel)]="getTaxReportsModal.endDate"
+                    (dateChange)="dateFilter()"
+                />
             </mat-date-range-input>
+
+            <mat-icon
+                matDatepickerToggleIcon
+                class="cursor-pointer"
+                (click)="clearDate()"
+                *ngIf="
+                    getTaxReportsModal.startDate != null &&
+                    getTaxReportsModal.endDate != null
+                "
+                >clear</mat-icon
+            >
 
             <mat-datepicker-toggle
                 class="text-myAccent w-7"
@@ -152,50 +174,64 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
         >
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef>SN</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.position }}
+                <td mat-cell *matCellDef="let element; let i = index">
+                    {{
+                        paginatorRef.pageIndex * paginatorRef.pageSize + (i + 1)
+                    }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="holderName">
                 <th mat-header-cell *matHeaderCellDef>Holder Name</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.holderName }}
+                    {{ element.accountName }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="paymentMode">
                 <th mat-header-cell *matHeaderCellDef>Payment Mode</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.paymentMode }}
+                    {{
+                        element.paymentMode == 0
+                            ? "Gpay"
+                            : element.paymentMode == 1
+                            ? "PhonePe"
+                            : element.paymentMode == 2
+                            ? "Credit Card / Debit Card"
+                            : element.paymentMode == 3
+                            ? "Cheque"
+                            : element.paymentMode == 4
+                            ? "Cash"
+                            : "-"
+                    }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef>Date</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.date }}
+                    {{ element.createdAt | date : "dd-MM-yyyy" }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="creditAmount">
                 <th mat-header-cell *matHeaderCellDef>Credit Amount</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.creditAmount }}
+                    {{ element.credit == null ? "-" : element.credit }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="debitAmount">
                 <th mat-header-cell *matHeaderCellDef>Debit Amount</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.debitAmount }}
+                    {{ element.debit == null ? "-" : element.debit }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="incluExclu">
                 <th mat-header-cell *matHeaderCellDef>Inclu / Exclu</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.incluExclu }}
+                    {{ element.taxStatus == 1 ? "Included" : "Excluded" }}
                 </td>
             </ng-container>
 
@@ -230,5 +266,11 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
+
+        <mat-paginator
+            #paginatorRef
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            [showFirstLastButtons]="true"
+        ></mat-paginator>
     </div>
 </section>

@@ -1,62 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { GetTaxReports } from 'app/shared/modals/reports';
 import { CommonService } from 'app/shared/services/common.service';
-
-export interface Transactions {
-    position: number;
-    holderName: string;
-    paymentMode: string;
-    date: string;
-    creditAmount: number | string;
-    debitAmount: number | string;
-    incluExclu: string;
-    taxRate: number;
-    taxAmount: number;
-    description: string;
-    runningBalance: number;
-}
-
-const ELEMENT_DATA: Transactions[] = [
-    {
-        position: 1,
-        holderName: 'Farves',
-        paymentMode: 'Gpay',
-        date: '25/04/2023',
-        creditAmount: 2000,
-        debitAmount: '-',
-        incluExclu: 'Excluded',
-        taxRate: 18,
-        taxAmount: 305.04,
-        description: 'This is for Event Organizing',
-        runningBalance: 2000,
-    },
-    {
-        position: 2,
-        holderName: 'Safiyudeen',
-        paymentMode: 'Credit Card',
-        date: '25/04/2023',
-        creditAmount: '-',
-        debitAmount: 423.73,
-        incluExclu: 'Included',
-        taxRate: 18,
-        taxAmount: 76.27,
-        description: 'This is for Travel',
-        runningBalance: 1500,
-    },
-    {
-        position: 3,
-        holderName: 'Hanif',
-        paymentMode: 'Phone Pe',
-        date: '25/04/2023',
-        creditAmount: 1000,
-        debitAmount: '-',
-        incluExclu: 'Excluded',
-        taxRate: 18,
-        taxAmount: 152.54,
-        description: 'This is for construction material',
-        runningBalance: 2500,
-    },
-];
+import { ReportsService } from 'app/shared/services/reports.service';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'app-tax-report',
@@ -64,7 +14,19 @@ const ELEMENT_DATA: Transactions[] = [
     styleUrls: ['./tax-report.component.scss'],
 })
 export class TaxReportComponent {
-    constructor(private router: Router, private commonService: CommonService) {}
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource: MatTableDataSource<any>;
+    getTaxReportsModal: GetTaxReports = new GetTaxReports();
+    categoryData: any;
+    url = environment.BASE_URL;
+
+    constructor(
+        private _commonService: CommonService,
+        private _reportService: ReportsService,
+        public dialog: MatDialog,
+        private router: Router,
+        private changeDetection: ChangeDetectorRef
+    ) {}
 
     displayedColumns: string[] = [
         'position',
@@ -79,13 +41,53 @@ export class TaxReportComponent {
         'description',
         'runningBalance',
     ];
-    dataSource = ELEMENT_DATA;
 
     navigateToHome() {
-        this.commonService.navigateToHome();
+        this._commonService.navigateToHome();
     }
 
-    navigateToManageAccount() {
-        this.router.navigateByUrl('/accounts/manage-accounts');
+    ngOnInit(): void {
+        this.getTaxReportsModal.userId = this._commonService.getUserId();
+
+        this.getTaxReports();
+    }
+
+    applyFilter() {
+        this.dataSource.filter = '' + Math.random();
+    }
+
+    searchTaxReport(event: any) {
+        this.getTaxReportsModal.search =
+            event.target.value === '' ? null : event.target.value;
+        this.getTaxReports();
+    }
+
+    getTaxReports() {
+        console.log(this.getTaxReportsModal);
+
+        this._reportService
+            .getTaxReports(this.getTaxReportsModal)
+            .subscribe((res) => {
+                // const decryptedData = this._commonService.decryptData(res);
+                console.log(this._commonService.decryptData(res));
+
+                this.dataSource = new MatTableDataSource(
+                    this._commonService.decryptData(res)
+                );
+
+                this.dataSource.paginator = this.paginator;
+                // this.dataSource.sort = this.sort;
+                this.changeDetection.detectChanges();
+            });
+    }
+
+    dateFilter() {
+        this.getTaxReports();
+    }
+
+    clearDate() {
+        (this.getTaxReportsModal.startDate = null),
+            (this.getTaxReportsModal.endDate = null),
+            this.getTaxReports();
     }
 }

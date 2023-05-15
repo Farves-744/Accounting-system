@@ -39,6 +39,7 @@ export class ManageUserComponent implements OnInit {
         this.getUserModal.userId = this._commonService.getUserId();
         this.getUser();
     }
+
     applyFilter() {
         this.dataSource.filter = '' + Math.random();
     }

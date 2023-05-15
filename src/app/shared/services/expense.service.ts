@@ -51,4 +51,42 @@ export class ExpenseService {
             this._commonService.httpOptions
         );
     }
+
+    filterByCategory(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/category/wise/payments',
+            {
+                data: this._commonService.encryptData(value),
+            },
+            this._commonService.httpOptions
+        );
+    }
+
+    addExpense(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/add/cash',
+            {
+                data: this._commonService.encryptData(value),
+            },
+            this._commonService.httpOptions
+        );
+    }
+
+    updateExpense(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/update/cash',
+            {
+                data: this._commonService.encryptData(value),
+            },
+            this._commonService.httpOptions
+        );
+    }
+
+    getExpenseById(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/get/update/details',
+            { data: this._commonService.encryptData(value) },
+            this._commonService.httpOptions
+        );
+    }
 }

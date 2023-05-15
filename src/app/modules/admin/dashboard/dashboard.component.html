@@ -2,15 +2,35 @@
     class="m-5 sm:m-10 p-4 sm:p-6 shadow-[inset_4px_4px_250px_130px_rgba(211,234,255,0.54)] bg-[#EFEFEF] rounded-lg w-full flex flex-col gap-4 overflow-y-scroll"
 >
     <!-- Date Range Filter -->
-    <div class="bg-transparent">
+    <div class="bg-transparent self-end">
         <mat-form-field appearance="fill" class="my-4 w-full sm:w-[25rem]">
             <mat-date-range-input
                 [rangePicker]="picker"
                 placeholder="Select Date"
             >
-                <input matStartDate placeholder="Start date" />
-                <input matEndDate placeholder="End date" />
+                <input
+                    matStartDate
+                    placeholder="Start date"
+                    [(ngModel)]="startDate"
+                    (dateChange)="dateFilter()"
+                />
+                <input
+                    matEndDate
+                    placeholder="End date"
+                    [(ngModel)]="endDate"
+                    (dateChange)="dateFilter()"
+                />
             </mat-date-range-input>
+
+            <mat-icon
+                matDatepickerToggleIcon
+                class="cursor-pointer"
+                (click)="clearDate()"
+                *ngIf="
+                    graphModal.startDate != null && graphModal.endDate != null
+                "
+                >clear</mat-icon
+            >
 
             <mat-datepicker-toggle
                 class="text-myAccent w-7"
@@ -35,7 +55,14 @@
                 class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]"
             >
                 <p class="font-bold">Total Incomes</p>
-                <p class="font-bold"><span>₹</span>20000</p>
+                <p class="font-bold">
+                    {{
+                        dashboardCardsData?.totalIncome == null
+                            ? 0
+                            : (dashboardCardsData?.totalIncome
+                              | currency : "INR")
+                    }}
+                </p>
             </div>
         </div>
         <div
@@ -51,7 +78,14 @@
                 class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]"
             >
                 <p class="font-bold">Total Expenses</p>
-                <p class="font-bold"><span>₹</span>15000</p>
+                <p class="font-bold">
+                    {{
+                        dashboardCardsData?.totalExpense == null
+                            ? 0
+                            : (dashboardCardsData?.totalExpense
+                              | currency : "INR")
+                    }}
+                </p>
             </div>
         </div>
         <div
@@ -67,58 +101,91 @@
                 class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]"
             >
                 <p class="font-bold">Transactions</p>
-                <p class="font-bold">53</p>
+                <p class="font-bold">
+                    {{
+                        dashboardCardsData?.TotalTransaction == 0
+                            ? 0
+                            : dashboardCardsData?.TotalTransaction
+                    }}
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Graphs -->
-    <div class="grid grid-cols-3 w-full gap-4">
-        <div
-            class="w-full flex flex-col col-span-3 bg-backgroundColor lg:col-span-2 p-4 shadow rounded-lg"
-        >
-            <h5 class="font-bold">Cashflow</h5>
-            <apx-chart
-                class="w-full"
-                [chart]="cashflowChart.chart"
-                [colors]="cashflowChart.colors"
-                [dataLabels]="cashflowChart.dataLabels"
-                [grid]="cashflowChart.grid"
-                [labels]="cashflowChart.labels"
-                [legend]="cashflowChart.legend"
-                [plotOptions]="cashflowChart.plotOptions"
-                [series]="cashflowChart.series"
-                [states]="cashflowChart.states"
-                [stroke]="cashflowChart.stroke"
-                [tooltip]="cashflowChart.tooltip"
-                [xaxis]="cashflowChart.xaxis"
-                [yaxis]="cashflowChart.yaxis"
-            ></apx-chart>
-        </div>
-        <div
-            class="w-full bg-backgroundColor flex flex-col col-span-3 lg:col-span-1 p-4 shadow rounded-lg"
-        >
-            <h5 class="font-bold">Profit and Loss</h5>
-            <apx-chart
-                class="w-full"
-                [chart]="profitAndLossChart.chart"
-                [colors]="profitAndLossChart.colors"
-                [dataLabels]="profitAndLossChart.dataLabels"
-                [markers]="profitAndLossChart.markers"
-                [plotOptions]="profitAndLossChart.plotOptions"
-                [series]="profitAndLossChart.series"
-                [stroke]="profitAndLossChart.stroke"
-                [tooltip]="profitAndLossChart.tooltip"
-                [xaxis]="profitAndLossChart.xaxis"
-                [yaxis]="profitAndLossChart.yaxis"
-                [title]="profitAndLossChart.title"
-            ></apx-chart>
+    <div class="flex flex-col bg-white rounded-lg shadow gap-4 p-4">
+        <mat-form-field class="w-fit mt-0 self-end">
+            <mat-select
+                matInfix
+                disableOptionCentering
+                placeholder="Filter By"
+                [(ngModel)]="dashboardModal.duration"
+                (valueChange)="filterByData($event)"
+            >
+                <mat-option *ngFor="let item of filterBy" [value]="item.id"
+                    >{{ item.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Graphs -->
+        <div class="grid grid-cols-3 w-full gap-4">
+            <div
+                class="w-full flex flex-col col-span-3 bg-backgroundColor lg:col-span-2 p-4 shadow rounded-lg"
+            >
+                <h5 class="font-bold">Cashflow</h5>
+
+                <apx-chart
+                    class="w-full"
+                    [chart]="cashflowChart.chart"
+                    [colors]="cashflowChart.colors"
+                    [dataLabels]="cashflowChart.dataLabels"
+                    [grid]="cashflowChart.grid"
+                    [labels]="cashflowChart.labels"
+                    [legend]="cashflowChart.legend"
+                    [plotOptions]="cashflowChart.plotOptions"
+                    [series]="cashflowChart.series"
+                    [states]="cashflowChart.states"
+                    [stroke]="cashflowChart.stroke"
+                    [tooltip]="cashflowChart.tooltip"
+                    [xaxis]="cashflowChart.xaxis"
+                    [yaxis]="cashflowChart.yaxis"
+                ></apx-chart>
+            </div>
+            <div
+                class="w-full bg-backgroundColor flex flex-col col-span-3 lg:col-span-1 p-4 shadow rounded-lg"
+            >
+                <h5 class="font-bold">Profit and Loss</h5>
+
+                <apx-chart
+                    class="w-full"
+                    [chart]="profitAndLossChart.chart"
+                    [colors]="profitAndLossChart.colors"
+                    [dataLabels]="profitAndLossChart.dataLabels"
+                    [markers]="profitAndLossChart.markers"
+                    [plotOptions]="profitAndLossChart.plotOptions"
+                    [series]="profitAndLossChart.series"
+                    [stroke]="profitAndLossChart.stroke"
+                    [tooltip]="profitAndLossChart.tooltip"
+                    [xaxis]="profitAndLossChart.xaxis"
+                    [yaxis]="profitAndLossChart.yaxis"
+                    [title]="profitAndLossChart.title"
+                ></apx-chart>
+            </div>
         </div>
     </div>
 
     <!-- Transaction History -->
     <div class="flex flex-col gap-2 mt-2 items-start w-full">
-        <h5 class="font-bold text-xl">Transaction History</h5>
+        <div class="flex items-center justify-between w-full">
+            <h5 class="font-bold text-xl">Transaction History</h5>
+
+            <button
+                class="hover:text-myAccent transition-all"
+                (click)="goToTransactions()"
+            >
+                See All
+            </button>
+        </div>
 
         <div
             class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg"
@@ -133,64 +200,85 @@
 
                 <ng-container matColumnDef="position">
                     <th mat-header-cell *matHeaderCellDef>SN</th>
-                    <td mat-cell *matCellDef="let element">
-                        {{ element.position }}
+                    <td mat-cell *matCellDef="let element; let i = index">
+                        {{
+                            paginatorRef.pageIndex * paginatorRef.pageSize +
+                                (i + 1)
+                        }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="holderName">
                     <th mat-header-cell *matHeaderCellDef>Holder Name</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.holderName }}
+                        {{ element.accountName }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="paymentMode">
                     <th mat-header-cell *matHeaderCellDef>Payment Mode</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.paymentMode }}
+                        {{
+                            element.paymentMode == 0
+                                ? "Gpay"
+                                : element.paymentMode == 1
+                                ? "PhonePe"
+                                : element.paymentMode == 2
+                                ? "Credit Card / Debit Card"
+                                : element.paymentMode == 3
+                                ? "Cheque"
+                                : element.paymentMode == 4
+                                ? "Cash"
+                                : "-"
+                        }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="date">
                     <th mat-header-cell *matHeaderCellDef>Date</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.date }}
+                        {{ element.createdAt | date : "dd-MM-yyyy" }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="creditAmount">
                     <th mat-header-cell *matHeaderCellDef>Credit Amount</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.creditAmount }}
+                        {{ element.credit == null ? "-" : element.credit }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="debitAmount">
                     <th mat-header-cell *matHeaderCellDef>Debit Amount</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.debitAmount }}
+                        {{ element.debit == null ? "-" : element.debit }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="incluExclu">
                     <th mat-header-cell *matHeaderCellDef>Inclu / Exclu</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.incluExclu }}
+                        {{
+                            element.taxStatus == 1
+                                ? "Included"
+                                : element.taxStatus == 2
+                                ? "Excluded"
+                                : "-"
+                        }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="taxRate">
                     <th mat-header-cell *matHeaderCellDef>Tax Rate</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.taxRate }}
+                        {{ element.taxRate }}{{ element.taxRate ? "%" : "-" }}
                     </td>
                 </ng-container>
 
                 <ng-container matColumnDef="taxAmount">
                     <th mat-header-cell *matHeaderCellDef>Tax Amount</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.taxAmount }}
+                        {{ element.taxAmount ? element.taxAmount : "-" }}
                     </td>
                 </ng-container>
 
@@ -214,615 +302,11 @@
                     *matRowDef="let row; columns: displayedColumns"
                 ></tr>
             </table>
+            <mat-paginator
+                #paginatorRef
+                [pageSizeOptions]="[5, 10, 25, 100]"
+                [showFirstLastButtons]="true"
+            ></mat-paginator>
         </div>
     </div>
-
-    <!-- <div class="w-full">
-        <div class="container space-y-8 text-md mx-auto">
-            <div class="space-y-2">
-                <div class="bg-white shadow rounded-lg overflow-hidden">
-                    <table
-                        class="table text-center lg:text-left table-auto w-full leading-normal"
-                    >
-                        <thead
-                            class="uppercase text-center text-black font-bold bg-[#F1F5F9]"
-                        >
-                            <tr
-                                class="hidden text-left lg:table-row space-x-10"
-                            >
-                                <th class="text-left p-3">
-                                    <p>SN</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Holder Name</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Payment Mode</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Date</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Credit Amount</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Debit Amount</p>
-                                </th>
-                                <th class="text-left p-3">
-                                    <p>Description</p>
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody class="flex-1 lg:flex-none">
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">1</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Farves Safiyudeen</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Gpay</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">2000</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">This is for Event Organizing</p>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">2</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Mohamed Nawasudeen</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Credit Card</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">500</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">This is for Travel</p>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">3</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Mohamed Mushary</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Debit Card</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">1500</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">
-                                        This is for Construction Materials
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">4</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Farves Safiyudeen</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Gpay</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">2000</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">This is for Event Organizing</p>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">5</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Mohamed Nawasudeen</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Credit Card</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">500</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">This is for Travel</p>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">6</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Mohamed Mushary</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Debit Card</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">1500</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">
-                                        This is for Construction Materials
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">7</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Farves Safiyudeen</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Gpay</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">2000</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">This is for Event Organizing</p>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">8</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Mohamed Nawasudeen</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Credit Card</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">500</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">This is for Travel</p>
-                                </td>
-                            </tr>
-                            <tr
-                                v-for="(person, index) in persons"
-                                :key="index"
-                                class="border-t first:border-t-0 flex p-1 lg:p-3 lg:table-row flex-col w-full"
-                            >
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >SN</label
-                                    >
-                                    <p class="">9</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Holder Name</label
-                                    >
-                                    <p class="">Mohamed Mushary</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Payment Mode</label
-                                    >
-                                    <p class="">Debit Card</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Date</label
-                                    >
-                                    <p class="">18/04/2023</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Credit Amount</label
-                                    >
-                                    <p class="">1500</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >debit Amount</label
-                                    >
-                                    <p class="">-</p>
-                                </td>
-                                <td class="p-1 lg:p-3">
-                                    <label
-                                        class="text-black uppercase font-bold lg:hidden"
-                                        for=""
-                                        >Description</label
-                                    >
-                                    <p class="">
-                                        This is for Construction Materials
-                                    </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </section>

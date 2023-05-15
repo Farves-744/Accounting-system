@@ -109,6 +109,7 @@ export class IncomeCategoriesDialogComponent {
                 }
             } else {
                 this.formatImage(this.file);
+
                 this._incomeService
                     .addCategoryImage(this.formData)
                     .subscribe((res) => {
@@ -122,20 +123,6 @@ export class IncomeCategoriesDialogComponent {
             }
         }
     }
-
-    // sendData() {
-    //     this.addCategoryForm.value.imageId = this.imageId;
-    //     console.log(this.addCategoryForm.value);
-
-    //     this._incomeService
-    //         .addCategory(this.addCategoryForm.value)
-    //         .subscribe((res) => {
-    //             console.log(this._commonService.decryptData(res));
-    //             this.addCategoryForm.reset();
-    //             this.dialogRef.close(true);
-    //             this.changeDetection.detectChanges();
-    //         });
-    // }
 
     ngAfterViewInit(): void {}
 

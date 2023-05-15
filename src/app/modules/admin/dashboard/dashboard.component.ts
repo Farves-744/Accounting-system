@@ -1,139 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { ApexOptions } from 'apexcharts';
-
-export interface Transactions {
-    position: number;
-    holderName: string;
-    paymentMode: string;
-    date: string;
-    creditAmount: number | string;
-    debitAmount: number | string;
-    incluExclu: string;
-    taxRate: number | string;
-    taxAmount: number | string;
-    description: string;
-    runningBalance: number;
-}
-
-const ELEMENT_DATA: Transactions[] = [
-    {
-        position: 1,
-        holderName: 'Farves',
-        paymentMode: 'Gpay',
-        date: '25/04/2023',
-        creditAmount: 2000,
-        debitAmount: '-',
-        incluExclu: 'Excluded',
-        taxRate: '18%',
-        taxAmount: 305.04,
-        description: 'This is for Event Organizing',
-        runningBalance: 2000,
-    },
-    {
-        position: 2,
-        holderName: 'Safiyudeen',
-        paymentMode: 'Credit Card',
-        date: '25/04/2023',
-        creditAmount: '-',
-        debitAmount: 423.73,
-        incluExclu: 'Included',
-        taxRate: '18%',
-        taxAmount: 76.27,
-        description: 'This is for Travel',
-        runningBalance: 1500,
-    },
-    {
-        position: 3,
-        holderName: 'Hanif',
-        paymentMode: 'Phone Pe',
-        date: '25/04/2023',
-        creditAmount: 1000,
-        debitAmount: '-',
-        incluExclu: '-',
-        taxRate: '-',
-        taxAmount: '-',
-        description: 'This is for construction material',
-        runningBalance: 2500,
-    },
-    {
-        position: 4,
-        holderName: 'Farves',
-        paymentMode: 'Gpay',
-        date: '25/04/2023',
-        creditAmount: 2000,
-        debitAmount: '-',
-        incluExclu: 'Excluded',
-        taxRate: '18%',
-        taxAmount: 305.04,
-        description: 'This is for Event Organizing',
-        runningBalance: 2000,
-    },
-    {
-        position: 5,
-        holderName: 'Safiyudeen',
-        paymentMode: 'Credit Card',
-        date: '25/04/2023',
-        creditAmount: '-',
-        debitAmount: 423.73,
-        incluExclu: 'Included',
-        taxRate: '18%',
-        taxAmount: 76.27,
-        description: 'This is for Travel',
-        runningBalance: 1500,
-    },
-    {
-        position: 6,
-        holderName: 'Hanif',
-        paymentMode: 'Phone Pe',
-        date: '25/04/2023',
-        creditAmount: 1000,
-        debitAmount: '-',
-        incluExclu: '-',
-        taxRate: '-',
-        taxAmount: '-',
-        description: 'This is for construction material',
-        runningBalance: 2500,
-    },
-    {
-        position: 7,
-        holderName: 'Farves',
-        paymentMode: 'Gpay',
-        date: '25/04/2023',
-        creditAmount: 2000,
-        debitAmount: '-',
-        incluExclu: 'Excluded',
-        taxRate: '18%',
-        taxAmount: 305.04,
-        description: 'This is for Event Organizing',
-        runningBalance: 2000,
-    },
-    {
-        position: 8,
-        holderName: 'Safiyudeen',
-        paymentMode: 'Credit Card',
-        date: '25/04/2023',
-        creditAmount: '-',
-        debitAmount: 423.73,
-        incluExclu: 'Included',
-        taxRate: '18%',
-        taxAmount: 76.27,
-        description: 'This is for Travel',
-        runningBalance: 1500,
-    },
-    {
-        position: 9,
-        holderName: 'Hanif',
-        paymentMode: 'Phone Pe',
-        date: '25/04/2023',
-        creditAmount: 1000,
-        debitAmount: '-',
-        incluExclu: '-',
-        taxRate: '-',
-        taxAmount: '-',
-        description: 'This is for construction material',
-        runningBalance: 2500,
-    },
-];
+import { DashboardData, GraphModal } from 'app/shared/modals/dashboard';
+import { CommonService } from 'app/shared/services/common.service';
+import { DashboardService } from 'app/shared/services/dashboard.service';
+import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'app-dashboard',
@@ -141,10 +14,26 @@ const ELEMENT_DATA: Transactions[] = [
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource: MatTableDataSource<any>;
     cashflowChart: ApexOptions = {};
     profitAndLossChart: ApexOptions = {};
+    dashboardModal: DashboardData = new DashboardData();
+    graphModal: GraphModal = new GraphModal();
+    dashboardCardsData: any;
+    duration: any;
+    startDate: any;
+    endDate: any;
+    areaGraphData: any;
+    polarGraphData: any;
+    formattedLabels: any;
 
-    constructor() {}
+    constructor(
+        private _router: Router,
+        private _commonService: CommonService,
+        private _dashboardService: DashboardService,
+        private changeDetection: ChangeDetectorRef
+    ) {}
 
     displayedColumns: string[] = [
         'position',
@@ -159,13 +48,237 @@ export class DashboardComponent {
         'description',
         'runningBalance',
     ];
-    dataSource = ELEMENT_DATA;
+
+    filterBy = [
+        { name: 'Monthly', id: 1 },
+        { name: 'Yearly', id: 2 },
+    ];
 
     ngOnInit(): void {
-        this.get();
+        this.dashboardModal.userId = this._commonService.getUserId();
+        this.graphModal.userId = this._commonService.getUserId();
+        this.getGraphData(1);
+
+        this.getDashboardTransactions();
+        this.getDashboardCards();
     }
 
-    get() {
+    getDashboardTransactions() {
+        console.log(this.graphModal);
+        this._dashboardService
+            .getDashboardTransactions(this.graphModal)
+            .subscribe((res) => {
+                console.log(this._commonService.decryptData(res));
+                this.dataSource = new MatTableDataSource(
+                    this._commonService.decryptData(res)
+                );
+                this.dataSource.paginator = this.paginator;
+                this.changeDetection.detectChanges();
+            });
+    }
+
+    filterByData(event) {
+        if (event == 1) {
+            this.getGraphData(1);
+        } else {
+            this.getGraphData(2);
+        }
+    }
+
+    getGraphData(value) {
+        this.dashboardModal.duration = value;
+        console.log(this.dashboardModal);
+
+        if (value == 1) {
+            const date = new Date();
+            const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+            const lastDay = new Date(
+                date.getFullYear(),
+                date.getMonth() + 1,
+                0
+            );
+            this.dashboardModal.startDate = firstDay;
+            this.dashboardModal.endDate = lastDay;
+            console.log(this.dashboardModal);
+            this._dashboardService
+                .getAreaGraphData(this.dashboardModal)
+                .subscribe((res) => {
+                    console.log(this._commonService.decryptData(res));
+                    this.areaGraphData = this._commonService.decryptData(res);
+                    this.areaGraphData.graphChart.graphData.type = 'area';
+                    console.log(this.areaGraphData.graphChart.graphData.type);
+                    console.log(this.areaGraphData.graphChart.date);
+
+                    if (this.areaGraphData.graphChart.duration == 1) {
+                        this.areaGraphData.graphChart.date =
+                            this.areaGraphData.graphChart.date.map((date) =>
+                                this.formatDateLabel(date)
+                            );
+                        console.log(this.areaGraphData.graphChart.date);
+                    }
+                    if (this.areaGraphData.graphChart.duration == 2) {
+                        this.areaGraphData.graphChart.date =
+                            this.areaGraphData.graphChart.date.map((date) =>
+                                this.formatMonthLabel(date)
+                            );
+                        console.log(this.areaGraphData.graphChart.date);
+                    }
+                    setTimeout(() => {
+                        this.getChartData();
+                    }, 500);
+                    this.changeDetection.markForCheck();
+                    // this.changeDetection.detectChanges();
+                });
+
+            this._dashboardService
+                .getPolarGraphData(this.dashboardModal)
+                .subscribe((res) => {
+                    this.polarGraphData = this._commonService.decryptData(res);
+                    console.log(this.polarGraphData);
+                    console.log(this.polarGraphData.graphChart.date);
+                    this.polarGraphData.graphChart.graphData.type = 'radar';
+
+                    if (this.polarGraphData.graphChart.duration == 1) {
+                        this.polarGraphData.graphChart.date =
+                            this.polarGraphData.graphChart.date.map((date) =>
+                                this.formatDateLabel(date)
+                            );
+                        console.log(this.polarGraphData.graphChart.date);
+                    }
+                    if (this.areaGraphData.graphChart.duration == 2) {
+                        this.polarGraphData.graphChart.date =
+                            this.polarGraphData.graphChart.date.map((date) =>
+                                this.formatMonthLabel(date)
+                            );
+                        console.log(this.polarGraphData.graphChart.date);
+                    }
+                    // this.changeDetection.detectChanges();
+                    setTimeout(() => {
+                        this.getChartData();
+                    }, 500);
+                    this.changeDetection.markForCheck();
+                });
+        }
+        if (value == 2) {
+            const currentYear = new Date().getFullYear();
+            const firstDateOfYear = new Date(currentYear, 0, 1);
+            const lastDateOfYear = new Date(currentYear, 11, 31);
+
+            this.dashboardModal.startDate = firstDateOfYear;
+            this.dashboardModal.endDate = lastDateOfYear;
+            console.log(this.dashboardModal);
+
+            this._dashboardService
+                .getAreaGraphData(this.dashboardModal)
+                .subscribe((res) => {
+                    this.areaGraphData = this._commonService.decryptData(res);
+                    console.log(this.areaGraphData);
+                    console.log(this.areaGraphData.graphChart.date);
+                    this.areaGraphData.graphChart.graphData.type = 'area';
+
+                    console.log(this.polarGraphData.graphChart.graphData.type);
+
+                    if (this.areaGraphData.graphChart.duration == 1) {
+                        this.areaGraphData.graphChart.date =
+                            this.areaGraphData.graphChart.date.map((date) =>
+                                this.formatDateLabel(date)
+                            );
+                        console.log(this.areaGraphData.graphChart.date);
+                    }
+                    if (this.areaGraphData.graphChart.duration == 2) {
+                        this.areaGraphData.graphChart.date =
+                            this.areaGraphData.graphChart.date.map((date) =>
+                                this.formatMonthLabel(date)
+                            );
+                        console.log(this.areaGraphData.graphChart.date);
+                    }
+
+                    // this.changeDetection.detectChanges();
+                    setTimeout(() => {
+                        this.getChartData();
+                    }, 500);
+                    this.changeDetection.markForCheck();
+                });
+
+            this._dashboardService
+                .getPolarGraphData(this.dashboardModal)
+                .subscribe((res) => {
+                    this.polarGraphData = this._commonService.decryptData(res);
+                    console.log(this.polarGraphData);
+                    console.log(this.polarGraphData.graphChart.date);
+                    this.polarGraphData.graphChart.graphData.type = 'radar';
+
+                    if (this.polarGraphData.graphChart.duration == 1) {
+                        this.polarGraphData.graphChart.date =
+                            this.polarGraphData.graphChart.date.map((date) =>
+                                this.formatDateLabel(date)
+                            );
+                        console.log(this.polarGraphData.graphChart.date);
+                    }
+                    if (this.areaGraphData.graphChart.duration == 2) {
+                        this.polarGraphData.graphChart.date =
+                            this.polarGraphData.graphChart.date.map((date) =>
+                                this.formatMonthLabel(date)
+                            );
+                        console.log(this.polarGraphData.graphChart.date);
+                    }
+                    // this.changeDetection.detectChanges();
+                    setTimeout(() => {
+                        this.getChartData();
+                    }, 500);
+                    this.changeDetection.markForCheck();
+                });
+        }
+    }
+
+    getDashboardCards() {
+        this._dashboardService
+            .getDashboardCards(this.graphModal)
+            .subscribe((res) => {
+                console.log(this._commonService.decryptData(res));
+                this.dashboardCardsData = this._commonService.decryptData(res);
+
+                this.changeDetection.detectChanges();
+            });
+    }
+
+    goToTransactions() {
+        this._router.navigateByUrl('accounts/transactions');
+    }
+
+    dateFilter() {
+        this.graphModal.startDate = this.startDate;
+        this.graphModal.endDate = this.endDate;
+        this.getDashboardTransactions();
+        this.getDashboardCards();
+    }
+
+    applyFilter() {
+        this.dataSource.filter = '' + Math.random();
+    }
+
+    clearDate() {
+        this.startDate = null;
+        this.endDate = null;
+        this.graphModal.startDate = null;
+        this.graphModal.endDate = null;
+        this.getDashboardTransactions();
+        this.getDashboardCards();
+        console.log(this.graphModal);
+    }
+
+    formatDateLabel(date: Date): string {
+        return formatDate(date, 'd', 'en-US');
+    }
+
+    formatMonthLabel(month: string): string {
+        const monthNumber = parseInt(month, 10);
+        const date = new Date(2000, monthNumber - 1, 1);
+        const formattedMonth = date.toLocaleString('en-US', { month: 'short' });
+        return formattedMonth;
+    }
+
+    getChartData() {
         this.cashflowChart = {
             chart: {
                 animations: {
@@ -185,14 +298,7 @@ export class DashboardComponent {
                     enabled: false,
                 },
             },
-            labels: [
-                '13 Mar 2023',
-                '14 Mar 2023',
-                '15 Mar 2023',
-                '16 Mar 2023',
-                '17 Mar 2023',
-                '20 Mar 2023',
-            ],
+            labels: this.areaGraphData.graphChart.date,
             dataLabels: {
                 enabled: false,
             },
@@ -201,16 +307,7 @@ export class DashboardComponent {
                 position: 'top',
             },
             colors: ['#2D98FF', '#FF417C'],
-            series: [
-                {
-                    name: 'Expense',
-                    data: [1000, 3200, 1300, 4000, 5000, 2000],
-                },
-                {
-                    name: 'Income',
-                    data: [6000, 1000, 4000, 2000, 3000, 1000],
-                },
-            ],
+            series: this.areaGraphData?.graphChart?.graphData,
             stroke: {
                 curve: 'smooth',
                 lineCap: 'round',
@@ -253,101 +350,8 @@ export class DashboardComponent {
             },
         };
 
-        // this.profitAndLossChart = {
-        //     chart: {
-        //         fontFamily: 'inherit',
-        //         foreColor: 'inherit',
-        //         height: '100%',
-        //         type: 'radar',
-        //         sparkline: {
-        //             enabled: true,
-        //         },
-        //     },
-        //     title: {
-        //         text: 'Profit and Loss',
-        //     },
-        //     colors: ['#818CF8'],
-        //     dataLabels: {
-        //         enabled: true,
-        //         formatter: (val: number): string | number => `${val}%`,
-        //         textAnchor: 'start',
-        //         style: {
-        //             fontSize: '13px',
-        //             fontWeight: 500,
-        //         },
-        //         // background: {
-        //         //     borderWidth: 0,
-        //         //     padding: 4,
-        //         // },
-        //         offsetY: -15,
-        //     },
-        //     markers: {
-        //         strokeColors: '#818CF8',
-        //         strokeWidth: 4,
-        //     },
-        //     plotOptions: {
-        //         radar: {
-        //             polygons: {
-        //                 strokeColors: 'var(--fuse-border)',
-        //                 connectorColors: 'var(--fuse-border)',
-        //             },
-        //         },
-        //     },
-        //     series: [
-        //         {
-        //             name: 'Profit',
-        //             data: [1000, 3200, 1300, 4000, 5000, 2000],
-        //         },
-        //         {
-        //             name: 'Loss',
-        //             data: [6000, 1000, 4000, 2000, 3000, 1000],
-        //         },
-        //     ],
-        //     stroke: {
-        //         width: 2,
-        //     },
-        //     tooltip: {
-        //         theme: 'light',
-        //         y: {
-        //             formatter: (val: number): string => `${val}%`,
-        //         },
-        //     },
-        //     xaxis: {
-        //         labels: {
-        //             show: true,
-        //             style: {
-        //                 fontSize: '12px',
-        //                 fontWeight: '500',
-        //             },
-        //         },
-        //         categories: [
-        //             '13 Mar 2023',
-        //             '14 Mar 2023',
-        //             '15 Mar 2023',
-        //             '16 Mar 2023',
-        //             '17 Mar 2023',
-        //             '20 Mar 2023',
-        //         ],
-        //     },
-
-        //     yaxis: {
-        //         max: (max: number): number =>
-        //             parseInt((max + 10).toFixed(0), 10),
-        //         tickAmount: 7,
-        //     },
-        // };
-
         this.profitAndLossChart = {
-            series: [
-                {
-                    name: 'Profit',
-                    data: [20, 100, 40, 30, 50, 80, 33],
-                },
-                {
-                    name: 'Loss',
-                    data: [66, 54, 25, 46, 89, 21, 67],
-                },
-            ],
+            series: this.polarGraphData?.graphChart?.graphData,
             chart: {
                 height: '350px',
                 type: 'radar',
@@ -387,9 +391,9 @@ export class DashboardComponent {
 
             tooltip: {
                 theme: 'light',
-                y: {
-                    formatter: (val: number): string => `${val}%`,
-                },
+                // y: {
+                //     formatter: (val: number): string => `${val}%`,
+                // },
             },
             fill: {
                 opacity: 0.3,
@@ -400,15 +404,7 @@ export class DashboardComponent {
             },
 
             xaxis: {
-                categories: [
-                    'Sunday',
-                    'Monday',
-                    'Tuesday',
-                    'Wednesday',
-                    'Thursday',
-                    'Friday',
-                    'Saturday',
-                ],
+                categories: this.polarGraphData.graphChart.date,
             },
 
             yaxis: {

@@ -24,7 +24,7 @@ export class AddRoleComponent implements OnInit {
     userId: any;
     updateFormData: any = undefined;
     permissions: any = [];
-    isEdit: boolean = false; // this is for toggle button text add or edit
+
     isDisabled: boolean = false;
 
     rolesData: Role[] = [
@@ -118,7 +118,6 @@ export class AddRoleComponent implements OnInit {
                     console.log(this._commonService.decryptData(res));
                     this.updateFormData = this._commonService.decryptData(res);
 
-                    this.isEdit = true;
                     this.addRoleForm.patchValue(this.updateFormData);
                     console.log(this.updateFormData);
                     this.changeDetection.detectChanges();

@@ -11,12 +11,14 @@
         </mat-icon>
         <p>Accounts</p>
         <span>/</span>
-        <p class="font-semibold text-myAccent">Add Account</p>
+        <p class="font-semibold text-myAccent">
+            {{ updateFormData != undefined ? "Update Account" : "Add Account" }}
+        </p>
     </div>
 
     <!-- Title -->
     <h3 class="font-bold text-[1.5rem] text-center sm:text-left">
-        Add Account
+        {{ updateFormData != undefined ? "Update Account" : "Add Account" }}
     </h3>
 
     <!-- Content -->

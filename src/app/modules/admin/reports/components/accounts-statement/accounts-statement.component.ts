@@ -1,33 +1,23 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { GetAccountName } from 'app/shared/modals/reports';
+import { ReportsService } from 'app/shared/services/reports.service';
+import { AccountTransactionsComponent } from '../account-transactions/account-transactions.component';
 
-export interface ManageExpense {
-    position: number;
-    holderName: string;
-}
-
-const ELEMENT_DATA: ManageExpense[] = [
-    {
-        position: 1,
-        holderName: 'Farves',
-    },
-    {
-        position: 2,
-        holderName: 'Safiyudeen',
-    },
-    {
-        position: 3,
-        holderName: 'Hanif',
-    },
-];
 @Component({
     selector: 'app-accounts-statement',
     templateUrl: './accounts-statement.component.html',
     styleUrls: ['./accounts-statement.component.scss'],
 })
 export class AccountsStatementComponent {
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource: MatTableDataSource<any>;
+    getAccountNameModel: GetAccountName = new GetAccountName();
+
     textInputDisabled: boolean = true;
     showTrans: boolean = true;
 
@@ -36,50 +26,66 @@ export class AccountsStatementComponent {
     }
 
     constructor(
-        private commonService: CommonService,
+        private _commonService: CommonService,
+        private _reportService: ReportsService,
         public dialog: MatDialog,
         private router: Router,
-        private changeDetection: ChangeDetectorRef // public newAccount: NewAccountComponent
+        private changeDetection: ChangeDetectorRef
     ) {}
 
     displayedColumns: string[] = ['position', 'holderName', 'transactions'];
-    dataSource = ELEMENT_DATA;
 
-    viewTransactions() {
-        this.router.navigateByUrl('reports/account-transactions');
+    ngOnInit(): void {
+        this.getAccountNameModel.userId = this._commonService.getUserId();
+        this.getAccountName();
+    }
+
+    applyFilter() {
+        this.dataSource.filter = '' + Math.random();
+    }
+
+    viewTransactions(id: any) {
+        this.router.navigate(['/reports/account-transactions'], {
+            state: { data: id },
+        });
+    }
+
+    searchAccountName(event: any) {
+        this.getAccountNameModel.search =
+            event.target.value === '' ? null : event.target.value;
+        this.getAccountName();
+    }
+
+    getAccountName() {
+        console.log(this.getAccountNameModel);
+
+        this._reportService
+            .getAccountsName(this.getAccountNameModel)
+            .subscribe((res) => {
+                // const decryptedData = this._commonService.decryptData(res);
+                console.log(this._commonService.decryptData(res));
+
+                this.dataSource = new MatTableDataSource(
+                    this._commonService.decryptData(res)
+                );
+
+                this.dataSource.paginator = this.paginator;
+                // this.dataSource.sort = this.sort;
+                this.changeDetection.detectChanges();
+            });
+    }
+
+    dateFilter() {
+        this.getAccountName();
+    }
+
+    clearDate() {
+        (this.getAccountNameModel.startDate = null),
+            (this.getAccountNameModel.endDate = null),
+            this.getAccountName();
     }
 
     navigateToHome() {
-        this.commonService.navigateToHome();
+        this._commonService.navigateToHome();
     }
-
-    // openDeleteDialog() {
-    //     const dialogRef = this.dialog.open(DeleteDialogComponent, {
-    //         width: '400px',
-    //     });
-    //     dialogRef.afterClosed().subscribe((result) => {
-    //         console.log(`Dialog result: ${result}`);
-    //     });
-    // }
-
-    // addAccount() {
-    //     this.newAccount.isUpdate = false;
-    //     this.router.navigateByUrl('/accounts/new-account');
-    // }
-
-    // openShowDialog() {
-    //     const dialogRef = this.dialog.open(ShowDialogComponent, {
-    //         width: '750px',
-    //     });
-    //     dialogRef.afterClosed().subscribe((result) => {
-    //         console.log(`Dialog result: ${result}`);
-    //     });
-    // }
-
-    // ngOnInit(): void {}
-
-    // public setUpdateMode() {
-    //     this.newAccount.isUpdate = true;
-    //     this.router.navigateByUrl('/accounts/new-account');
-    // }
 }

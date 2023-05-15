@@ -53,4 +53,42 @@ export class IncomeService {
             this._commonService.httpOptions
         );
     }
+
+    filterByCategory(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/category/wise/payments',
+            {
+                data: this._commonService.encryptData(value),
+            },
+            this._commonService.httpOptions
+        );
+    }
+
+    addIncome(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/add/cash',
+            {
+                data: this._commonService.encryptData(value),
+            },
+            this._commonService.httpOptions
+        );
+    }
+
+    updateIncome(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/update/cash',
+            {
+                data: this._commonService.encryptData(value),
+            },
+            this._commonService.httpOptions
+        );
+    }
+
+    getIncomeById(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/get/update/details',
+            { data: this._commonService.encryptData(value) },
+            this._commonService.httpOptions
+        );
+    }
 }

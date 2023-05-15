@@ -25,9 +25,30 @@
 
     <mat-form-field appearance="fill" class="mt-4 w-full sm:w-[25rem]">
         <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
-            <input matStartDate placeholder="Start date" />
-            <input matEndDate placeholder="End date" />
+            <input
+                matStartDate
+                placeholder="Start date"
+                [(ngModel)]="getProfitAndLossModal.startDate"
+                (dateChange)="dateFilter()"
+            />
+            <input
+                matEndDate
+                placeholder="End date"
+                [(ngModel)]="getProfitAndLossModal.endDate"
+                (dateChange)="dateFilter()"
+            />
         </mat-date-range-input>
+
+        <mat-icon
+            matDatepickerToggleIcon
+            class="cursor-pointer"
+            (click)="clearDate()"
+            *ngIf="
+                getProfitAndLossModal.startDate != null &&
+                getProfitAndLossModal.endDate != null
+            "
+            >clear</mat-icon
+        >
 
         <mat-datepicker-toggle
             class="text-myAccent w-7"
@@ -47,7 +68,9 @@
                 class="flex flex-col items-center justify-center rounded-full bg-[#8BC6FF] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12"
             >
                 <p class="font-bold text-lg">Total Income</p>
-                <p class="font-bold text-lg">$2000</p>
+                <p class="font-bold text-lg">
+                    {{ profitAndLossData?.totalIncome | currency : "INR" }}
+                </p>
             </div>
 
             <img
@@ -63,7 +86,9 @@
                 class="flex flex-col items-center justify-center rounded-full bg-[#FFCE9A] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12"
             >
                 <p class="font-bold text-lg">Total Expense</p>
-                <p class="font-bold text-lg">$1000</p>
+                <p class="font-bold text-lg">
+                    {{ profitAndLossData?.totalExpense | currency : "INR" }}
+                </p>
             </div>
 
             <img
@@ -75,13 +100,16 @@
     </div>
 
     <div
+        *ngIf="profitAndLossData?.profit != 0"
         class="bg-[#C2FFC5] mx-auto mt-[3rem] rounded-[1rem] border border-[#039E00] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full lg:w-1/2 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
     >
         <div
             class="flex flex-col items-center justify-center rounded-full bg-[#85E489] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12"
         >
             <p class="font-bold text-lg">Profit</p>
-            <p class="font-bold text-lg">$1000</p>
+            <p class="font-bold text-lg">
+                {{ profitAndLossData?.profit | currency : "INR" }}
+            </p>
         </div>
 
         <img
@@ -92,14 +120,17 @@
     </div>
 
     <!-- Loss card -->
-    <!-- <div
+    <div
+        *ngIf="profitAndLossData?.loss != 0"
         class="bg-[#FFB9B9] mx-auto mt-[3rem] rounded-[1rem] border border-[#F90000] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full lg:w-1/2 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
     >
         <div
             class="flex flex-col items-center justify-center rounded-full bg-[#F98E8E] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12"
         >
             <p class="font-bold text-lg">Profit</p>
-            <p class="font-bold text-lg">$1000</p>
+            <p class="font-bold text-lg">
+                {{ profitAndLossData?.loss | currency : "INR" }}
+            </p>
         </div>
 
         <img
@@ -107,5 +138,5 @@
             alt="Total Income"
             class="w-[70px] sm:w-[100px]"
         />
-    </div> -->
+    </div>
 </section>

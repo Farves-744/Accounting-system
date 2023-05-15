@@ -3,6 +3,6 @@ export class GetUser {
     limit: number = null;
     startDate: number = null;
     endDate: number = null;
-    offset: number = 0;
+    offset: number = null;
     userId: number = null;
 }

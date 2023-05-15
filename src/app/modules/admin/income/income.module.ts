@@ -15,6 +15,8 @@ import { ReceiptDialogComponent } from './components/receipt-dialog/receipt-dial
 import { PaymentDialogComponent } from './components/payment-dialog/payment-dialog.component';
 import { DndDirective } from 'app/shared/directives/dnd.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToasterComponent } from 'app/shared/toaster/toaster/toaster.component';
+import { ToasterContainerComponent } from 'app/shared/toaster/toaster-container/toaster-container.component';
 
 @NgModule({
     declarations: [

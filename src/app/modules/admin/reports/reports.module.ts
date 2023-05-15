@@ -12,6 +12,10 @@ import { PaymentDialogComponent } from './components/payment-dialog/payment-dial
 import { ExpensePaymentDialogComponent } from './components/expense-payment-dialog/expense-payment-dialog.component';
 import { ExpenseReceiptDialogComponent } from './components/expense-receipt-dialog/expense-receipt-dialog.component';
 import { AccountTransactionsComponent } from './components/account-transactions/account-transactions.component';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'app/shared/shared.module';
+import { ToasterContainerComponent } from 'app/shared/toaster/toaster-container/toaster-container.component';
+import { ToasterComponent } from 'app/shared/toaster/toaster/toaster.component';
 
 @NgModule({
     declarations: [
@@ -25,6 +29,13 @@ import { AccountTransactionsComponent } from './components/account-transactions/
         ExpenseReceiptDialogComponent,
         AccountTransactionsComponent,
     ],
-    imports: [CommonModule, ReportsRoutingModule, MaterialExampleModule],
+
+    imports: [
+        CommonModule,
+        ReportsRoutingModule,
+        MaterialExampleModule,
+        FormsModule,
+        SharedModule,
+    ],
 })
 export class ReportsModule {}

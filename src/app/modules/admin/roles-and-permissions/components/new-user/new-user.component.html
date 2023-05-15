@@ -59,13 +59,38 @@
                 <label class="font-medium" for="user-password"
                     >Password <span class="text-red-600">*</span></label
                 >
-                <input
-                    id="user-password"
-                    type="password"
-                    placeholder="Enter Password"
-                    formControlName="password"
-                    class="border border-myAccent p-2 rounded"
-                />
+                <div class="flex items-center w-full relative">
+                    <input
+                        id="user-password"
+                        type="password"
+                        placeholder="Enter Password"
+                        formControlName="password"
+                        class="border w-full border-myAccent p-2 rounded"
+                        #passwordField
+                    />
+                    <button
+                        mat-icon-button
+                        type="button"
+                        (click)="
+                            passwordField.type === 'password'
+                                ? (passwordField.type = 'text')
+                                : (passwordField.type = 'password')
+                        "
+                        matSuffix
+                        class="absolute right-1 top-0"
+                    >
+                        <mat-icon
+                            class="icon-size-5"
+                            *ngIf="passwordField.type === 'password'"
+                            [svgIcon]="'heroicons_solid:eye'"
+                        ></mat-icon>
+                        <mat-icon
+                            class="icon-size-5"
+                            *ngIf="passwordField.type === 'text'"
+                            [svgIcon]="'heroicons_solid:eye-off'"
+                        ></mat-icon>
+                    </button>
+                </div>
             </div>
             <div
                 class="flex flex-col gap-2"
@@ -74,13 +99,38 @@
                 <label class="font-medium" for="user-password"
                     >Password Edit<span class="text-red-600">*</span></label
                 >
-                <input
-                    id="user-password"
-                    type="password"
-                    placeholder="Enter Password"
-                    formControlName="editPassword"
-                    class="border border-myAccent p-2 rounded"
-                />
+                <div class="flex items-center w-full relative">
+                    <input
+                        #passwordField
+                        id="user-password"
+                        type="password"
+                        placeholder="Enter Password"
+                        formControlName="editPassword"
+                        class="border w-full border-myAccent p-2 rounded"
+                    />
+                    <button
+                        mat-icon-button
+                        type="button"
+                        (click)="
+                            passwordField.type === 'password'
+                                ? (passwordField.type = 'text')
+                                : (passwordField.type = 'password')
+                        "
+                        matSuffix
+                        class="absolute right-1 top-0"
+                    >
+                        <mat-icon
+                            class="icon-size-5"
+                            *ngIf="passwordField.type === 'password'"
+                            [svgIcon]="'heroicons_solid:eye'"
+                        ></mat-icon>
+                        <mat-icon
+                            class="icon-size-5"
+                            *ngIf="passwordField.type === 'text'"
+                            [svgIcon]="'heroicons_solid:eye-off'"
+                        ></mat-icon>
+                    </button>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2 w-full">

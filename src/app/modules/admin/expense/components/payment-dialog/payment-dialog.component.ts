@@ -1,29 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-
-export interface ManageIncome {
-    position: number;
-    accountName: string;
-    paymentMode: string;
-    amount: number;
-    date: string;
-}
-
-const ELEMENT_DATA: ManageIncome[] = [
-    {
-        position: 1,
-        accountName: 'Farves',
-        paymentMode: 'Gpay',
-        amount: 750,
-        date: '23/04/2023',
-    },
-    {
-        position: 2,
-        accountName: 'Safiyudeen',
-        paymentMode: 'Credit Card',
-        amount: 250,
-        date: '23/04/2023',
-    },
-];
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { CommonService } from 'app/shared/services/common.service';
+import { ReportsService } from 'app/shared/services/reports.service';
 
 @Component({
     selector: 'app-payment-dialog',
@@ -31,8 +11,9 @@ const ELEMENT_DATA: ManageIncome[] = [
     styleUrls: ['./payment-dialog.component.scss'],
 })
 export class PaymentDialogComponent implements OnInit {
-    constructor() {}
-
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource: MatTableDataSource<any>;
+    userId: any;
     displayedColumns: string[] = [
         'position',
         'accountName',
@@ -40,7 +21,37 @@ export class PaymentDialogComponent implements OnInit {
         'amount',
         'date',
     ];
-    dataSource = ELEMENT_DATA;
 
-    ngOnInit(): void {}
+    constructor(
+        private _reportService: ReportsService,
+        private _commonService: CommonService,
+        public _dialogRef: MatDialogRef<PaymentDialogComponent>,
+        @Inject(MAT_DIALOG_DATA)
+        private data: any
+    ) {}
+
+    ngOnInit(): void {
+        this.userId = this._commonService.getUserId();
+        console.log(this.data);
+        setTimeout(() => {
+            this.getPaymentById(this.data);
+        });
+    }
+
+    getPaymentById(id: number) {
+        const req = {
+            id: JSON.parse(JSON.stringify(id)).id,
+            userId: this.userId,
+        };
+        console.log(req);
+
+        this._reportService.getIncomeReportsById(req).subscribe((res) => {
+            console.log(this._commonService.decryptData(res));
+            this.dataSource = new MatTableDataSource(
+                this._commonService.decryptData(res)
+            );
+
+            this.dataSource.paginator = this.paginator;
+        });
+    }
 }

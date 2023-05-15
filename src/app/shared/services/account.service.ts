@@ -67,4 +67,20 @@ export class AccountService {
             this._commonService.httpOptions
         );
     }
+
+    getTransactions(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/transaction/search',
+            { data: this._commonService.encryptData(value) },
+            this._commonService.httpOptions
+        );
+    }
+
+    getProfitAndLoss(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/profit/loss',
+            { data: this._commonService.encryptData(value) },
+            this._commonService.httpOptions
+        );
+    }
 }
