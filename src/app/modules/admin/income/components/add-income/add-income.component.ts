@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from 'app/shared/services/common.service';
 import { CollectDialogComponent } from '../collect-dialog/collect-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IncomeService } from 'app/shared/services/income.service';
 import { Router } from '@angular/router';
 import { getIncomeCategory } from 'app/shared/modals/income-category';
@@ -54,13 +54,13 @@ export class AddIncomeComponent {
     ngOnInit() {
         this.userId = this._commonService.getUserId();
         this.addIncomeForm = this._formBuilder.group({
-            totalAmount: null,
-            description: '',
+            totalAmount: [null, Validators.required],
+            description: ['', Validators.minLength(1)],
             taxApplicable: 0,
             taxId: [{ value: null, disabled: true }],
             imageId: this.imageId,
             image_url: '',
-            categoryId: null,
+            categoryId: [null, Validators.required],
             payments: [[]],
             file: null,
             type: 0,
