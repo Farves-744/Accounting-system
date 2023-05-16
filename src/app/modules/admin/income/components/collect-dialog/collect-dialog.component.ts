@@ -23,6 +23,7 @@ export class CollectDialogComponent implements OnInit {
     imageId;
     any;
     accounts: any;
+    value: boolean = true;
 
     constructor(
         public dialogRef: MatDialogRef<CollectDialogComponent>,
@@ -89,25 +90,33 @@ export class CollectDialogComponent implements OnInit {
         } else {
             this.data.userId = this.userId;
             this.data.payments = this.paymentsModal;
-            console.log(this.data.file);
-            this.formatImage(this.data.file);
             console.log(this.data);
 
-            this._incomeService.addCategoryImage(this.formData).subscribe(
-                (res) => {
-                    console.log(res);
-                    let reData = JSON.parse(JSON.stringify(res));
-                    this.imageId = reData.imageId;
-                    this.data.imageId = this.imageId;
-                    this.addIncome();
-                    this.toaster.show('success', 'Income added successfully');
-                    console.log(this.data.imageId);
-                    console.log(this.data);
-                },
-                (error) => {
-                    this.toaster.show('error', 'Something went wrong');
-                }
-            );
+            console.log(this.data.file);
+
+            if (this.data.file != null) {
+                this.formatImage(this.data.file);
+                this._incomeService.addCategoryImage(this.formData).subscribe(
+                    (res) => {
+                        console.log(res);
+                        let reData = JSON.parse(JSON.stringify(res));
+                        this.imageId = reData.imageId;
+                        this.data.imageId = this.imageId;
+                        this.addIncome();
+                        this.toaster.show(
+                            'success',
+                            'Income added successfully'
+                        );
+                        console.log(this.data.imageId);
+                        console.log(this.data);
+                    },
+                    (error) => {
+                        this.toaster.show('error', 'Something went wrong');
+                    }
+                );
+            } else {
+                this.addIncome();
+            }
         }
     }
 
@@ -122,6 +131,10 @@ export class CollectDialogComponent implements OnInit {
             // console.log(this.updateFormData);
             // console.log(this.url);
         }
+    }
+
+    submit() {
+        console.log('hello');
     }
 
     addIncome() {

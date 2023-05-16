@@ -30,7 +30,7 @@ export class AddIncomeComponent {
     finalAmount: number = null;
     isDisabled: boolean = true;
     env = environment;
-    file: File;
+    file: File = null;
     imageUrl: any;
     userId: any;
     imageId: any;
@@ -54,7 +54,7 @@ export class AddIncomeComponent {
     ngOnInit() {
         this.userId = this._commonService.getUserId();
         this.addIncomeForm = this._formBuilder.group({
-            totalAmount: [null, Validators.required],
+            totalAmount: [null, [Validators.required, Validators.min(100)]],
             description: ['', Validators.minLength(1)],
             taxApplicable: 0,
             taxId: [{ value: null, disabled: true }],
@@ -72,6 +72,10 @@ export class AddIncomeComponent {
         this.getTaxNameModal.userId = this.userId;
         this.getTaxName();
         console.log(this.addIncomeForm.value.taxApplicable);
+    }
+
+    get f() {
+        return this.addIncomeForm.controls;
     }
 
     calculateTax(value) {
@@ -368,51 +372,59 @@ export class AddIncomeComponent {
     }
 
     openCollectDialog() {
-        console.log(this.updateFormData);
+        if (this.addIncomeForm.invalid) {
+            for (const control of Object.keys(this.addIncomeForm.controls)) {
+                this.addIncomeForm.controls[control].markAsTouched();
+            }
+            return;
+        }
 
-        console.log(this.addIncomeForm.value.taxAmount);
-        console.log(this.file);
-        console.log(this.addIncomeForm.value.file);
+        if (this.addIncomeForm.valid) {
+            console.log(this.updateFormData);
 
-        this.addIncomeForm.value.file = this.file;
-        // this.addIncomeForm.patchValue({ file: this.file });
+            console.log(this.addIncomeForm.value.taxAmount);
+            console.log(this.file);
+            console.log(this.addIncomeForm.value.file);
 
-        console.log(this.addIncomeForm.value);
+            this.addIncomeForm.value.file = this.file;
+            // this.addIncomeForm.patchValue({ file: this.file });
 
-        if (history.state.data) {
-            // this.addIncomeForm.patchValue({
-            //     imageId: this.updateFormData.imageId,
-            // });
             console.log(this.addIncomeForm.value);
-            // return;
+            if (history.state.data) {
+                // this.addIncomeForm.patchValue({
+                //     imageId: this.updateFormData.imageId,
+                // });
+                console.log(this.addIncomeForm.value);
+                // return;
 
-            this.addIncomeForm.value.id = history.state.data;
-            console.log(this.addIncomeForm.value);
-            const dialogRef = this.dialog.open(CollectDialogComponent, {
-                width: '900px',
-                data: this.addIncomeForm.value,
-            });
-            dialogRef.afterClosed().subscribe((result) => {
-                if (result) {
-                    this.addIncomeForm.reset();
-                    this.imageUrl = null;
-                    this._route.navigateByUrl('income/manage-income');
-                }
-            });
-        } else {
-            console.log(this.addIncomeForm.value);
+                this.addIncomeForm.value.id = history.state.data;
+                console.log(this.addIncomeForm.value);
+                const dialogRef = this.dialog.open(CollectDialogComponent, {
+                    width: '900px',
+                    data: this.addIncomeForm.value,
+                });
+                dialogRef.afterClosed().subscribe((result) => {
+                    if (result) {
+                        this.addIncomeForm.reset();
+                        this.imageUrl = null;
+                        this._route.navigateByUrl('income/manage-income');
+                    }
+                });
+            } else {
+                console.log(this.addIncomeForm.value);
 
-            const dialogRef = this.dialog.open(CollectDialogComponent, {
-                width: '900px',
-                data: this.addIncomeForm.value,
-            });
-            dialogRef.afterClosed().subscribe((result) => {
-                if (result) {
-                    this.addIncomeForm.reset();
-                    this.imageUrl = null;
-                    this._route.navigateByUrl('income/manage-income');
-                }
-            });
+                const dialogRef = this.dialog.open(CollectDialogComponent, {
+                    width: '900px',
+                    data: this.addIncomeForm.value,
+                });
+                dialogRef.afterClosed().subscribe((result) => {
+                    if (result) {
+                        this.addIncomeForm.reset();
+                        this.imageUrl = null;
+                        this._route.navigateByUrl('income/manage-income');
+                    }
+                });
+            }
         }
     }
 }

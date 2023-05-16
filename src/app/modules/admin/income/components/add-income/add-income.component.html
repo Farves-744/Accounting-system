@@ -38,11 +38,32 @@
                     id="amount"
                     type="number"
                     required
+                    name="totalAmount"
                     (change)="calculateTaxByAmount()"
                     formControlName="totalAmount"
                     placeholder="Enter Amount"
                     class="border border-myAccent p-2 rounded"
                 />
+                <div
+                    *ngIf="
+                        f.totalAmount.invalid &&
+                        (f.totalAmount.dirty || f.totalAmount.touched)
+                    "
+                >
+                    <span
+                        class="text-[#dc2626]"
+                        *ngIf="f.totalAmount.errors?.['required']"
+                    >
+                        This field is required
+                    </span>
+                </div>
+
+                <div
+                    class="text-[#dc2626]"
+                    *ngIf="f.totalAmount.errors?.['min']"
+                >
+                    Amount must be at least 100.
+                </div>
             </div>
 
             <div class="flex flex-col gap-2">
@@ -59,9 +80,7 @@
             </div>
 
             <div class="flex flex-col gap-2 w-full">
-                <label for="tax" class="font-medium"
-                    >Tax <span class="text-red-600">*</span></label
-                >
+                <label for="tax" class="font-medium">Tax</label>
                 <div
                     class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8"
                 >
@@ -101,9 +120,7 @@
             </div>
 
             <div class="flex flex-col gap-2 w-full">
-                <label for="tax-type" class="font-medium"
-                    >Tax Type<span class="text-red-600">*</span></label
-                >
+                <label for="tax-type" class="font-medium">Tax Type</label>
                 <mat-form-field class="w-full mt-0">
                     <mat-select
                         (valueChange)="calculateTaxBySelect($event)"
@@ -179,6 +196,20 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+
+                    <div
+                        *ngIf="
+                            f.categoryId.invalid &&
+                            (f.categoryId.dirty || f.categoryId.touched)
+                        "
+                    >
+                        <span
+                            class="text-[#dc2626]"
+                            *ngIf="f.categoryId.errors?.['required']"
+                        >
+                            This field is required
+                        </span>
+                    </div>
                 </div>
 
                 <div
