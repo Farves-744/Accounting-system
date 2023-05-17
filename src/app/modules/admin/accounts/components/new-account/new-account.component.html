@@ -1,13 +1,8 @@
-<section
-    class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4"
->
+<section class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4">
     <!-- Breadcrumb -->
     <div class="sm:flex hidden gap-2 items-center">
-        <mat-icon
-            class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-            svgIcon="heroicons_outline:home"
-            (click)="navigateToHome()"
-        >
+        <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+            svgIcon="heroicons_outline:home" (click)="navigateToHome()">
         </mat-icon>
         <p>Accounts</p>
         <span>/</span>
@@ -22,111 +17,107 @@
     </h3>
 
     <!-- Content -->
-    <form
-        [formGroup]="addAccountForm"
-        (ngSubmit)="addOrEditAccount()"
-        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between"
-    >
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center"
-        >
+    <form [formGroup]="addAccountForm" (ngSubmit)="addOrEditAccount()"
+        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center">
             <div class="flex flex-col gap-2">
-                <label class="font-medium" for="holder-name"
-                    >Account Holder Name
+                <label class="font-medium" for="holder-name">Account Holder Name
 
-                    <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="holder-name"
-                    type="text"
-                    placeholder="Enter Holder Name"
-                    formControlName="accountName"
-                    class="border border-myAccent p-2 rounded"
-                />
+                    <span class="text-red-600">*</span></label>
+                <input id="holder-name" type="text" required placeholder="Enter Holder Name"
+                    formControlName="accountName" class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                        f.accountName.invalid &&
+                        (f.accountName.dirty || f.accountName.touched)
+                    ">
+                    <span class="text-[#dc2626]" *ngIf="f.accountName.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2">
-                <label class="font-medium" for="account-number"
-                    >Account Number <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="account-number"
-                    type="text"
-                    (change)="validateAccountNumber($event)"
-                    formControlName="accountNo"
-                    placeholder="Enter Account Number"
-                    class="border border-myAccent p-2 rounded"
-                />
-                <!-- <mat-error *ngIf="response.status === 'failure'">
-                        This is not a valid account number
-                    </mat-error> -->
+                <label class="font-medium" for="account-number">Account Number <span
+                        class="text-red-600">*</span></label>
+                <input id="account-number" type="text" required (change)="validateAccountNumber($event)"
+                    formControlName="accountNo" placeholder="Enter Account Number"
+                    class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                        f.accountNo.invalid &&
+                        (f.accountNo.dirty || f.accountNo.touched)
+                    ">
+                    <span class="text-[#dc2626]" *ngIf="f.accountNo.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="bank-name">
-                    Bank Name <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="bank-name"
-                    type="text"
-                    placeholder="Enter Bank Name"
-                    formControlName="bankName"
-                    class="border border-myAccent p-2 rounded"
-                />
+                    Bank Name <span class="text-red-600">*</span></label>
+                <input id="bank-name" type="text" required placeholder="Enter Bank Name" formControlName="bankName"
+                    class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                        f.bankName.invalid &&
+                        (f.bankName.dirty || f.bankName.touched)
+                    ">
+                    <span class="text-[#dc2626]" *ngIf="f.bankName.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2 w-full">
-                <label for="income-category" class="font-medium"
-                    >Account Type <span class="text-red-600">*</span></label
-                >
+                <label for="income-category" class="font-medium">Account Type <span
+                        class="text-red-600">*</span></label>
                 <mat-form-field class="w-full mt-0">
-                    <mat-select
-                        #clubs
-                        matInfix
-                        disableOptionCentering
-                        placeholder="Select Account Type"
-                        formControlName="accountType"
-                    >
-                        <mat-option
-                            *ngFor="let accType of accountType"
-                            [value]="accType.id"
-                            >{{ accType.type }}
+                    <mat-select #clubs matInfix required disableOptionCentering placeholder="Select Account Type"
+                        formControlName="accountType">
+                        <mat-option *ngFor="let accType of accountType" [value]="accType.id">{{ accType.type }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+
+                <div *ngIf="
+                        f.accountType.invalid &&
+                        (f.accountType.dirty || f.accountType.touched)
+                    ">
+                    <span class="text-[#dc2626]" *ngIf="f.accountType.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="ifsc-code">
-                    IFSC Code <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="ifsc-code"
-                    type="text"
-                    formControlName="ifscCode"
-                    placeholder="Enter IFSC Code"
-                    class="border border-myAccent p-2 rounded"
-                />
+                    IFSC Code <span class="text-red-600">*</span></label>
+                <input id="ifsc-code" type="text" required formControlName="ifscCode" placeholder="Enter IFSC Code"
+                    class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                        f.ifscCode.invalid &&
+                        (f.ifscCode.dirty || f.ifscCode.touched)
+                    ">
+                    <span class="text-[#dc2626]" *ngIf="f.ifscCode.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2">
-                <label class="font-medium" for="opening-balance"
-                    >Opening Balance
+                <label class="font-medium" for="opening-balance">Opening Balance
                 </label>
-                <input
-                    id="opening-balance"
-                    type="number"
-                    placeholder="Enter Opening Balance"
-                    formControlName="initialAmount"
-                    class="border border-myAccent p-2 rounded"
-                />
+
+                <input id="opening-balance" type="number" placeholder="Enter Opening Balance"
+                    formControlName="initialAmount" class="border border-myAccent p-2 rounded" />
             </div>
         </div>
 
-        <button
-            type="submit"
-            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit"
-        >
+        <button type="submit"
+            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit">
             {{ updateFormData != undefined ? "Update Account" : "Add Account" }}
         </button>
     </form>
