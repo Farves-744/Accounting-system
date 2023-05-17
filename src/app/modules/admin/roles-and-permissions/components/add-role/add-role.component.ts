@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Role } from 'app/shared/modals/role';
 import { CommonService } from 'app/shared/services/common.service';
@@ -17,7 +17,7 @@ export class AddRoleComponent implements OnInit {
         private _route: Router,
         private _formBuilder: FormBuilder,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     addRoleForm: FormGroup;
     // dataSource = rolesData;
@@ -92,8 +92,8 @@ export class AddRoleComponent implements OnInit {
         this.userId = this._commonService.getUserId();
 
         this.addRoleForm = this._formBuilder.group({
-            roleName: '',
-            permissions: [],
+            roleName: ['', Validators.required],
+            permissions: [[], Validators.required],
             userId: this.userId,
         });
     }
@@ -104,6 +104,11 @@ export class AddRoleComponent implements OnInit {
     //         this.changeDetection.detectChanges();
     //     });
     // }
+
+    get f() {
+
+        return this.addRoleForm.controls;
+    }
 
     ngAfterContentInit() {
         if (history.state.data) {
@@ -145,6 +150,14 @@ export class AddRoleComponent implements OnInit {
     }
 
     addOrEditRole() {
+
+        if (this.addRoleForm.invalid) {
+            for (const control of Object.keys(this.addRoleForm.controls)) {
+                this.addRoleForm.controls[control].markAsTouched();
+            }
+            return;
+        }
+
         if (this.addRoleForm.valid) {
             if (this.updateFormData) {
                 console.log(this.updateFormData);
