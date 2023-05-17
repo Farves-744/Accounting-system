@@ -3,61 +3,52 @@
         Account Details
     </h2>
     <mat-dialog-content class="py-3 sm:overflow-hidden overflow-y-auto">
-        <div
-            *ngIf="response"
-            class="flex flex-wrap items-center mx-auto w-fit justify-center gap-4 mt-4"
-        >
+        <div *ngIf="response" class="flex flex-wrap items-center mx-auto w-fit justify-center gap-4 mt-4">
             <div
-                class="flex flex-col w-[230px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]"
-            >
+                class="flex flex-col w-[230px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]">
                 <p class="font-semibold text-[1.1rem] text-myAccent">
                     Account Holder Name
                 </p>
                 <p>{{ response.accountName }}</p>
             </div>
             <div
-                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]"
-            >
+                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]">
                 <p class="font-semibold text-[1.1rem] text-myAccent">
                     Account Number
                 </p>
                 <p>{{ response.accountNo }}</p>
             </div>
             <div
-                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]"
-            >
+                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]">
                 <p class="font-semibold text-[1.1rem] text-myAccent">
                     IFSC Code
                 </p>
                 <p>{{ response.ifscCode }}</p>
             </div>
             <div
-                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]"
-            >
+                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]">
                 <p class="font-semibold text-[1.1rem] text-myAccent">
                     Bank Name
                 </p>
                 <p>{{ response.bankName }}</p>
             </div>
             <div
-                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]"
-            >
+                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]">
                 <p class="font-semibold text-[1.1rem] text-myAccent">
                     Account Type
                 </p>
-                <p>{{ response.accountType }}</p>
+                <p>{{ response.accountType == 0 ? 'Cash' : response.accountType == 1 ? 'Savings' : response.accountType
+                    == 2 ? 'Current' : ''}}</p>
             </div>
             <div
-                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]"
-            >
+                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]">
                 <p class="font-semibold text-[1.1rem] text-myAccent">
                     Created Date
                 </p>
                 <p>{{ response.createdAt | date : "dd-MM-yyyy" }}</p>
             </div>
             <div
-                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]"
-            >
+                class="flex flex-col w-[225px] items-center rounded bg-[#CAE5FF] py-3 px-5 shadow-[inset_4px_4px_21px_7px_rgba(0,0,0,0.25)]">
                 <p class="font-semibold text-[1.1rem] text-myAccent">
                     Account Balance
                 </p>
@@ -66,16 +57,9 @@
         </div>
 
         <mat-dialog-actions>
-            <button
-                class="text-myAccent text-2xl absolute -top-2 sm:top-0 -right-2 sm:right-0"
-                [mat-dialog-close]="true"
-                cdkFocusInitial
-            >
-                <img
-                    src="assets/icons/close.svg"
-                    alt="Close"
-                    class="sm:w-[20px] sm:h-[20px] w-[18px] h-[18px]"
-                />
+            <button class="text-myAccent text-2xl absolute -top-2 sm:top-0 -right-2 sm:right-0"
+                [mat-dialog-close]="true" cdkFocusInitial>
+                <img src="assets/icons/close.svg" alt="Close" class="sm:w-[20px] sm:h-[20px] w-[18px] h-[18px]" />
             </button>
         </mat-dialog-actions>
     </mat-dialog-content>

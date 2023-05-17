@@ -10,6 +10,7 @@ import { MaterialExampleModule } from 'app/material.module';
 import { DeleteDialogComponent } from './components/delete-dialog/delete-dialog.component';
 import { ShowDialogComponent } from './components/show-dialog/show-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -24,9 +25,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         CommonModule,
         AccountsRoutingModule,
         MaterialExampleModule,
+        SharedModule,
         ReactiveFormsModule,
         FormsModule,
     ],
     providers: [NewAccountComponent],
 })
-export class AccountsModule {}
+export class AccountsModule { }

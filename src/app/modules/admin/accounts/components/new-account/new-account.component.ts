@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountService } from 'app/shared/services/account.service';
 import { CommonService } from 'app/shared/services/common.service';
+import { ToasterService } from 'app/shared/services/toaster.service';
 
 @Component({
     selector: 'app-new-account',
@@ -23,7 +24,8 @@ export class NewAccountComponent {
         private _accountService: AccountService,
         private _formBuilder: FormBuilder,
         private _route: Router,
-        private changeDetection: ChangeDetectorRef
+        private changeDetection: ChangeDetectorRef,
+        private toaster: ToasterService
     ) { }
     accountType = [
         { type: 'Cash', id: 0 },
@@ -101,7 +103,13 @@ export class NewAccountComponent {
                     .subscribe((res) => {
                         console.log(this._commonService.decryptData(res));
                         this.addAccountForm.reset();
-                        this._route.navigateByUrl('accounts/manage-account');
+                        this.toaster.show(
+                            'success',
+                            'Account added successfully'
+                        );
+                        setTimeout(() => {
+                            this._route.navigateByUrl('accounts/manage-account');
+                        }, 2000);
                         this.changeDetection.detectChanges();
                     });
             }
