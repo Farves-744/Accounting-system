@@ -2,6 +2,9 @@
 /*  @ Import/write your custom styles here.
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
+@import 'primeicons/primeicons.css';
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
 
 :root {
     --myAccent: #6fb8ff;
@@ -21,9 +24,7 @@ body.light .mat-calendar-body-in-range::before {
     opacity: 50%;
 }
 
-body.light
-    .mat-radio-button.mat-accent.mat-radio-checked
-    .mat-radio-outer-circle {
+body.light .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
     border-color: var(--myAccent);
 }
 
@@ -165,11 +166,13 @@ input[type="search"]::-ms-clear {
     width: 0;
     height: 0;
 }
+
 input[type="search"]::-ms-reveal {
     display: none;
     width: 0;
     height: 0;
 }
+
 /* clears the ‘X’ from Chrome */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
@@ -178,9 +181,6 @@ input[type="search"]::-webkit-search-results-decoration {
     display: none;
 }
 
-// .is-invalid {
-//     border: 1px solid #dc2626 !important;
-// }
 
 input.ng-invalid.ng-touched {
     border: 1px solid #dc2626 !important;

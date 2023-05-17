@@ -7,6 +7,7 @@ import { GetAccounts } from 'app/shared/modals/accounts';
 import { CommonService } from 'app/shared/services/common.service';
 import { IncomeService } from 'app/shared/services/income.service';
 import { ToasterService } from 'app/shared/services/toaster.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-collect-dialog',
@@ -33,7 +34,7 @@ export class CollectDialogComponent implements OnInit {
         private _accountService: AccountService,
         private _incomeService: IncomeService,
         private changeDetection: ChangeDetectorRef,
-        private toaster: ToasterService
+        private messageService: MessageService
     ) { }
 
     ngOnInit(): void {
@@ -76,15 +77,15 @@ export class CollectDialogComponent implements OnInit {
                         console.log(this.data.imageId);
                         console.log(this.data.deleteImageId);
                         this.updateIncome();
-                        // this.toaster.show('success', 'Income  successfully');
-
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully' });
                         console.log(this.data.imageId);
                         console.log(this.data);
                     });
             } else {
                 console.log(this.data);
                 this.updateIncome();
-                // this.toaster.show('success', 'Income updated successfully');
+
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully' });
             }
         } else {
             this.data.userId = this.userId;
@@ -102,19 +103,17 @@ export class CollectDialogComponent implements OnInit {
                         this.imageId = reData.imageId;
                         this.data.imageId = this.imageId;
                         this.addIncome();
-                        this.toaster.show(
-                            'success',
-                            'Income added successfully'
-                        );
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income added successfully' });
                         console.log(this.data.imageId);
                         console.log(this.data);
                     },
                     (error) => {
-                        this.toaster.show('error', 'Something went wrong');
+                        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     }
                 );
             } else {
                 this.addIncome();
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income added successfully' });
             }
         }
     }

@@ -28,6 +28,7 @@ import { SharedModule } from 'app/shared/shared.module';
         SharedModule,
         ReactiveFormsModule,
         FormsModule,
+
     ],
     providers: [NewAccountComponent],
 })

@@ -19,6 +19,7 @@ import { IncomeService } from 'app/shared/services/income.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from 'environments/environment';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-income-categories-dialog',
@@ -44,6 +45,7 @@ export class IncomeCategoriesDialogComponent {
         // private _compressImageService: CompressImageService,
         private _route: Router,
         private _incomeService: IncomeService,
+        private messageService: MessageService,
         private changeDetection: ChangeDetectorRef,
         private _formBuilder: FormBuilder,
         public dialogRef: MatDialogRef<IncomeCategoriesDialogComponent>,
@@ -90,7 +92,6 @@ export class IncomeCategoriesDialogComponent {
             }
             return;
         }
-
         console.log(this.file);
         if (this.addCategoryForm.valid) {
             if (this.data) {
@@ -112,18 +113,22 @@ export class IncomeCategoriesDialogComponent {
                                 this.addCategoryForm.value.imageId;
                             this.addCategoryForm.value.imageId = this.imageId;
                             this.updateCategory();
+                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account updated successfully' });
                             console.log(this.addCategoryForm.value);
-                        });
+                        }, error => {
+                            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
+                        }
+                        );
                 } else {
                     console.log(this.addCategoryForm.value);
                     this.updateCategory();
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account updated successfully', });
                 }
             } else {
                 console.log(this.file);
 
                 if (this.file != undefined) {
 
-                    console.log('guiiu');
                     this.formatImage(this.file);
 
                     this._incomeService
@@ -134,11 +139,14 @@ export class IncomeCategoriesDialogComponent {
                             this.imageId = reData.imageId;
                             this.addCategoryForm.value.imageId = this.imageId;
                             this.addCategory();
+                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account added successfully' });
                             console.log(this.addCategoryForm.value.imageId);
+                        }, error => {
+                            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                         });
                 } else {
-                    console.log('normal');
                     this.addCategory();
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account added successfully' });
                 }
             }
         }
@@ -210,6 +218,8 @@ export class IncomeCategoriesDialogComponent {
                 this.addCategoryForm.reset();
                 this.dialogRef.close(true);
                 this.changeDetection.detectChanges();
+            }, error => {
+                this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
             });
     }
 
@@ -222,6 +232,8 @@ export class IncomeCategoriesDialogComponent {
                 this.addCategoryForm.reset();
                 this.dialogRef.close(true);
                 this.changeDetection.detectChanges();
+            }, error => {
+                this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
             });
     }
 

@@ -10,6 +10,7 @@ import { TaxService } from 'app/shared/services/tax.service';
 import { GetTax } from 'app/shared/modals/tax';
 import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
 import { environment } from 'environments/environment';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-add-income',
@@ -48,7 +49,8 @@ export class AddIncomeComponent {
         private _formBuilder: FormBuilder,
         private _route: Router,
         private changeDetection: ChangeDetectorRef,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private messageService: MessageService
     ) { }
 
     ngOnInit() {
@@ -405,7 +407,10 @@ export class AddIncomeComponent {
                     if (result) {
                         this.addIncomeForm.reset();
                         this.imageUrl = null;
-                        this._route.navigateByUrl('income/manage-income');
+                        // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully' });
+                        setTimeout(() => {
+                            this._route.navigateByUrl('income/manage-income');
+                        }, 1000);
                     }
                 });
             } else {
@@ -419,7 +424,9 @@ export class AddIncomeComponent {
                     if (result) {
                         this.addIncomeForm.reset();
                         this.imageUrl = null;
-                        this._route.navigateByUrl('income/manage-income');
+                        setTimeout(() => {
+                            this._route.navigateByUrl('income/manage-income');
+                        }, 1000);
                     }
                 });
             }

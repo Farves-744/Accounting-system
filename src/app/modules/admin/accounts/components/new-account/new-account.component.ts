@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountService } from 'app/shared/services/account.service';
 import { CommonService } from 'app/shared/services/common.service';
-import { ToasterService } from 'app/shared/services/toaster.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-new-account',
@@ -25,13 +25,15 @@ export class NewAccountComponent {
         private _formBuilder: FormBuilder,
         private _route: Router,
         private changeDetection: ChangeDetectorRef,
-        private toaster: ToasterService
+        private messageService: MessageService
     ) { }
     accountType = [
         { type: 'Cash', id: 0 },
         { type: 'Savings Account', id: 1 },
         { type: 'Current Account', id: 2 },
     ];
+
+
 
     validateAccountNumber(event) {
         const req = {
@@ -103,10 +105,7 @@ export class NewAccountComponent {
                     .subscribe((res) => {
                         console.log(this._commonService.decryptData(res));
                         this.addAccountForm.reset();
-                        this.toaster.show(
-                            'success',
-                            'Account added successfully'
-                        );
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account added successfully' });
                         setTimeout(() => {
                             this._route.navigateByUrl('accounts/manage-account');
                         }, 2000);
