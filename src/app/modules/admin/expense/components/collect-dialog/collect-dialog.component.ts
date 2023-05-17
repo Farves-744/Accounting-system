@@ -31,7 +31,7 @@ export class CollectDialogComponent implements OnInit {
         private _accountService: AccountService,
         private _expenseService: ExpenseService,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         console.log(this.data);
@@ -84,20 +84,25 @@ export class CollectDialogComponent implements OnInit {
             this.data.userId = this.userId;
             this.data.payments = this.paymentsModal;
             console.log(this.data.file);
-            this.formatImage(this.data.file);
             console.log(this.data);
 
-            this._expenseService
-                .addCategoryImage(this.formData)
-                .subscribe((res) => {
-                    console.log(res);
-                    let reData = JSON.parse(JSON.stringify(res));
-                    this.imageId = reData.imageId;
-                    this.data.imageId = this.imageId;
-                    this.addExpense();
-                    console.log(this.data.imageId);
-                    console.log(this.data);
-                });
+            if (this.data.file != null) {
+
+                this.formatImage(this.data.file);
+                this._expenseService
+                    .addCategoryImage(this.formData)
+                    .subscribe((res) => {
+                        console.log(res);
+                        let reData = JSON.parse(JSON.stringify(res));
+                        this.imageId = reData.imageId;
+                        this.data.imageId = this.imageId;
+                        this.addExpense();
+                        console.log(this.data.imageId);
+                        console.log(this.data);
+                    });
+            } else {
+                this.addExpense();
+            }
         }
     }
 
