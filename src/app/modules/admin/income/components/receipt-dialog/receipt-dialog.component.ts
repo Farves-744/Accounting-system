@@ -14,8 +14,8 @@ export class ReceiptDialogComponent implements OnInit {
         // private _taxService: TaxService,
         private _commonService: CommonService,
         public _dialogRef: MatDialogRef<ReceiptDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private data: any
-    ) {}
+        @Inject(MAT_DIALOG_DATA) public data: any
+    ) { }
 
     ngOnInit(): void {
         console.log(this.data);

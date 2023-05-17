@@ -119,18 +119,27 @@ export class IncomeCategoriesDialogComponent {
                     this.updateCategory();
                 }
             } else {
-                this.formatImage(this.file);
+                console.log(this.file);
 
-                this._incomeService
-                    .addCategoryImage(this.formData)
-                    .subscribe((res) => {
-                        console.log(res);
-                        let reData = JSON.parse(JSON.stringify(res));
-                        this.imageId = reData.imageId;
-                        this.addCategoryForm.value.imageId = this.imageId;
-                        this.addCategory();
-                        console.log(this.addCategoryForm.value.imageId);
-                    });
+                if (this.file != undefined) {
+
+                    console.log('guiiu');
+                    this.formatImage(this.file);
+
+                    this._incomeService
+                        .addCategoryImage(this.formData)
+                        .subscribe((res) => {
+                            console.log(res);
+                            let reData = JSON.parse(JSON.stringify(res));
+                            this.imageId = reData.imageId;
+                            this.addCategoryForm.value.imageId = this.imageId;
+                            this.addCategory();
+                            console.log(this.addCategoryForm.value.imageId);
+                        });
+                } else {
+                    console.log('normal');
+                    this.addCategory();
+                }
             }
         }
     }

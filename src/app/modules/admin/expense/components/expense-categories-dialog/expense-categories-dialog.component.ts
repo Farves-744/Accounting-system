@@ -77,8 +77,9 @@ export class ExpenseCategoriesDialogComponent {
             this.updateFormData = data;
             this.isEdit = true;
             this.addCategoryForm.patchValue(this.updateFormData);
-            console.log(this.addCategoryForm.value.image_url);
-            this.imageUrl = this.env.BASE_URL + '/' + data.image_url;
+            console.log(this.addCategoryForm.value);
+            console.log(this.addCategoryForm.value.imageUrl);
+            this.imageUrl = this.env.BASE_URL + '/' + data.imageUrl;
             console.log(this.updateFormData);
             console.log(this.url);
         }
