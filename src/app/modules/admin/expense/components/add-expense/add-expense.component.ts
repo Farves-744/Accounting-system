@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'environments/environment';
 import { GetTax } from 'app/shared/modals/tax';
 import { getExpenseCategory } from 'app/shared/modals/expense-category';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExpenseService } from 'app/shared/services/expense.service';
 import { TaxService } from 'app/shared/services/tax.service';
 import { Router } from '@angular/router';
@@ -29,7 +29,7 @@ export class AddExpenseComponent implements OnInit {
     finalAmount: number = null;
     isDisabled: boolean = true;
     env = environment;
-    file: File;
+    file: File = null;
     imageUrl: any;
     userId: any;
     imageId: any;
@@ -48,18 +48,18 @@ export class AddExpenseComponent implements OnInit {
         private _route: Router,
         private changeDetection: ChangeDetectorRef,
         public dialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.userId = this._commonService.getUserId();
         this.addExpenseForm = this._formBuilder.group({
-            totalAmount: null,
-            description: '',
+            totalAmount: [null, [Validators.required, Validators.min(100)]],
+            description: ['', Validators.minLength(1)],
             taxApplicable: 0,
             taxId: [{ value: null, disabled: true }],
             imageId: this.imageId,
             image_url: '',
-            categoryId: null,
+            categoryId: [null, Validators.required],
             payments: [[]],
             file: null,
             type: 1,
@@ -73,6 +73,10 @@ export class AddExpenseComponent implements OnInit {
         console.log(this.addExpenseForm.value.taxApplicable);
     }
 
+    get f() {
+        return this.addExpenseForm.controls;
+    }
+
     calculateTax(value) {
         console.log(value);
 
@@ -82,7 +86,7 @@ export class AddExpenseComponent implements OnInit {
                 taxAmount:
                     this.addExpenseForm.value.totalAmount -
                     (this.addExpenseForm.value.totalAmount * 100) /
-                        (100 + value),
+                    (100 + value),
             });
 
             console.log(this.addExpenseForm.value.taxAmount);
@@ -102,7 +106,7 @@ export class AddExpenseComponent implements OnInit {
                 taxAmount:
                     this.addExpenseForm.value.totalAmount -
                     (this.addExpenseForm.value.totalAmount * 100) /
-                        (100 + value),
+                    (100 + value),
             });
 
             console.log(this.addExpenseForm.value.taxAmount);
@@ -111,7 +115,7 @@ export class AddExpenseComponent implements OnInit {
                 this.addExpenseForm.value.totalAmount;
             this.addExpenseForm.value.finalAmount = Math.round(
                 this.addExpenseForm.value.totalAmount +
-                    this.addExpenseForm.value.taxAmount
+                this.addExpenseForm.value.taxAmount
             );
             this.finalAmount = this.addExpenseForm.value.finalAmount;
 
@@ -358,51 +362,59 @@ export class AddExpenseComponent implements OnInit {
     }
 
     openCollectDialog() {
-        console.log(this.updateFormData);
-
-        console.log(this.addExpenseForm.value.taxAmount);
-        console.log(this.file);
-        console.log(this.addExpenseForm.value.file);
-
-        this.addExpenseForm.value.file = this.file;
-        // this.addExpenseForm.patchValue({ file: this.file });
-
-        console.log(this.addExpenseForm.value);
-
-        if (history.state.data) {
-            // this.addExpenseForm.patchValue({
-            //     imageId: this.updateFormData.imageId,
-            // });
-            console.log(this.addExpenseForm.value);
-            // return;
-
-            this.addExpenseForm.value.id = history.state.data;
-            console.log(this.addExpenseForm.value);
-            const dialogRef = this.dialog.open(CollectDialogComponent, {
-                width: '900px',
-                data: this.addExpenseForm.value,
-            });
-            dialogRef.afterClosed().subscribe((result) => {
-                if (result) {
-                    this.addExpenseForm.reset();
-                    this.imageUrl = null;
-                    this._route.navigateByUrl('expense/manage-expense');
-                }
-            });
-        } else {
-            console.log(this.addExpenseForm.value);
-
-            const dialogRef = this.dialog.open(CollectDialogComponent, {
-                width: '900px',
-                data: this.addExpenseForm.value,
-            });
-            dialogRef.afterClosed().subscribe((result) => {
-                if (result) {
-                    this.addExpenseForm.reset();
-                    this.imageUrl = null;
-                    this._route.navigateByUrl('expense/manage-expense');
-                }
-            });
+        if (this.addExpenseForm.invalid) {
+            for (const control of Object.keys(this.addExpenseForm.controls)) {
+                this.addExpenseForm.controls[control].markAsTouched();
+            }
+            return;
         }
+        if (this.addExpenseForm.valid) {
+            console.log(this.updateFormData);
+            console.log(this.addExpenseForm.value.taxAmount);
+            console.log(this.file);
+            console.log(this.addExpenseForm.value.file);
+
+            this.addExpenseForm.value.file = this.file;
+            // this.addExpenseForm.patchValue({ file: this.file });
+
+            console.log(this.addExpenseForm.value);
+
+            if (history.state.data) {
+                // this.addExpenseForm.patchValue({
+                //     imageId: this.updateFormData.imageId,
+                // });
+                console.log(this.addExpenseForm.value);
+                // return;
+
+                this.addExpenseForm.value.id = history.state.data;
+                console.log(this.addExpenseForm.value);
+                const dialogRef = this.dialog.open(CollectDialogComponent, {
+                    width: '900px',
+                    data: this.addExpenseForm.value,
+                });
+                dialogRef.afterClosed().subscribe((result) => {
+                    if (result) {
+                        this.addExpenseForm.reset();
+                        this.imageUrl = null;
+                        this._route.navigateByUrl('expense/manage-expense');
+                    }
+                });
+            } else {
+                console.log(this.addExpenseForm.value);
+
+                const dialogRef = this.dialog.open(CollectDialogComponent, {
+                    width: '900px',
+                    data: this.addExpenseForm.value,
+                });
+                dialogRef.afterClosed().subscribe((result) => {
+                    if (result) {
+                        this.addExpenseForm.reset();
+                        this.imageUrl = null;
+                        this._route.navigateByUrl('expense/manage-expense');
+                    }
+                });
+            }
+        }
+
     }
 }
