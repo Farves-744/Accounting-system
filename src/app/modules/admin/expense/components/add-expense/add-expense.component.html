@@ -1,13 +1,8 @@
-<section
-    class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4"
->
+<section class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4">
     <!-- Breadcrumb -->
     <div class="sm:flex hidden gap-2 items-center">
-        <mat-icon
-            class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-            svgIcon="heroicons_outline:home"
-            (click)="navigateToHome()"
-        >
+        <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+            svgIcon="heroicons_outline:home" (click)="navigateToHome()">
         </mat-icon>
         <p>Expense</p>
         <span>/</span>
@@ -21,177 +16,114 @@
         {{ updateFormData != undefined ? "Update Expense" : "Add Expense" }}
     </h3>
 
-    <form
-        [formGroup]="addExpenseForm"
-        (ngSubmit)="openCollectDialog()"
-        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-4 items-center justify-between"
-    >
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center"
-        >
+    <form [formGroup]="addExpenseForm" (ngSubmit)="openCollectDialog()"
+        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-4 items-center justify-between">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center">
             <div class="flex flex-col gap-2">
-                <label class="font-medium" for="amount"
-                    >Total Amount <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="amount"
-                    type="number"
-                    (change)="calculateTaxByAmount()"
-                    formControlName="totalAmount"
-                    placeholder="Enter Amount"
-                    class="border border-myAccent p-2 rounded"
-                />
+                <label class="font-medium" for="amount">Total Amount <span class="text-red-600">*</span></label>
+
+                <input id="amount" type="number" required name="totalAmount" (change)="calculateTaxByAmount()"
+                    formControlName="totalAmount" placeholder="Enter Amount"
+                    class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                        f.totalAmount.invalid &&
+                        (f.totalAmount.dirty || f.totalAmount.touched)
+                    ">
+                    <span class="text-[#dc2626]" *ngIf="f.totalAmount.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
+
+                <div class="text-[#dc2626]" *ngIf="f.totalAmount.errors?.['min']">
+                    Amount must be at least 100.
+                </div>
             </div>
 
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="description">
-                    Description</label
-                >
-                <input
-                    id="description"
-                    formControlName="description"
-                    type="text"
-                    placeholder="Enter Description"
-                    class="border border-myAccent p-2 rounded"
-                />
+                    Description</label>
+
+                <input id="description" formControlName="description" type="text" placeholder="Enter Description"
+                    class="border border-myAccent p-2 rounded" />
             </div>
 
             <div class="flex flex-col gap-2 w-full">
-                <label for="tax" class="font-medium"
-                    >Tax <span class="text-red-600">*</span></label
-                >
-                <div
-                    class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8"
-                >
-                    <mat-checkbox
-                        (change)="toggleTaxInput($event)"
-                        formControlName="taxApplicable"
-                        class=""
-                        value="0"
-                        >Tax Applicable</mat-checkbox
-                    >
+                <label for="tax" class="font-medium">Tax</label>
+                <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+                    <mat-checkbox (change)="toggleTaxInput($event)" formControlName="taxApplicable" class=""
+                        value="0">Tax Applicable</mat-checkbox>
 
-                    <mat-radio-group
-                        aria-label="Select an option"
-                        formControlName="taxApplicable"
-                        class="flex flex-col lg:flex-row items-start justify-between gap-8"
-                    >
-                        <mat-radio-button
-                            class="accent-myAccent"
-                            [checked]="includeInputChecked"
-                            [disabled]="includeInputDisabled"
-                            value="1"
-                            #include
-                            (change)="calculateTaxByRadio($event)"
-                            >Including Tax</mat-radio-button
-                        >
-                        <mat-radio-button
-                            class="accent-myAccent"
-                            [checked]="excludeInputChecked"
-                            [disabled]="excludeInputDisabled"
-                            value="2"
-                            #exclude
-                            (change)="calculateTaxByRadio($event)"
-                            >Excluding Tax</mat-radio-button
-                        >
+                    <mat-radio-group aria-label="Select an option" formControlName="taxApplicable"
+                        class="flex flex-col lg:flex-row items-start justify-between gap-8">
+                        <mat-radio-button class="accent-myAccent" [checked]="includeInputChecked"
+                            [disabled]="includeInputDisabled" value="1" #include
+                            (change)="calculateTaxByRadio($event)">Including Tax</mat-radio-button>
+                        <mat-radio-button class="accent-myAccent" [checked]="excludeInputChecked"
+                            [disabled]="excludeInputDisabled" value="2" #exclude
+                            (change)="calculateTaxByRadio($event)">Excluding Tax</mat-radio-button>
                     </mat-radio-group>
                 </div>
             </div>
 
             <div class="flex flex-col gap-2 w-full">
-                <label for="tax-type" class="font-medium"
-                    >Tax Type <span class="text-red-600">*</span></label
-                >
+                <label for="tax-type" class="font-medium">Tax Type</label>
                 <mat-form-field class="w-full mt-0">
-                    <mat-select
-                        (valueChange)="calculateTaxBySelect($event)"
-                        #clubs
-                        matInfix
-                        formControlName="taxId"
-                        disableOptionCentering
-                        placeholder="Select Tax"
-                    >
-                        <mat-option *ngFor="let tax of taxData" [value]="tax.id"
-                            >{{ tax.taxName }}
+                    <mat-select (valueChange)="calculateTaxBySelect($event)" #clubs matInfix formControlName="taxId"
+                        disableOptionCentering placeholder="Select Tax">
+                        <mat-option *ngFor="let tax of taxData" [value]="tax.id">{{ tax.taxName }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
 
-            <div
-                class="w-full h-[12rem] p-[2rem] border-[2px] border-opacity-75 mt-2 rounded border-myAccent text-center border-dashed relative"
-                appDnd
-                (fileDropped)="onFileDropped($event)"
-            >
-                <input
-                    type="file"
-                    class="opacity-0 absolute z-10 w-full top-0 left-0 h-full"
-                    #fileDropRef
-                    id="fileDropRef"
-                    (change)="saveImage($event)"
-                />
-                <div
-                    class="flex items-center justify-center flex-col gap-4 mt-4"
-                >
-                    <img
-                        src="assets\icons\upload.svg"
-                        alt=""
-                        class="w-[50px] fill-myAccent"
-                    />
+            <div class="w-full h-[12rem] p-[2rem] border-[2px] border-opacity-75 mt-2 rounded border-myAccent text-center border-dashed relative"
+                appDnd (fileDropped)="onFileDropped($event)">
+                <input type="file" class="opacity-0 absolute z-10 w-full top-0 left-0 h-full" #fileDropRef
+                    id="fileDropRef" (change)="saveImage($event)" />
+                <div class="flex items-center justify-center flex-col gap-4 mt-4">
+                    <img src="assets\icons\upload.svg" alt="" class="w-[50px] fill-myAccent" />
 
-                    <label for="fileDropRef" class="font-semibold text-xl"
-                        >Choose an image or drag it here</label
-                    >
+                    <label for="fileDropRef" class="font-semibold text-xl">Choose an image or drag it here</label>
 
-                    <div
-                        *ngIf="imageUrl"
-                        class="w-full bg-backgroundColor absolute top-0 bottom-0 p-4"
-                    >
-                        <img
-                            [src]="imageUrl"
-                            alt=""
-                            class="object-contain w-full h-full"
-                        />
+                    <div *ngIf="imageUrl" class="w-full bg-backgroundColor absolute top-0 bottom-0 p-4">
+                        <img [src]="imageUrl" alt="" class="object-contain w-full h-full" />
                     </div>
                 </div>
             </div>
 
             <div class="flex flex-col gap-8 items-start">
                 <div class="flex flex-col gap-2 w-full">
-                    <label for="expenseCategory" class="font-medium"
-                        >Expense Category
-                        <span class="text-red-600">*</span></label
-                    >
+                    <label for="expenseCategory" class="font-medium">Expense Category
+                        <span class="text-red-600">*</span></label>
+
                     <mat-form-field class="w-full mt-1">
-                        <mat-select
-                            #clubs
-                            matInfix
-                            disableOptionCentering
-                            formControlName="categoryId"
-                            placeholder="Select Category"
-                        >
-                            <mat-option
-                                *ngFor="let category of categoryData"
-                                [value]="category.id"
-                                >{{ category.categoryName }}
+                        <mat-select #clubs matInfix disableOptionCentering formControlName="categoryId"
+                            placeholder="Select Category">
+                            <mat-option *ngFor="let category of categoryData" [value]="category.id">{{
+                                category.categoryName }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+
+                    <div *ngIf="
+                            f.categoryId.invalid &&
+                            (f.categoryId.dirty || f.categoryId.touched)
+                        ">
+                        <span class="text-[#dc2626]" *ngIf="f.categoryId.errors?.['required']">
+                            This field is required
+                        </span>
+                    </div>
                 </div>
 
-                <div
-                    *ngIf="showFinal"
-                    class="text-myAccent font-semibold text-[1.3rem] mb-2"
-                >
+                <div *ngIf="showFinal" class="text-myAccent font-semibold text-[1.3rem] mb-2">
                     Total Amount: {{ finalAmount | number }}<span></span>
                 </div>
             </div>
         </div>
 
-        <button
-            type="submit"
-            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit"
-        >
+        <button type="submit"
+            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit">
             {{ updateFormData != undefined ? "Update Expense" : "Add Expense" }}
         </button>
     </form>
