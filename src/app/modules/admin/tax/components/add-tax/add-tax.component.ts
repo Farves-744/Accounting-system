@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonService } from 'app/shared/services/common.service';
 import { TaxService } from 'app/shared/services/tax.service';
@@ -22,15 +22,19 @@ export class AddTaxComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private _route: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
         this.addTaxForm = this._formBuilder.group({
-            taxName: '',
-            taxRate: '',
+            taxName: ['', Validators.required],
+            taxRate: ['', Validators.required],
             userId: this.userId,
         });
+    }
+
+    get f() {
+        return this.addTaxForm.controls;
     }
 
     ngAfterContentInit() {
@@ -43,6 +47,13 @@ export class AddTaxComponent implements OnInit {
     }
 
     addOrEditTax() {
+        if (this.addTaxForm.invalid) {
+            for (const control of Object.keys(this.addTaxForm.controls)) {
+                this.addTaxForm.controls[control].markAsTouched();
+            }
+            return;
+        }
+
         if (this.addTaxForm.valid) {
             if (history.state.data) {
                 // console.log(history.state.data);
