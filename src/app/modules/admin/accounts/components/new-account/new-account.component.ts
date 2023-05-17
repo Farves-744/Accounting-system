@@ -24,7 +24,7 @@ export class NewAccountComponent {
         private _formBuilder: FormBuilder,
         private _route: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
     accountType = [
         { type: 'Cash', id: 0 },
         { type: 'Savings Account', id: 1 },
@@ -60,6 +60,10 @@ export class NewAccountComponent {
         });
     }
 
+    get f() {
+        return this.addAccountForm.controls;
+    }
+
     ngAfterContentInit() {
         if (history.state.data) {
             this.updateFormData = history.state.data;
@@ -70,6 +74,13 @@ export class NewAccountComponent {
     }
 
     addOrEditAccount() {
+        if (this.addAccountForm.invalid) {
+            for (const control of Object.keys(this.addAccountForm.controls)) {
+                this.addAccountForm.controls[control].markAsTouched();
+            }
+            return;
+        }
+
         if (this.addAccountForm.valid) {
             if (history.state.data) {
                 // console.log(history.state.data);
