@@ -16,7 +16,7 @@ import {
 } from '@angular/material/dialog';
 import { ExpenseService } from 'app/shared/services/expense.service';
 // import { CompressImageService } from 'app/shared/services/compress-image.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from 'environments/environment';
 
@@ -50,12 +50,12 @@ export class ExpenseCategoriesDialogComponent {
         public dialogRef: MatDialogRef<ExpenseCategoriesDialogComponent>,
         @Inject(MAT_DIALOG_DATA)
         public data: any
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
         this.addCategoryForm = this._formBuilder.group({
-            categoryName: '',
+            categoryName: ['', Validators.required],
             categoryType: 1,
             imageId: this.imageId,
             userId: this.userId,
@@ -65,7 +65,11 @@ export class ExpenseCategoriesDialogComponent {
         this.editCategory(this.data);
     }
 
-    ngAfterContentInit() {}
+    get f() {
+        return this.addCategoryForm.controls;
+    }
+
+    ngAfterContentInit() { }
 
     editCategory(data: any) {
         if (data) {
@@ -81,6 +85,13 @@ export class ExpenseCategoriesDialogComponent {
     }
 
     addOrUpdateCategory() {
+        if (this.addCategoryForm.invalid) {
+            for (const control of Object.keys(this.addCategoryForm.controls)) {
+                this.addCategoryForm.controls[control].markAsTouched();
+            }
+            return;
+        }
+
         console.log(this.file);
         if (this.addCategoryForm.valid) {
             if (this.data) {
@@ -138,7 +149,7 @@ export class ExpenseCategoriesDialogComponent {
     //         });
     // }
 
-    ngAfterViewInit(): void {}
+    ngAfterViewInit(): void { }
 
     onFileDropped(event) {
         this.file = event[0];
