@@ -49,7 +49,7 @@ export class AddIncomeComponent {
         private _route: Router,
         private changeDetection: ChangeDetectorRef,
         public dialog: MatDialog
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.userId = this._commonService.getUserId();
@@ -87,9 +87,8 @@ export class AddIncomeComponent {
                 taxAmount:
                     this.addIncomeForm.value.totalAmount -
                     (this.addIncomeForm.value.totalAmount * 100) /
-                        (100 + value),
+                    (100 + value),
             });
-
             console.log(this.addIncomeForm.value.taxAmount);
 
             this.addIncomeForm.value.totalAmount =
@@ -107,7 +106,7 @@ export class AddIncomeComponent {
                 taxAmount:
                     this.addIncomeForm.value.totalAmount -
                     (this.addIncomeForm.value.totalAmount * 100) /
-                        (100 + value),
+                    (100 + value),
             });
 
             console.log(this.addIncomeForm.value.taxAmount);
@@ -116,7 +115,7 @@ export class AddIncomeComponent {
                 this.addIncomeForm.value.totalAmount;
             this.addIncomeForm.value.finalAmount = Math.round(
                 this.addIncomeForm.value.totalAmount +
-                    this.addIncomeForm.value.taxAmount
+                this.addIncomeForm.value.taxAmount
             );
             this.finalAmount = this.addIncomeForm.value.finalAmount;
 
@@ -381,7 +380,6 @@ export class AddIncomeComponent {
 
         if (this.addIncomeForm.valid) {
             console.log(this.updateFormData);
-
             console.log(this.addIncomeForm.value.taxAmount);
             console.log(this.file);
             console.log(this.addIncomeForm.value.file);
