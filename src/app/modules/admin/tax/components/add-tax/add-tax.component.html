@@ -1,13 +1,8 @@
-<section
-    class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4"
->
+<section class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4">
     <!-- Breadcrumb -->
     <div class="sm:flex hidden gap-2 items-center">
-        <mat-icon
-            class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-            svgIcon="heroicons_outline:home"
-            (click)="navigateToHome()"
-        >
+        <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+            svgIcon="heroicons_outline:home" (click)="navigateToHome()">
         </mat-icon>
         <p>Tax</p>
         <span>/</span>
@@ -18,44 +13,42 @@
     <h3 class="font-bold text-[1.5rem] text-center sm:text-left">Add Tax</h3>
 
     <!-- Content -->
-    <form
-        [formGroup]="addTaxForm"
-        (ngSubmit)="addOrEditTax()"
-        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between"
-    >
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center"
-        >
+    <form [formGroup]="addTaxForm" (ngSubmit)="addOrEditTax()"
+        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center">
             <div class="flex flex-col gap-2">
-                <label class="font-medium" for="tax-name"
-                    >Tax Name <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="tax-name"
-                    type="text"
-                    placeholder="Enter Tax Name"
-                    formControlName="taxName"
-                    class="border border-myAccent p-2 rounded"
-                />
+                <label class="font-medium" for="tax-name">Tax Name <span class="text-red-600">*</span></label>
+                <input id="tax-name" type="text" required placeholder="Enter Tax Name" formControlName="taxName"
+                    class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                            f.taxName.invalid &&
+                            (f.taxName.dirty || f.taxName.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.taxName.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
             </div>
 
             <div class="flex flex-col gap-2">
-                <label class="font-medium" for="tax-rate"
-                    >Tax Rate <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="tax-rate"
-                    type="number"
-                    formControlName="taxRate"
-                    placeholder="Enter Tax Rate"
-                    class="border border-myAccent p-2 rounded"
-                />
+                <label class="font-medium" for="tax-rate">Tax Rate <span class="text-red-600">*</span></label>
+
+                <input id="tax-rate" type="number" formControlName="taxRate" placeholder="Enter Tax Rate"
+                    class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                            f.taxRate.invalid &&
+                            (f.taxRate.dirty || f.taxRate.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.taxRate.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
             </div>
         </div>
-        <button
-            type="submit"
-            class="px-10 border text-textColor hover:border-darkAccent border-accentHover shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2 self-end"
-        >
+        <button type="submit"
+            class="px-10 border text-textColor hover:border-darkAccent border-accentHover shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2 self-end">
             {{ updateFormData != undefined ? "Update Tax" : "Add Tax" }}
         </button>
     </form>
