@@ -23,7 +23,6 @@ export class CollectDialogComponent implements OnInit {
     imageId;
     any;
     accounts: any;
-    value: boolean = true;
 
     constructor(
         public dialogRef: MatDialogRef<CollectDialogComponent>,
@@ -35,7 +34,7 @@ export class CollectDialogComponent implements OnInit {
         private _incomeService: IncomeService,
         private changeDetection: ChangeDetectorRef,
         private toaster: ToasterService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         console.log(this.data);
@@ -133,9 +132,6 @@ export class CollectDialogComponent implements OnInit {
         }
     }
 
-    submit() {
-        console.log('hello');
-    }
 
     addIncome() {
         this._incomeService.addIncome(this.data).subscribe((res) => {
