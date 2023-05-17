@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GetRole } from 'app/shared/modals/role';
 import { CommonService } from 'app/shared/services/common.service';
@@ -26,20 +26,19 @@ export class NewUserComponent {
         private _formBuilder: FormBuilder,
         private _route: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
 
         this.addUserForm = this._formBuilder.group({
-            name: '',
-            email: '',
-            password: '',
-            editPassword: '',
-            roleId: null,
+            name: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            editPassword: ['', [Validators.required, Validators.minLength(6)]],
+            roleId: [null, Validators.required],
             userId: this.userId,
         });
-
         this.getRolesName();
     }
 
@@ -53,7 +52,18 @@ export class NewUserComponent {
         }
     }
 
+    get f() {
+        return this.addUserForm.controls;
+    }
+
     addOrEditUser() {
+        if (this.addUserForm.invalid) {
+            for (const control of Object.keys(this.addUserForm.controls)) {
+                this.addUserForm.controls[control].markAsTouched();
+            }
+            return;
+        }
+
         if (this.addUserForm.valid) {
             if (history.state.data) {
                 console.log(history.state.data);
@@ -106,7 +116,6 @@ export class NewUserComponent {
             console.log(this._commonService.decryptData(res));
             this.rolesData = this._commonService.decryptData(res);
             console.log(this.rolesData);
-
             this.changeDetection.detectChanges();
         });
     }
