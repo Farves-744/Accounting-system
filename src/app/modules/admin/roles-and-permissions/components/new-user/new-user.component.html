@@ -1,13 +1,8 @@
-<section
-    class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4"
->
+<section class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4">
     <!-- Breadcrumb -->
     <div class="sm:flex hidden gap-2 items-center">
-        <mat-icon
-            class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-            svgIcon="heroicons_outline:home"
-            (click)="navigateToHome()"
-        >
+        <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+            svgIcon="heroicons_outline:home" (click)="navigateToHome()">
         </mat-icon>
         <p>Roles and Permission</p>
         <span>/</span>
@@ -18,146 +13,136 @@
     <h3 class="font-bold text-[1.5rem] text-center sm:text-left">Add User</h3>
 
     <!-- Content -->
-    <form
-        [formGroup]="addUserForm"
-        (ngSubmit)="addOrEditUser()"
-        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between"
-    >
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center"
-        >
+    <form [formGroup]="addUserForm" (ngSubmit)="addOrEditUser()"
+        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-10 items-center justify-between">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center">
             <div class="flex flex-col gap-2">
-                <label class="font-medium" for="user-name"
-                    >Name <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="user-name"
-                    type="text"
-                    placeholder="Enter Name"
-                    formControlName="name"
-                    class="border border-myAccent p-2 rounded"
-                />
+                <label class="font-medium" for="user-name">Name <span class="text-red-600">*</span></label>
+
+                <input id="user-name" name="name" type="text" required placeholder="Enter Name" formControlName="name"
+                    class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                            f.name.invalid &&
+                            (f.name.dirty || f.name.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.name.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
+                <!-- <div *ngIf="
+                            f.name.invalid &&
+                            (f.name.dirty || f.name.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.name.errors?.['required']">
+                        This field is required
+                    </span>
+                </div> -->
             </div>
 
             <div class="flex flex-col gap-2">
-                <label class="font-medium" for="user-email"
-                    >Email <span class="text-red-600">*</span></label
-                >
-                <input
-                    id="user-email"
-                    type="email"
-                    placeholder="Enter Email"
-                    formControlName="email"
-                    class="border border-myAccent p-2 rounded"
-                />
+                <label class="font-medium" for="user-email">Email <span class="text-red-600">*</span></label>
+
+                <input autocomplete="off" id="user-email" type="email" placeholder="Enter Email" formControlName="email"
+                    class="border border-myAccent p-2 rounded" />
+
+                <div *ngIf="
+                            f.email.invalid &&
+                            (f.email.dirty || f.email.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.email.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
+
+                <div class="text-[#dc2626]" *ngIf="f.email.errors?.['email']">Email must be a valid email address</div>
             </div>
 
-            <div
-                class="flex flex-col gap-2"
-                *ngIf="updateFormData == undefined"
-            >
-                <label class="font-medium" for="user-password"
-                    >Password <span class="text-red-600">*</span></label
-                >
+            <div class="flex flex-col gap-2" *ngIf="updateFormData == undefined">
+                <label class="font-medium" for="user-password">Password <span class="text-red-600">*</span></label>
                 <div class="flex items-center w-full relative">
-                    <input
-                        id="user-password"
-                        type="password"
-                        placeholder="Enter Password"
-                        formControlName="password"
-                        class="border w-full border-myAccent p-2 rounded"
-                        #passwordField
-                    />
-                    <button
-                        mat-icon-button
-                        type="button"
-                        (click)="
+                    <input id="user-password" type="password" required placeholder="Enter Password"
+                        formControlName="password" class="border w-full border-myAccent p-2 rounded" #passwordField />
+
+                    <button mat-icon-button type="button" (click)="
                             passwordField.type === 'password'
                                 ? (passwordField.type = 'text')
                                 : (passwordField.type = 'password')
-                        "
-                        matSuffix
-                        class="absolute right-1 top-0"
-                    >
-                        <mat-icon
-                            class="icon-size-5"
-                            *ngIf="passwordField.type === 'password'"
-                            [svgIcon]="'heroicons_solid:eye'"
-                        ></mat-icon>
-                        <mat-icon
-                            class="icon-size-5"
-                            *ngIf="passwordField.type === 'text'"
-                            [svgIcon]="'heroicons_solid:eye-off'"
-                        ></mat-icon>
+                        " matSuffix class="absolute right-1 top-0">
+                        <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'"
+                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+
+                        <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
+                            [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
                     </button>
                 </div>
+
+                <div *ngIf="
+                            f.password.invalid &&
+                            (f.password.dirty || f.password.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.password.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
+
+                <div class="text-[#dc2626]" *ngIf="f.password.errors?.['minlength']">Password must be at least 6
+                    characters</div>
             </div>
-            <div
-                class="flex flex-col gap-2"
-                *ngIf="updateFormData != undefined"
-            >
-                <label class="font-medium" for="user-password"
-                    >Password Edit<span class="text-red-600">*</span></label
-                >
+            <div class="flex flex-col gap-2" *ngIf="updateFormData != undefined">
+                <label class="font-medium" for="user-password">Password Edit<span class="text-red-600">*</span></label>
                 <div class="flex items-center w-full relative">
-                    <input
-                        #passwordField
-                        id="user-password"
-                        type="password"
-                        placeholder="Enter Password"
-                        formControlName="editPassword"
-                        class="border w-full border-myAccent p-2 rounded"
-                    />
-                    <button
-                        mat-icon-button
-                        type="button"
-                        (click)="
+                    <input #passwordField id="user-password" type="password" required placeholder="Enter Password"
+                        formControlName="editPassword" class="border w-full border-myAccent p-2 rounded" />
+
+                    <button mat-icon-button type="button" (click)="
                             passwordField.type === 'password'
                                 ? (passwordField.type = 'text')
                                 : (passwordField.type = 'password')
-                        "
-                        matSuffix
-                        class="absolute right-1 top-0"
-                    >
-                        <mat-icon
-                            class="icon-size-5"
-                            *ngIf="passwordField.type === 'password'"
-                            [svgIcon]="'heroicons_solid:eye'"
-                        ></mat-icon>
-                        <mat-icon
-                            class="icon-size-5"
-                            *ngIf="passwordField.type === 'text'"
-                            [svgIcon]="'heroicons_solid:eye-off'"
-                        ></mat-icon>
+                        " matSuffix class="absolute right-1 top-0">
+                        <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'"
+                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+
+                        <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
+                            [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
                     </button>
                 </div>
+
+                <div *ngIf="
+                            f.editPassword.invalid &&
+                            (f.editPassword.dirty || f.editPassword.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.editPassword.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
+
+                <div class="text-[#dc2626]" *ngIf="f.editPassword.errors?.['minlength']">Password must be at least 6
+                    characters</div>
             </div>
 
             <div class="flex flex-col gap-2 w-full">
-                <label for="user-role" class="font-medium"
-                    >Role<span class="text-red-600">*</span></label
-                >
+                <label for="user-role" class="font-medium">Role <span class="text-red-600">*</span></label>
                 <mat-form-field class="w-full mt-0">
-                    <mat-select
-                        #clubs
-                        matInfix
-                        disableOptionCentering
-                        formControlName="roleId"
-                        placeholder="Select User Role"
-                    >
-                        <mat-option
-                            *ngFor="let role of rolesData"
-                            [value]="role.id"
-                            >{{ role.roleName }}
+                    <mat-select #clubs matInfix required disableOptionCentering formControlName="roleId"
+                        placeholder="Select User Role">
+                        <mat-option *ngFor="let role of rolesData" [value]="role.id">{{ role.roleName }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+
+                <div *ngIf="
+                            f.roleId.invalid &&
+                            (f.roleId.dirty || f.roleId.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.roleId.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
             </div>
         </div>
-        <button
-            type="submit"
-            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit"
-        >
+        <button type="submit"
+            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit">
             {{ updateFormData != undefined ? "Update User" : "Add User" }}
         </button>
     </form>
