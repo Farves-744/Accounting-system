@@ -3,16 +3,20 @@
 <form [formGroup]="addCategoryForm" (ngSubmit)="addOrUpdateCategory()">
     <mat-dialog-content class="mat-typography mb-2 flex flex-col gap-4">
         <div class="flex flex-col gap-2">
-            <label for="category-name" class="text-[1rem] font-medium"
-                >Category Name <span class="text-red-600">*</span></label
-            >
-            <input
-                type="text"
-                placeholder="Enter Category Name"
-                id="category-name"
-                formControlName="categoryName"
-                class="border border-myAccent caret-myAccent px-4 py-2 rounded"
-            />
+            <label for="category-name" class="text-[1rem] font-medium">Category Name <span
+                    class="text-red-600">*</span></label>
+
+            <input type="text" placeholder="Enter Category Name" id="category-name" formControlName="categoryName"
+                class="border border-myAccent caret-myAccent px-4 py-2 rounded" />
+
+            <div *ngIf="
+                        f.categoryName.invalid &&
+                        (f.categoryName.dirty || f.categoryName.touched)
+                    ">
+                <span class="text-[#dc2626]" *ngIf="f.categoryName.errors?.['required']">
+                    This field is required
+                </span>
+            </div>
         </div>
 
         <!-- <div class="flex flex-col gap-2 w-fit">
@@ -30,44 +34,20 @@
         </div> -->
 
         <div class="flex flex-col items-start gap-2">
-            <label for="category-icon" class="text-[1rem] font-medium"
-                >Category Icon <span class="text-red-600">*</span></label
-            >
+            <label for="category-icon" class="text-[1rem] font-medium">Category Icon <span
+                    class="text-red-600">*</span></label>
 
-            <div
-                class="w-full h-[12rem] p-[2rem] border-[2px] border-opacity-75 rounded border-myAccent text-center border-dashed relative"
-                appDnd
-                (fileDropped)="onFileDropped($event)"
-            >
-                <input
-                    type="file"
-                    class="opacity-0 absolute z-10 w-full top-0 left-0 h-full"
-                    #fileDropRef
-                    id="fileDropRef"
-                    (change)="saveImage($event)"
-                />
-                <div
-                    class="flex items-center justify-center flex-col gap-4 mt-4"
-                >
-                    <img
-                        src="assets\icons\upload.svg"
-                        alt=""
-                        class="w-[50px] fill-myAccent"
-                    />
+            <div class="w-full h-[12rem] p-[2rem] border-[2px] border-opacity-75 rounded border-myAccent text-center border-dashed relative"
+                appDnd (fileDropped)="onFileDropped($event)">
+                <input required type="file" class="opacity-0 absolute z-10 w-full top-0 left-0 h-full" #fileDropRef
+                    id="fileDropRef" (change)="saveImage($event)" />
+                <div class="flex items-center justify-center flex-col gap-4 mt-4">
+                    <img src="assets\icons\upload.svg" alt="" class="w-[50px] fill-myAccent" />
 
-                    <label for="fileDropRef" class="font-semibold text-xl"
-                        >Choose an icon or drag it here</label
-                    >
+                    <label for="fileDropRef" class="font-semibold text-xl">Choose an icon or drag it here</label>
 
-                    <div
-                        *ngIf="imageUrl"
-                        class="w-full bg-backgroundColor absolute top-0 bottom-0 p-4"
-                    >
-                        <img
-                            [src]="imageUrl"
-                            alt=""
-                            class="object-contain w-full h-full"
-                        />
+                    <div *ngIf="imageUrl" class="w-full bg-backgroundColor absolute top-0 bottom-0 p-4">
+                        <img [src]="imageUrl" alt="" class="object-contain w-full h-full" />
                     </div>
                 </div>
             </div>
@@ -76,16 +56,12 @@
     <mat-dialog-actions align="end" class="flex gap-4 items-center">
         <button
             class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2"
-            mat-dialog-close
-        >
+            mat-dialog-close>
             Cancel
         </button>
         <button
             class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
-            [mat-dialog-close]="true"
-            cdkFocusInitial
-            type="submit"
-        >
+            cdkFocusInitial type="submit">
             {{ updateFormData != undefined ? "Update" : "Add" }}
         </button>
     </mat-dialog-actions>
