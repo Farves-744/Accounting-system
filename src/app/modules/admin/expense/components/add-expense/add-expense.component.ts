@@ -65,6 +65,7 @@ export class AddExpenseComponent implements OnInit {
             type: 1,
             taxAmount: null,
             deleteImageId: null,
+            actualDate: [null, Validators.required]
         });
         this.getCategoryNameModal.userId = this.userId;
         this.getCategoryName();
@@ -392,11 +393,15 @@ export class AddExpenseComponent implements OnInit {
                     width: '900px',
                     data: this.addExpenseForm.value,
                 });
+
                 dialogRef.afterClosed().subscribe((result) => {
                     if (result) {
                         this.addExpenseForm.reset();
                         this.imageUrl = null;
-                        this._route.navigateByUrl('expense/manage-expense');
+
+                        setTimeout(() => {
+                            this._route.navigateByUrl('expense/manage-expense');
+                        }, 1000)
                     }
                 });
             } else {
@@ -406,11 +411,15 @@ export class AddExpenseComponent implements OnInit {
                     width: '900px',
                     data: this.addExpenseForm.value,
                 });
+
                 dialogRef.afterClosed().subscribe((result) => {
                     if (result) {
                         this.addExpenseForm.reset();
                         this.imageUrl = null;
-                        this._route.navigateByUrl('expense/manage-expense');
+
+                        setTimeout(() => {
+                            this._route.navigateByUrl('expense/manage-expense');
+                        }, 1000)
                     }
                 });
             }
