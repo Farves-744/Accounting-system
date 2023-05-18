@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { CommonService } from 'app/shared/services/common.service';
 import { TaxService } from 'app/shared/services/tax.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-delete-dialog',
@@ -11,10 +12,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class DeleteDialogComponent implements OnInit {
     constructor(
         private _taxService: TaxService,
+        private messageService: MessageService,
         private _commonService: CommonService,
         public _dialogRef: MatDialogRef<DeleteDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any
-    ) {}
+    ) { }
 
     userId: any;
 
@@ -31,9 +33,10 @@ export class DeleteDialogComponent implements OnInit {
         this._taxService.deleteTax(req).subscribe(
             (res) => {
                 console.log(this._commonService.decryptData(res));
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tax deleted successfully' });
             },
             (err) => {
-                console.error;
+                this.messageService.add({ severity: 'error', summary: 'You cannot delete', detail: 'This Tax is being used' });
             }
         );
         this._dialogRef.close(true);
