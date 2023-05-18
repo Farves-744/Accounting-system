@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonService } from 'app/shared/services/common.service';
 import { TaxService } from 'app/shared/services/tax.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-add-tax',
@@ -20,6 +21,7 @@ export class AddTaxComponent implements OnInit {
         private _commonService: CommonService,
         private _taxService: TaxService,
         private _formBuilder: FormBuilder,
+        private messageService: MessageService,
         private _route: Router,
         private changeDetection: ChangeDetectorRef
     ) { }
@@ -64,18 +66,24 @@ export class AddTaxComponent implements OnInit {
                     .updateTax(this.addTaxForm.value)
                     .subscribe((res) => {
                         console.log(this._commonService.decryptData(res));
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tax updated successfully' });
                         this.addTaxForm.reset();
                         this._route.navigateByUrl('tax/manage-tax');
                         this.changeDetection.detectChanges();
+                    }, error => {
+                        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     });
             } else {
                 this._taxService
                     .addTax(this.addTaxForm.value)
                     .subscribe((res) => {
                         console.log(this._commonService.decryptData(res));
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tax added successfully' });
                         this.addTaxForm.reset();
                         this._route.navigateByUrl('tax/manage-tax');
                         this.changeDetection.detectChanges();
+                    }, error => {
+                        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     });
             }
         }
