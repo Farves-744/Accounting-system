@@ -7,6 +7,17 @@ export class GetRole {
     userId: number = null;
 }
 
-export interface Role {
-    privileges: string;
+export class AddRole {
+    roleName: string;
+    permissions: any = [];
+    userId: number = null;
+    id?: number = null;
 }
+
+export class GetRoleById {
+    roleName: string;
+    permissions: string[];
+    userId: number = null;
+    id: number = null;
+}
+

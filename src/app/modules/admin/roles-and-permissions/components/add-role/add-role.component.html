@@ -16,21 +16,21 @@
         </div>
     </div>
 
-    <form class="flex flex-col gap-4" [formGroup]="addRoleForm" (ngSubmit)="addOrEditRole()">
+    <form class="flex flex-col gap-4" #f="ngForm" (ngSubmit)="f.form.valid && addOrEditRole()">
         <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div class="flex flex-col items-start gap-2">
                 <label class="font-medium" for="role-name">Role Name</label>
 
-                <input id="role-name" type="text" required formControlName="roleName" placeholder="Enter Role Name"
+                <input id="role-name" name="roleName" #role="ngModel" required [(ngModel)]="roleModal.roleName"
+                    type="text" required placeholder="Enter Role Name"
                     class="border border-myAccent p-2 rounded w-[15rem]" />
 
                 <div *ngIf="
-                        f.roleName.invalid &&
-                        (f.roleName.dirty || f.roleName.touched)
-                    ">
-                    <span class="text-[#dc2626]" *ngIf="f.roleName.errors?.['required']">
+                    (f.submitted && role.invalid) || role.touched
+                ">
+                    <div class="text-[#dc2626]" *ngIf="role.errors?.['required']">
                         This field is required
-                    </span>
+                    </div>
                 </div>
             </div>
 
@@ -66,27 +66,26 @@
                         <tr>
                             <td class="p-3 font-bold text-black">Dashboard</td>
                             <td class="p-3">
-                                <mat-checkbox name="1" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="1" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
                         <tr class="td">
                             <td class="p-3 font-bold text-black">Income</td>
                             <td class="p-3">
-                                <mat-checkbox name="2" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="2" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="3" formControlName="permissions" (change)="addPermission($event)"
-                                    [checked]="isDisabled">
+                                <mat-checkbox name="3" (change)="addPermission($event)" [checked]="isDisabled">
                                 </mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="4" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="4" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="5" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="5" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -94,38 +93,38 @@
                         <tr class="td">
                             <td class="p-3 text-black">Income Categories</td>
                             <td class="p-3">
-                                <mat-checkbox name="6" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="6" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="7" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="7" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="8" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="8" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="9" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="9" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
                         <tr class="td">
                             <td class="p-3 font-bold text-black">Expense</td>
                             <td class="p-3">
-                                <mat-checkbox name="10" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="10" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="11" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="11" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="12" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="12" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="13" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="13" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -133,38 +132,38 @@
                         <tr class="td">
                             <td class="p-3 text-black">Expense Categories</td>
                             <td class="p-3">
-                                <mat-checkbox name="14" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="14" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="15" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="15" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="16" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="16" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="17" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="17" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
                         <tr class="td">
                             <td class="p-3 font-bold text-black">Accounts</td>
                             <td class="p-3">
-                                <mat-checkbox name="18" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="18" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="19" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="19" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="20" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="20" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="21" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="21" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -172,33 +171,33 @@
                         <tr class="td">
                             <td class="p-3 text-black">Transactions</td>
                             <td class="p-3">
-                                <mat-checkbox name="22" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="22" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
                         <tr class="td">
                             <td class="p-3 text-black">Profit and Loss</td>
                             <td class="p-3">
-                                <mat-checkbox name="23" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="23" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
                         <tr class="td">
                             <td class="p-3 font-bold text-black">Tax</td>
                             <td class="p-3">
-                                <mat-checkbox name="24" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="24" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="25" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="25" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="26" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="26" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="27" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="27" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -206,7 +205,7 @@
                         <tr class="td">
                             <td class="p-3 text-black">Tax Statement</td>
                             <td class="p-3">
-                                <mat-checkbox name="28" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="28" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -218,7 +217,7 @@
                                 Income Reports
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="29" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="29" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -227,7 +226,7 @@
                                 Expense Reports
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="30" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="30" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -236,7 +235,7 @@
                                 Tax Reports
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="31" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="31" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -245,7 +244,7 @@
                                 Account Statement
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="32" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="32" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -259,19 +258,19 @@
                         <tr class="td">
                             <td class="p-3 font-bold text-black">Users</td>
                             <td class="p-3">
-                                <mat-checkbox name="33" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="33" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="34" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="34" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="35" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="35" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="36" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="36" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -281,19 +280,19 @@
                                 Roles and Permissions
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="37" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="37" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="38" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="38" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="39" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="39" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                             <td class="p-3">
-                                <mat-checkbox name="40" formControlName="permissions" (change)="addPermission($event)"
+                                <mat-checkbox name="40" (change)="addPermission($event)"
                                     [checked]="isDisabled"></mat-checkbox>
                             </td>
                         </tr>
@@ -302,7 +301,7 @@
             </div>
 
             <div class="flex items-center gap-4 mt-4 self-end">
-                <button type="submit"
+                <button type="button"
                     class="px-10 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2">
                     Cancel
                 </button>

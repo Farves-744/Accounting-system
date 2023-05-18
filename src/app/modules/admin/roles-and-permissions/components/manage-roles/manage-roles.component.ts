@@ -25,7 +25,7 @@ export class ManageRolesComponent {
         private router: Router,
         private _roleService: RoleService,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     displayedColumns: string[] = [
         'position',
@@ -49,7 +49,7 @@ export class ManageRolesComponent {
     }
 
     openDeleteDialog(id: number) {
-        const dialogRef = this.dialog.open(DeleteDialogComponent, {
+        const dialogRef = this.dialog.open(DeleteRoleDialogComponent, {
             width: '400px',
             data: { id },
         });

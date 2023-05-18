@@ -24,6 +24,7 @@ export class GetTransactions {
     endDate: number = null;
     offset: number = null;
     userId: number = null;
+    taxStatus: number = null;
 }
 
 export class GetProfitAndLoss {
