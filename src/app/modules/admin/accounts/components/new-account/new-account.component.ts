@@ -44,7 +44,7 @@ export class NewAccountComponent {
             console.log(this._commonService.decryptData(res));
             this.response = this._commonService.decryptData(res);
             if (this.response.status === 'failure') {
-                alert('This account number is already exist.');
+                this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'This account number is already exist.' });
                 event.target.value = '';
             }
             this.changeDetection.detectChanges();
@@ -95,9 +95,12 @@ export class NewAccountComponent {
                     .updateAccount(this.addAccountForm.value)
                     .subscribe((res) => {
                         console.log(this._commonService.decryptData(res));
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account updated successfully' });
                         this.addAccountForm.reset();
                         this._route.navigateByUrl('accounts/manage-account');
                         this.changeDetection.detectChanges();
+                    }, error => {
+                        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     });
             } else {
                 this._accountService
@@ -110,6 +113,8 @@ export class NewAccountComponent {
                             this._route.navigateByUrl('accounts/manage-account');
                         }, 2000);
                         this.changeDetection.detectChanges();
+                    }, error => {
+                        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     });
             }
         }
