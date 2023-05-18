@@ -113,7 +113,7 @@ export class IncomeCategoriesDialogComponent {
                                 this.addCategoryForm.value.imageId;
                             this.addCategoryForm.value.imageId = this.imageId;
                             this.updateCategory();
-                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account updated successfully' });
+                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully' });
                             console.log(this.addCategoryForm.value);
                         }, error => {
                             this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
@@ -122,7 +122,7 @@ export class IncomeCategoriesDialogComponent {
                 } else {
                     console.log(this.addCategoryForm.value);
                     this.updateCategory();
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account updated successfully', });
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully', });
                 }
             } else {
                 console.log(this.file);
@@ -139,14 +139,14 @@ export class IncomeCategoriesDialogComponent {
                             this.imageId = reData.imageId;
                             this.addCategoryForm.value.imageId = this.imageId;
                             this.addCategory();
-                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account added successfully' });
+                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income added successfully' });
                             console.log(this.addCategoryForm.value.imageId);
                         }, error => {
                             this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                         });
                 } else {
                     this.addCategory();
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account added successfully' });
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income added successfully' });
                 }
             }
         }
