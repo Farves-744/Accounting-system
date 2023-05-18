@@ -5,6 +5,7 @@ import { GetAccounts } from 'app/shared/modals/accounts';
 import { AccountService } from 'app/shared/services/account.service';
 import { CommonService } from 'app/shared/services/common.service';
 import { ExpenseService } from 'app/shared/services/expense.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-collect-dialog',
@@ -30,7 +31,8 @@ export class CollectDialogComponent implements OnInit {
         private _commonService: CommonService,
         private _accountService: AccountService,
         private _expenseService: ExpenseService,
-        private changeDetection: ChangeDetectorRef
+        private changeDetection: ChangeDetectorRef,
+        private messageService: MessageService
     ) { }
 
     ngOnInit(): void {
@@ -40,7 +42,7 @@ export class CollectDialogComponent implements OnInit {
         setTimeout(() => {
             this.getAccountName();
         });
-        this.editPayment(this.data);
+
     }
 
     async formatImage(file: any) {
@@ -73,12 +75,17 @@ export class CollectDialogComponent implements OnInit {
                         console.log(this.data.imageId);
                         console.log(this.data.deleteImageId);
                         this.updateExpense();
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense updated successfully' });
                         console.log(this.data.imageId);
                         console.log(this.data);
+                    }, error => {
+                        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     });
             } else {
                 console.log(this.data);
                 this.updateExpense();
+
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense updated successfully' });
             }
         } else {
             this.data.userId = this.userId;
@@ -97,33 +104,25 @@ export class CollectDialogComponent implements OnInit {
                         this.imageId = reData.imageId;
                         this.data.imageId = this.imageId;
                         this.addExpense();
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense added successfully' });
                         console.log(this.data.imageId);
                         console.log(this.data);
                     });
             } else {
                 this.addExpense();
+                this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense added successfully' });
             }
         }
     }
 
-    editPayment(data: any) {
-        if (data) {
-            console.log(data);
-            // this.updateFormData = data;
-            // this.isEdit = true;
-            // this.addCategoryForm.patchValue(this.updateFormData);
-            // console.log(this.addCategoryForm.value.image_url);
-            // this.imageUrl = this.env.BASE_URL + '/' + data.image_url;
-            // console.log(this.updateFormData);
-            // console.log(this.url);
-        }
-    }
 
     addExpense() {
         this._expenseService.addExpense(this.data).subscribe((res) => {
             console.log(this._commonService.decryptData(res));
             this.dialogRef.close(true);
             this.changeDetection.detectChanges();
+        }, (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
         });
     }
 
@@ -132,6 +131,8 @@ export class CollectDialogComponent implements OnInit {
             console.log(this._commonService.decryptData(res));
             this.dialogRef.close(true);
             this.changeDetection.detectChanges();
+        }, (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
         });
     }
 
@@ -184,6 +185,8 @@ export class CollectDialogComponent implements OnInit {
                 this.accounts = this._commonService.decryptData(res);
                 console.log(this.accounts);
                 this.changeDetection.detectChanges();
+            }, (error) => {
+                console.log(error);
             });
     }
 }
