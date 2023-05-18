@@ -19,6 +19,7 @@ import { ExpenseService } from 'app/shared/services/expense.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from 'environments/environment';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-income-categories-dialog',
@@ -46,6 +47,7 @@ export class ExpenseCategoriesDialogComponent {
         private _route: Router,
         private _expenseService: ExpenseService,
         private changeDetection: ChangeDetectorRef,
+        private messageService: MessageService,
         private _formBuilder: FormBuilder,
         public dialogRef: MatDialogRef<ExpenseCategoriesDialogComponent>,
         @Inject(MAT_DIALOG_DATA)
@@ -114,24 +116,35 @@ export class ExpenseCategoriesDialogComponent {
                                 this.addCategoryForm.value.imageId;
                             this.addCategoryForm.value.imageId = this.imageId;
                             this.updateCategory();
+                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense updated successfully' });
                             console.log(this.addCategoryForm.value);
                         });
                 } else {
                     console.log(this.addCategoryForm.value);
                     this.updateCategory();
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense updated successfully' });
                 }
             } else {
-                this.formatImage(this.file);
-                this._expenseService
-                    .addCategoryImage(this.formData)
-                    .subscribe((res) => {
-                        console.log(res);
-                        let reData = JSON.parse(JSON.stringify(res));
-                        this.imageId = reData.imageId;
-                        this.addCategoryForm.value.imageId = this.imageId;
-                        this.addCategory();
-                        console.log(this.addCategoryForm.value.imageId);
-                    });
+
+                if (this.file != undefined) {
+                    this.formatImage(this.file);
+                    this._expenseService
+                        .addCategoryImage(this.formData)
+                        .subscribe((res) => {
+                            console.log(res);
+                            let reData = JSON.parse(JSON.stringify(res));
+                            this.imageId = reData.imageId;
+                            this.addCategoryForm.value.imageId = this.imageId;
+                            this.addCategory();
+                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense added successfully' });
+                            console.log(this.addCategoryForm.value.imageId);
+                        }, error => {
+                            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
+                        });
+                } else {
+                    this.addCategory();
+                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense added successfully' });
+                }
             }
         }
     }
@@ -216,6 +229,8 @@ export class ExpenseCategoriesDialogComponent {
                 this.addCategoryForm.reset();
                 this.dialogRef.close(true);
                 this.changeDetection.detectChanges();
+            }, error => {
+                this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
             });
     }
 
@@ -228,6 +243,8 @@ export class ExpenseCategoriesDialogComponent {
                 this.addCategoryForm.reset();
                 this.dialogRef.close(true);
                 this.changeDetection.detectChanges();
+            }, error => {
+                this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
             });
     }
 
