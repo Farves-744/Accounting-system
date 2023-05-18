@@ -1,15 +1,10 @@
-<section
-    class="m-5 sm:m-10 p-4 sm:py-6 w-full sm:px-8 bg-white rounded-lg flex flex-col gap-4 overflow-x-hidden"
->
+<section class="m-5 sm:m-10 p-4 sm:py-6 w-full sm:px-8 bg-white rounded-lg flex flex-col gap-4 overflow-x-hidden">
     <div class="flex items-center justify-between">
         <div class="flex flex-col gap-2 justify-items-start">
             <!-- Breadcrumb -->
             <div class="sm:flex hidden gap-2 items-center">
-                <mat-icon
-                    class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-                    svgIcon="heroicons_outline:home"
-                    (click)="navigateToHome()"
-                >
+                <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+                    svgIcon="heroicons_outline:home" (click)="navigateToHome()">
                 </mat-icon>
                 <p>Income</p>
                 <span>/</span>
@@ -106,70 +101,36 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
     </div>
 
     <!-- Content -->
-    <div
-        class="flex w-full flex-col md:flex-row gap-4 justify-center items-center"
-    >
+    <div class="flex w-full flex-col md:flex-row gap-4 justify-center items-center">
         <!-- Search -->
-        <div
-            class="border border-myAccent w-full flex items-center justify-between rounded pr-2"
-        >
-            <input
-                type="search"
-                name="account-search"
-                (keyup)="searchIncome($event)"
-                id="account-search"
-                placeholder="Search "
-                class="px-4 py-2 w-full rounded caret-myAccent"
-            />
+        <div class="border border-myAccent w-full flex items-center justify-between rounded pr-2">
+            <input type="search" name="account-search" (keyup)="searchIncome($event)" id="account-search"
+                placeholder="Search " class="px-4 py-2 w-full rounded caret-myAccent" />
 
-            <mat-icon
-                class="text-myAccent w-[24px] h-[24px] cursor-pointer search-icon"
-                svgIcon="heroicons_outline:search"
-            ></mat-icon>
+            <mat-icon class="text-myAccent w-[24px] h-[24px] cursor-pointer search-icon"
+                svgIcon="heroicons_outline:search"></mat-icon>
         </div>
 
         <mat-form-field appearance="fill" class="mt-0 w-full">
-            <mat-date-range-input
-                [rangePicker]="picker"
-                placeholder="Select Date"
-            >
-                <input
-                    matStartDate
-                    placeholder="Start date"
-                    [(ngModel)]="getIncomeModal.startDate"
-                    (dateChange)="dateFilter()"
-                />
-                <input
-                    matEndDate
-                    placeholder="End date"
-                    [(ngModel)]="getIncomeModal.endDate"
-                    (dateChange)="dateFilter()"
-                />
+            <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
+                <input matStartDate placeholder="Start date" [(ngModel)]="getIncomeModal.startDate"
+                    (dateChange)="dateFilter()" />
+                <input matEndDate placeholder="End date" [(ngModel)]="getIncomeModal.endDate"
+                    (dateChange)="dateFilter()" />
             </mat-date-range-input>
 
-            <mat-icon
-                matDatepickerToggleIcon
-                class="cursor-pointer"
-                (click)="clearDate()"
-                *ngIf="
+            <mat-icon matDatepickerToggleIcon class="cursor-pointer" (click)="clearDate()" *ngIf="
                     getIncomeModal.startDate != null &&
                     getIncomeModal.endDate != null
-                "
-                >clear</mat-icon
-            >
+                ">clear</mat-icon>
 
-            <mat-datepicker-toggle
-                class="text-myAccent w-7"
-                matIconSuffix
-                [for]="picker"
-            ></mat-datepicker-toggle>
+            <mat-datepicker-toggle class="text-myAccent w-7" matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
 
         <button
-            class="px-10 border text-textColor hover:border-darkAccent border-accentHover shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
-            (click)="addIncome()"
-        >
+            class="px-10 border text-textColor hover:border-accentHover border-darkAccent  py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
+            (click)="addIncome()">
             <p class="font-semibold">Add Income</p>
             <!-- <mat-icon
                 class="text-textColor w-[24px] h-[24px] px-0"
@@ -180,16 +141,12 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
 
     <!-- Angular Table -->
     <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
-        <table
-            mat-table
-            [dataSource]="dataSource"
-            class="mat-elevation-z8 w-full"
-        >
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef>SN</th>
                 <td mat-cell *matCellDef="let element; let i = index">
                     {{
-                        paginatorRef.pageIndex * paginatorRef.pageSize + (i + 1)
+                    paginatorRef.pageIndex * paginatorRef.pageSize + (i + 1)
                     }}
                 </td>
             </ng-container>
@@ -198,11 +155,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 <th mat-header-cell *matHeaderCellDef>Category Name</th>
                 <td mat-cell *matCellDef="let element" class="">
                     <div class="flex items-center gap-2">
-                        <img
-                            class="w-[24px]"
-                            [src]="url + '/' + element.categoryImage"
-                            [alt]="element.categoryName"
-                        />
+                        <img class="w-[24px]" [src]="url + '/' + element.categoryImage" [alt]="element.categoryName" />
                         <span>{{ element.categoryName }}</span>
                     </div>
                 </td>
@@ -239,10 +192,8 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <ng-container matColumnDef="receipt">
                 <th mat-header-cell *matHeaderCellDef>Receipt</th>
                 <td mat-cell *matCellDef="let element">
-                    <button
-                        (click)="openReceiptDialog(element.receiptImage)"
-                        class="shadow-[inset_4px_4px_13px_rgba(0,0,0,0.25)] px-3 py-1 bg-darkAccent rounded transition hover:bg-accentHover text-textColor"
-                    >
+                    <button (click)="openReceiptDialog(element.receiptImage)"
+                        class="shadow-[inset_4px_4px_13px_rgba(0,0,0,0.25)] px-3 py-1 bg-darkAccent rounded transition hover:bg-accentHover text-textColor">
                         View
                     </button>
                 </td>
@@ -251,11 +202,8 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <ng-container matColumnDef="details">
                 <th mat-header-cell *matHeaderCellDef>Details</th>
                 <td mat-cell *matCellDef="let element">
-                    <mat-icon
-                        svgIcon="heroicons_outline:eye"
-                        (click)="openPaymentDialog(element.id)"
-                        class="text-myAccent ml-5 cursor-pointer mt-2"
-                    ></mat-icon>
+                    <mat-icon svgIcon="heroicons_outline:eye" (click)="openPaymentDialog(element.id)"
+                        class="text-myAccent ml-5 cursor-pointer mt-2"></mat-icon>
                 </td>
             </ng-container>
 
@@ -269,13 +217,8 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                         class="text-green-600 cursor-pointer ml-5"
                     ></mat-icon> -->
 
-                    <img
-                        src="assets/icons/edit.svg"
-                        matTooltip="Edit Income"
-                        alt="Edit"
-                        (click)="editIncome(element.id)"
-                        class="w-[24px] h-[24px] cursor-pointer ml-5"
-                    />
+                    <img src="assets/icons/edit.svg" matTooltip="Edit Income" alt="Edit"
+                        (click)="editIncome(element.id)" class="w-[24px] h-[24px] cursor-pointer ml-5" />
                 </td>
             </ng-container>
 
@@ -283,10 +226,6 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
-        <mat-paginator
-            #paginatorRef
-            [pageSizeOptions]="[5, 10, 25, 100]"
-            [showFirstLastButtons]="true"
-        ></mat-paginator>
+        <mat-paginator #paginatorRef [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator>
     </div>
 </section>
