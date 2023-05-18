@@ -68,6 +68,7 @@ export class AddIncomeComponent {
             type: 0,
             taxAmount: null,
             deleteImageId: null,
+            actualDate: [null, Validators.required]
         });
         this.getCategoryNameModal.userId = this.userId;
         this.getCategoryName();
