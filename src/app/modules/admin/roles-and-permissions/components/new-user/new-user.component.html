@@ -30,14 +30,6 @@
                         This field is required
                     </span>
                 </div>
-                <!-- <div *ngIf="
-                            f.name.invalid &&
-                            (f.name.dirty || f.name.touched)
-                        ">
-                    <span class="text-[#dc2626]" *ngIf="f.name.errors?.['required']">
-                        This field is required
-                    </span>
-                </div> -->
             </div>
 
             <div class="flex flex-col gap-2">
@@ -140,10 +132,33 @@
                     </span>
                 </div>
             </div>
+
+            <div class="flex flex-col gap-2 w-full">
+                <label for="accounts" class="font-medium">Accounts <span class="text-red-600">*</span></label>
+                <mat-form-field>
+                    <mat-select formControlName="accountId" multiple placeholder="Select Accounts">
+                        <mat-option *ngFor="let account of accounts" [value]="account.id">
+                            {{account.accountName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="
+                        f.accountId.invalid &&
+                        (f.accountId.dirty || f.accountId.touched)
+                        ">
+                    <span class="text-[#dc2626]" *ngIf="f.accountId.errors?.['required']">
+                        This field is required
+                    </span>
+                </div>
+            </div>
+
+
         </div>
         <button type="submit"
-            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit">
+            class="py-2 px-10 rounded font-semibold text-textColor  self-end transition-all hover:bg-accentHover bg-darkAccent w-fit">
             {{ updateFormData != undefined ? "Update User" : "Add User" }}
         </button>
     </form>
 </section>
+<p-toast></p-toast>
