@@ -53,12 +53,12 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end" class="flex gap-4 items-center">
         <button
-            class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2"
+            class="px-6 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2"
             mat-dialog-close>
             Cancel
         </button>
         <button
-            class="px-6 text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
+            class="px-6 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover border border-darkAccent hover:border-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
             cdkFocusInitial type="submit">
             {{ updateFormData != undefined ? "Update" : "Add" }}
         </button>
