@@ -18,7 +18,7 @@
 
     <!-- Content -->
     <form [formGroup]="addIncomeForm" (ngSubmit)="openCollectDialog()"
-        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-4 items-center justify-between">
+        class="p-4 sm:p-8 shadow-md rounded-md flex flex-col gap-8 items-center justify-between">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center">
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="amount">Amount <span class="text-red-600">*</span></label>
@@ -77,18 +77,24 @@
                 </mat-form-field>
             </div>
 
-            <div class="w-full h-[12rem] p-[2rem] border-[2px] border-opacity-75 mt-2 rounded border-myAccent text-center border-dashed relative"
-                appDnd (fileDropped)="onFileDropped($event)">
-                <input type="file" class="opacity-0 absolute z-10 w-full top-0 left-0 h-full" #fileDropRef
-                    id="fileDropRef" (change)="saveImage($event)" />
-                <div class="flex items-center justify-center flex-col gap-4 mt-4">
-                    <img src="assets\icons\upload.svg" alt="" class="w-[50px] fill-myAccent" />
+            <div class="flex flex-col gap-8 items-start">
+                <div class="w-full h-[12rem] p-[2rem] border-[2px] border-opacity-75 mt-2 rounded border-myAccent text-center border-dashed relative"
+                    appDnd (fileDropped)="onFileDropped($event)">
+                    <input type="file" class="opacity-0 absolute z-10 w-full top-0 left-0 h-full" #fileDropRef
+                        id="fileDropRef" (change)="saveImage($event)" />
+                    <div class="flex items-center justify-center flex-col gap-4 mt-4">
+                        <img src="assets\icons\upload.svg" alt="" class="w-[50px] fill-myAccent" />
 
-                    <label for="fileDropRef" class="font-semibold text-xl">Choose an image or drag it here</label>
+                        <label for="fileDropRef" class="font-semibold text-xl">Choose an image or drag it here</label>
 
-                    <div *ngIf="imageUrl" class="w-full bg-backgroundColor absolute top-0 bottom-0 p-4">
-                        <img [src]="imageUrl" alt="" class="object-contain w-full h-full" />
+                        <div *ngIf="imageUrl" class="w-full bg-backgroundColor absolute top-0 bottom-0 p-4">
+                            <img [src]="imageUrl" alt="" class="object-contain w-full h-full" />
+                        </div>
                     </div>
+                </div>
+
+                <div *ngIf="showFinal" class="text-myAccent font-semibold text-[1.3rem] mb-2">
+                    Total Amount: {{ finalAmount | number }}<span></span>
                 </div>
             </div>
 
@@ -116,14 +122,30 @@
                     </div>
                 </div>
 
-                <div *ngIf="showFinal" class="text-myAccent font-semibold text-[1.3rem] mb-2">
-                    Total Amount: {{ finalAmount | number }}<span></span>
+                <div class="flex flex-col gap-2 w-full">
+                    <label for="tax-type" class="font-medium">Date <span class="text-red-600">*</span></label>
+                    <mat-form-field>
+                        <input class="date" formControlName="actualDate" matInput [matDatepicker]="picker"
+                            placeholder="Choose date">
+                        <mat-datepicker-toggle class="text-myAccent w-7" matIconSuffix
+                            [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <div *ngIf="
+                            f.actualDate.invalid &&
+                            (f.actualDate.dirty || f.actualDate.touched)
+                        ">
+                        <span class="text-[#dc2626]" *ngIf="f.actualDate.errors?.['required']">
+                            This field is required
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <button type="submit"
-            class="py-2 px-10 rounded font-semibold text-textColor shadow-[inset_5px_4px_19px_5px_rgba(0,0,0,0.25)] self-end transition-all hover:bg-accentHover bg-darkAccent w-fit">
+            class="py-2 px-10 rounded font-semibold text-textColor  self-end transition-all hover:bg-accentHover bg-darkAccent w-fit">
             {{ updateFormData != undefined ? "Update Income" : "Add Income" }}
         </button>
     </form>
