@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Role } from 'app/shared/modals/role';
 import { CommonService } from 'app/shared/services/common.service';
 import { RoleService } from 'app/shared/services/role.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-add-role',
@@ -13,6 +14,7 @@ import { RoleService } from 'app/shared/services/role.service';
 export class AddRoleComponent implements OnInit {
     constructor(
         private _commonService: CommonService,
+        private messageService: MessageService,
         private _roleService: RoleService,
         private _route: Router,
         private _formBuilder: FormBuilder,
@@ -91,6 +93,12 @@ export class AddRoleComponent implements OnInit {
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
 
+
+
+        console.log(this.isDisabled);
+
+
+
         this.addRoleForm = this._formBuilder.group({
             roleName: ['', Validators.required],
             permissions: [[], Validators.required],
@@ -168,12 +176,16 @@ export class AddRoleComponent implements OnInit {
                     .updateRole(this.addRoleForm.value)
                     .subscribe((res) => {
                         console.log(this._commonService.decryptData(res));
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role updated successfully' });
                         this.addRoleForm.reset();
                         this._route.navigateByUrl(
                             'roles-and-permissions/manage-roles'
                         );
                         this.changeDetection.detectChanges();
-                    });
+                    },
+                        (error) => {
+                            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
+                        });
             } else {
                 this.addRoleForm.value.permissions = this.permissions;
                 console.log(this.addRoleForm.value);
@@ -181,12 +193,16 @@ export class AddRoleComponent implements OnInit {
                     .addRole(this.addRoleForm.value)
                     .subscribe((res) => {
                         console.log(this._commonService.decryptData(res));
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role added successfully' });
                         this.addRoleForm.reset();
                         this._route.navigateByUrl(
                             'roles-and-permissions/manage-roles'
                         );
                         this.changeDetection.detectChanges();
-                    });
+                    },
+                        (error) => {
+                            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
+                        });
             }
         }
     }
@@ -208,8 +224,12 @@ export class AddRoleComponent implements OnInit {
                 console.log(this.addRoleForm.value.permissions);
                 // this.rolesData.isDisabled = false
                 this.isDisabled = true;
+                console.log(this.isDisabled);
+
             } else {
                 this.isDisabled = true;
+                console.log(this.isDisabled);
+
             }
         } else {
             for (let i = 1; i <= 40; i++) {
@@ -222,6 +242,8 @@ export class AddRoleComponent implements OnInit {
             console.log(this.addRoleForm.value.permissions);
             // this.rolesData.isDisabled = false
             this.isDisabled = false;
+            console.log(this.isDisabled);
+
         }
     }
 }
