@@ -44,7 +44,6 @@ export class CollectDialogComponent implements OnInit {
         setTimeout(() => {
             this.getAccountName();
         });
-        this.editPayment(this.data);
     }
 
     async formatImage(file: any) {
@@ -80,6 +79,8 @@ export class CollectDialogComponent implements OnInit {
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully' });
                         console.log(this.data.imageId);
                         console.log(this.data);
+                    }, error => {
+                        this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     });
             } else {
                 console.log(this.data);
@@ -118,25 +119,14 @@ export class CollectDialogComponent implements OnInit {
         }
     }
 
-    editPayment(data: any) {
-        if (data) {
-            console.log(data);
-            // this.updateFormData = data;
-            // this.isEdit = true;
-            // this.addCategoryForm.patchValue(this.updateFormData);
-            // console.log(this.addCategoryForm.value.image_url);
-            // this.imageUrl = this.env.BASE_URL + '/' + data.image_url;
-            // console.log(this.updateFormData);
-            // console.log(this.url);
-        }
-    }
-
 
     addIncome() {
         this._incomeService.addIncome(this.data).subscribe((res) => {
             console.log(this._commonService.decryptData(res));
             this.dialogRef.close(true);
             this.changeDetection.detectChanges();
+        }, (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
         });
     }
 
@@ -145,6 +135,8 @@ export class CollectDialogComponent implements OnInit {
             console.log(this._commonService.decryptData(res));
             this.dialogRef.close(true);
             this.changeDetection.detectChanges();
+        }, (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
         });
     }
 
@@ -197,6 +189,8 @@ export class CollectDialogComponent implements OnInit {
                 this.accounts = this._commonService.decryptData(res);
                 console.log(this.accounts);
                 this.changeDetection.detectChanges();
+            }, (error) => {
+                console.log(error);
             });
     }
 }
