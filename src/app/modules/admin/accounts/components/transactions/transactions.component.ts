@@ -26,7 +26,7 @@ export class TransactionsComponent {
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) { }
 
     displayedColumns: string[] = [
         'position',
@@ -60,6 +60,19 @@ export class TransactionsComponent {
         this.getTransactionsModal.search =
             event.target.value === '' ? null : event.target.value;
         this.getTransactions();
+    }
+
+    filterBy = [
+        { name: 'Included', id: 1 },
+        { name: 'Excluded', id: 2 },
+    ];
+
+    filterByData(event) {
+        // if (event == 1) {
+        //     this.getGraphData(1);
+        // } else {
+        //     this.getGraphData(2);
+        // }
     }
 
     getTransactions() {
