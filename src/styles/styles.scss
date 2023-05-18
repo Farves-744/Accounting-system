@@ -182,7 +182,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 
-input.ng-invalid.ng-touched {
+input.ng-invalid.ng-touched:not(.date) {
     border: 1px solid #dc2626 !important;
 }
 
