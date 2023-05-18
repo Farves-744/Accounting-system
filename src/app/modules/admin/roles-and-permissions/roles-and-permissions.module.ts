@@ -11,6 +11,7 @@ import { ShowDialogComponent } from './components/show-dialog/show-dialog.compon
 import { AddRoleComponent } from './components/add-role/add-role.component';
 import { DeleteRoleDialogComponent } from './components/delete-role-dialog/delete-role-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         RolesAndPermissionsRoutingModule,
         MaterialExampleModule,
         FormsModule,
+        SharedModule,
         ReactiveFormsModule,
     ],
 })
-export class RolesAndPermissionsModule {}
+export class RolesAndPermissionsModule { }
