@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
@@ -11,11 +11,14 @@ import { ReportsService } from 'app/shared/services/reports.service';
 import { IncomeService } from 'app/shared/services/income.service';
 import { getIncomeCategory } from 'app/shared/modals/income-category';
 import { environment } from 'environments/environment';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-income-report',
     templateUrl: './income-report.component.html',
     styleUrls: ['./income-report.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class IncomeReportComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -25,6 +28,8 @@ export class IncomeReportComponent implements OnInit {
     categoryData: any;
     url = environment.BASE_URL;
 
+    dashboardAccess: any
+
     constructor(
         private _commonService: CommonService,
         private _incomeService: IncomeService,
@@ -32,7 +37,9 @@ export class IncomeReportComponent implements OnInit {
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = [
         'position',

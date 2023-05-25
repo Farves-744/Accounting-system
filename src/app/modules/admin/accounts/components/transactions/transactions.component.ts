@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { AppComponent } from 'app/app.component';
 import { GetTransactions } from 'app/shared/modals/accounts';
 import { AccountService } from 'app/shared/services/account.service';
 import { CommonService } from 'app/shared/services/common.service';
@@ -12,6 +13,8 @@ import { environment } from 'environments/environment';
     selector: 'app-transactions',
     templateUrl: './transactions.component.html',
     styleUrls: ['./transactions.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class TransactionsComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -20,13 +23,17 @@ export class TransactionsComponent {
     // categoryData: any;
     url = environment.BASE_URL;
 
+    dashboardAccess: any
+
     constructor(
         private _commonService: CommonService,
         private _accountService: AccountService,
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) { }
+    ) {
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = [
         'position',

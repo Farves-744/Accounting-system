@@ -10,6 +10,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { CommonService } from 'app/shared/services/common.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'auth-sign-in',
@@ -37,8 +38,9 @@ export class AuthSignInComponent implements OnInit {
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-        private _commonService: CommonService
-    ) {}
+        private _commonService: CommonService,
+        private messageService: MessageService,
+    ) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -50,8 +52,8 @@ export class AuthSignInComponent implements OnInit {
     ngOnInit(): void {
         // Create the form
         this.signInForm = this._formBuilder.group({
-            email: ['admin@gmail.com', [Validators.required, Validators.email]],
-            password: ['admin123', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', Validators.required],
         });
     }
 
@@ -66,13 +68,21 @@ export class AuthSignInComponent implements OnInit {
     signIn() {
         this._authService.signIn(this.signInForm.value).subscribe((res) => {
             this.result = this._commonService.decryptData(res);
+            console.log(this.result);
+            localStorage.clear()
             localStorage.setItem('token', this.result.token);
             localStorage.setItem('userId', this.result.userId);
             localStorage.setItem('userName', this.result.name);
             localStorage.setItem('userMail', this.result.email);
             localStorage.setItem('privileges', this.result.permissions);
             console.log(this.result);
+
             this._router.navigateByUrl('dashboard');
+        }, error => {
+            this._router.navigateByUrl('/sign-in')
+            if (error.status === 601) {
+                this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Email and password mismatch' });
+            }
         });
     }
 

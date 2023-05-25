@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from 'app/shared/services/common.service';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'environments/environment';
@@ -9,11 +9,14 @@ import { ExpenseService } from 'app/shared/services/expense.service';
 import { TaxService } from 'app/shared/services/tax.service';
 import { Router } from '@angular/router';
 import { CollectDialogComponent } from '../collect-dialog/collect-dialog.component';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-add-expense',
     templateUrl: './add-expense.component.html',
     styleUrls: ['./add-expense.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AddExpenseComponent implements OnInit {
     addExpenseForm: FormGroup;
@@ -37,6 +40,9 @@ export class AddExpenseComponent implements OnInit {
     getTaxNameModal: GetTax = new GetTax();
     updateFormData: any;
 
+    isAccessToManageExpense: any;
+    dashboardAccess: any
+
     @ViewChild('exclude') exclude: any;
     @ViewChild('include') include: any;
 
@@ -48,7 +54,10 @@ export class AddExpenseComponent implements OnInit {
         private _route: Router,
         private changeDetection: ChangeDetectorRef,
         public dialog: MatDialog
-    ) { }
+    ) {
+        this.isAccessToManageExpense = (AppComponent.checkUrl("manageExpenses"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     ngOnInit() {
         this.userId = this._commonService.getUserId();
@@ -76,6 +85,10 @@ export class AddExpenseComponent implements OnInit {
 
     get f() {
         return this.addExpenseForm.controls;
+    }
+
+    back() {
+        this._route.navigateByUrl('/expense/manage-expense')
     }
 
     calculateTax(value) {
@@ -400,7 +413,11 @@ export class AddExpenseComponent implements OnInit {
                         this.imageUrl = null;
 
                         setTimeout(() => {
-                            this._route.navigateByUrl('expense/manage-expense');
+                            if (this.isAccessToManageExpense) {
+                                this._route.navigateByUrl('expense/manage-expense');
+                            } else {
+                                this._route.navigateByUrl('expense/add-expense');
+                            }
                         }, 1000)
                     }
                 });
@@ -418,7 +435,11 @@ export class AddExpenseComponent implements OnInit {
                         this.imageUrl = null;
 
                         setTimeout(() => {
-                            this._route.navigateByUrl('expense/manage-expense');
+                            if (this.isAccessToManageExpense) {
+                                this._route.navigateByUrl('expense/manage-expense');
+                            } else {
+                                this._route.navigateByUrl('expense/add-expense');
+                            }
                         }, 1000)
                     }
                 });

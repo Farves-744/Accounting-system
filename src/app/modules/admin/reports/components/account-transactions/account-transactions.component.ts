@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
@@ -6,16 +6,21 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { GetAccountStatement } from 'app/shared/modals/reports';
 import { ReportsService } from 'app/shared/services/reports.service';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-account-transactions',
     templateUrl: './account-transactions.component.html',
     styleUrls: ['./account-transactions.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AccountTransactionsComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     dataSource: MatTableDataSource<any>;
     getAccountStatementModel: GetAccountStatement = new GetAccountStatement();
+
+    dashboardAccess: any
 
     constructor(
         private _commonService: CommonService,
@@ -23,7 +28,9 @@ export class AccountTransactionsComponent implements OnInit {
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = [
         'position',

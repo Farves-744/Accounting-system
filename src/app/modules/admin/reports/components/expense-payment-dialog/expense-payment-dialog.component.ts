@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,6 +9,8 @@ import { ReportsService } from 'app/shared/services/reports.service';
     selector: 'app-expense-payment-dialog',
     templateUrl: './expense-payment-dialog.component.html',
     styleUrls: ['./expense-payment-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ExpensePaymentDialogComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -28,7 +30,7 @@ export class ExpensePaymentDialogComponent implements OnInit {
         private _commonService: CommonService,
         public _dialogRef: MatDialogRef<ExpensePaymentDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();

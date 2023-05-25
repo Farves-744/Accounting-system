@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { CommonService } from 'app/shared/services/common.service';
 import { RoleService } from 'app/shared/services/role.service';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
@@ -9,6 +9,8 @@ import { MessageService } from 'primeng/api';
     selector: 'app-delete-role-dialog',
     templateUrl: './delete-role-dialog.component.html',
     styleUrls: ['./delete-role-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class DeleteRoleDialogComponent implements OnInit {
     constructor(
@@ -37,7 +39,12 @@ export class DeleteRoleDialogComponent implements OnInit {
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role deleted successfully' });
             },
             (err) => {
-                this.messageService.add({ severity: 'error', summary: 'You cannot delete', detail: 'This Role is being used' });
+
+                // if (err.status === 605) {
+                this.messageService.add({ severity: 'info', summary: 'You cannot delete', detail: 'This Role is being used' });
+                console.log(err.status);
+
+                // }
             }
         );
         this._dialogRef.close(true);

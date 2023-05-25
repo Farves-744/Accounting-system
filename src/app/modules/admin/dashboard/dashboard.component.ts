@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,11 +7,14 @@ import { DashboardData, GraphModal } from 'app/shared/modals/dashboard';
 import { CommonService } from 'app/shared/services/common.service';
 import { DashboardService } from 'app/shared/services/dashboard.service';
 import { formatDate } from '@angular/common';
+import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class DashboardComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,8 +35,9 @@ export class DashboardComponent {
         private _router: Router,
         private _commonService: CommonService,
         private _dashboardService: DashboardService,
-        private changeDetection: ChangeDetectorRef
-    ) {}
+        private changeDetection: ChangeDetectorRef,
+        private _authService: AuthService
+    ) { }
 
     displayedColumns: string[] = [
         'position',
@@ -57,6 +61,7 @@ export class DashboardComponent {
     ngOnInit(): void {
         this.dashboardModal.userId = this._commonService.getUserId();
         this.graphModal.userId = this._commonService.getUserId();
+
         this.getGraphData(1);
 
         this.getDashboardTransactions();
@@ -125,9 +130,18 @@ export class DashboardComponent {
                     }
                     setTimeout(() => {
                         this.getChartData();
-                    }, 500);
+                    }, 100);
                     this.changeDetection.markForCheck();
                     // this.changeDetection.detectChanges();
+                }, error => {
+                    console.log(error.status);
+
+                    if (error.status == 603) {
+                        // location.reload();
+                        // this.getGraphData(1)
+                        // localStorage.clear()
+                        // this._router.navigateByUrl('sign-in')
+                    }
                 });
 
             this._dashboardService
@@ -155,7 +169,7 @@ export class DashboardComponent {
                     // this.changeDetection.detectChanges();
                     setTimeout(() => {
                         this.getChartData();
-                    }, 500);
+                    }, 100);
                     this.changeDetection.markForCheck();
                 });
         }
@@ -196,7 +210,7 @@ export class DashboardComponent {
                     // this.changeDetection.detectChanges();
                     setTimeout(() => {
                         this.getChartData();
-                    }, 500);
+                    }, 100);
                     this.changeDetection.markForCheck();
                 });
 
@@ -225,7 +239,7 @@ export class DashboardComponent {
                     // this.changeDetection.detectChanges();
                     setTimeout(() => {
                         this.getChartData();
-                    }, 500);
+                    }, 100);
                     this.changeDetection.markForCheck();
                 });
         }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NewAccountComponent } from 'app/modules/admin/accounts/components/new-account/new-account.component';
 import { CommonService } from 'app/shared/services/common.service';
@@ -8,11 +8,14 @@ import { TaxService } from 'app/shared/services/tax.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { GetTax } from 'app/shared/modals/tax';
 import { MatPaginator } from '@angular/material/paginator';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-manage-tax',
     templateUrl: './manage-tax.component.html',
     styleUrls: ['./manage-tax.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ManageTaxComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -26,6 +29,11 @@ export class ManageTaxComponent {
         'actions',
     ];
 
+    checkAdd: any;
+    dashboardAccess: any
+    checkEdit: any;
+    checkDelete: any;
+
     constructor(
         private _commonService: CommonService,
         private _taxService: TaxService,
@@ -33,7 +41,12 @@ export class ManageTaxComponent {
         private router: Router,
         public newAccount: NewAccountComponent,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.checkAdd = (AppComponent.checkUrl("manageTaxAdd"))
+        this.checkEdit = (AppComponent.checkUrl("manageTaxEdit"))
+        this.checkDelete = (AppComponent.checkUrl("manageTaxDelete"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     ngOnInit(): void {
         this.getTaxModal.userId = this._commonService.getUserId();

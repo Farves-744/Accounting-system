@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
 import { environment } from 'environments/environment';
@@ -7,6 +7,8 @@ import { environment } from 'environments/environment';
     selector: 'app-expense-receipt-dialog',
     templateUrl: './expense-receipt-dialog.component.html',
     styleUrls: ['./expense-receipt-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ExpenseReceiptDialogComponent implements OnInit {
     url = environment.BASE_URL;
@@ -16,12 +18,11 @@ export class ExpenseReceiptDialogComponent implements OnInit {
         // private _taxService: TaxService,
         private _commonService: CommonService,
         public _dialogRef: MatDialogRef<ExpenseReceiptDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private data: any
-    ) {}
+        @Inject(MAT_DIALOG_DATA) public data: any
+    ) { }
 
     ngOnInit(): void {
         this.imageUrl = this.data;
-
         this.imageUrl = this.url + '/' + this.data.imageUrl;
     }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from 'app/shared/services/common.service';
 import { ExpenseReceiptDialogComponent } from '../expense-receipt-dialog/expense-receipt-dialog.component';
@@ -12,11 +12,14 @@ import { getExpenseCategory } from 'app/shared/modals/expense-category';
 import { ExpenseService } from 'app/shared/services/expense.service';
 import { environment } from 'environments/environment';
 import { ToasterService } from 'app/shared/services/toaster.service';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-expense-report',
     templateUrl: './expense-report.component.html',
     styleUrls: ['./expense-report.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ExpenseReportComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -25,6 +28,7 @@ export class ExpenseReportComponent implements OnInit {
     getCategoryNameModal: getExpenseCategory = new getExpenseCategory();
     categoryData: any;
     url = environment.BASE_URL;
+    dashboardAccess: any
 
     constructor(
         private _commonService: CommonService,
@@ -34,7 +38,9 @@ export class ExpenseReportComponent implements OnInit {
         private router: Router,
         private changeDetection: ChangeDetectorRef,
         private toaster: ToasterService
-    ) {}
+    ) {
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = [
         'position',

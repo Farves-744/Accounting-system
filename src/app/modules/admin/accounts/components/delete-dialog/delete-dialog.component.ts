@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AccountService } from 'app/shared/services/account.service';
 import { CommonService } from 'app/shared/services/common.service';
@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
     selector: 'app-delete-dialog',
     templateUrl: './delete-dialog.component.html',
     styleUrls: ['./delete-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeleteDialogComponent implements OnInit {
     constructor(
@@ -21,7 +22,7 @@ export class DeleteDialogComponent implements OnInit {
     userId: any;
 
     ngOnInit(): void {
-        this.userId = parseInt(localStorage.getItem('userId'));
+        this.userId = this._commonService.getUserId();
     }
 
     deleteAccount() {
@@ -36,7 +37,7 @@ export class DeleteDialogComponent implements OnInit {
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account deleted successfully' });
             },
             (err) => {
-                this.messageService.add({ severity: 'error', summary: 'You cannot delete', detail: 'This Account is being used' });
+                this.messageService.add({ severity: 'info', summary: 'You cannot delete', detail: 'This Account is being used' });
             }
         );
         this._dialogRef.close(true);

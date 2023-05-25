@@ -4,7 +4,7 @@
             <!-- Breadcrumb -->
             <div class="sm:flex hidden gap-2 items-center">
                 <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-                    svgIcon="heroicons_outline:home" (click)="navigateToHome()">
+                    svgIcon="heroicons_outline:home" (click)="dashboardAccess ? navigateToHome() : ''">
                 </mat-icon>
                 <p>Income</p>
                 <span>/</span>
@@ -128,7 +128,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
 
-        <button
+        <button *ngIf="checkAdd"
             class="px-10 border text-textColor hover:border-accentHover border-darkAccent  py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
             (click)="addIncome()">
             <p class="font-semibold">Add Income</p>
@@ -155,7 +155,8 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 <th mat-header-cell *matHeaderCellDef>Category Name</th>
                 <td mat-cell *matCellDef="let element" class="">
                     <div class="flex items-center gap-2">
-                        <img class="w-[24px]" [src]="url + '/' + element.categoryImage" [alt]="element.categoryName" />
+                        <img *ngIf="element.categoryImage" class="w-[24px]" [src]="url + '/' + element.categoryImage"
+                            [alt]="element.categoryName" />
                         <span>{{ element.categoryName }}</span>
                     </div>
                 </td>
@@ -164,14 +165,14 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <ng-container matColumnDef="description">
                 <th mat-header-cell *matHeaderCellDef>Description</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.description }}
+                    {{ element.description ? element.description : '-' }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                <th mat-header-cell *matHeaderCellDef>Date</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.createDate | date : "dd-MM-yyyy" }}
+                    {{ element.actualDate | date : "dd-MM-yyyy" }}
                 </td>
             </ng-container>
 
@@ -185,7 +186,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef>Amount</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.totalAmount }}
+                    {{ element.totalAmount ? element.totalAmount : '-' }}
                 </td>
             </ng-container>
 
@@ -207,7 +208,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="actions">
+            <ng-container matColumnDef="actions" *ngIf="checkEdit">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                 <td mat-cell *matCellDef="let element">
                     <!-- <mat-icon

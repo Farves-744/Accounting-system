@@ -4,7 +4,7 @@
             <!-- Breadcrumb -->
             <div class="sm:flex hidden gap-2 items-center">
                 <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-                    svgIcon="heroicons_outline:home" (click)="navigateToHome()">
+                    svgIcon="heroicons_outline:home" (click)="dashboardAccess ? navigateToHome() : ''">
                 </mat-icon>
                 <p>Reports</p>
                 <span>/</span>

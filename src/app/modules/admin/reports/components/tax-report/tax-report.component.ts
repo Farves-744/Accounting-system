@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { AppComponent } from 'app/app.component';
 import { GetTaxReports } from 'app/shared/modals/reports';
 import { CommonService } from 'app/shared/services/common.service';
 import { ReportsService } from 'app/shared/services/reports.service';
@@ -12,6 +13,8 @@ import { environment } from 'environments/environment';
     selector: 'app-tax-report',
     templateUrl: './tax-report.component.html',
     styleUrls: ['./tax-report.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class TaxReportComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -20,13 +23,17 @@ export class TaxReportComponent {
     categoryData: any;
     url = environment.BASE_URL;
 
+    dashboardAccess: any
+
     constructor(
         private _commonService: CommonService,
         private _reportService: ReportsService,
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = [
         'position',

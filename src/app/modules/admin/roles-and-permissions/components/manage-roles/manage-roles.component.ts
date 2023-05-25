@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
@@ -8,16 +8,24 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { RoleService } from 'app/shared/services/role.service';
 import { GetRole } from 'app/shared/modals/role';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-manage-roles',
     templateUrl: './manage-roles.component.html',
     styleUrls: ['./manage-roles.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ManageRolesComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     dataSource: MatTableDataSource<any>;
     getRoleModal: GetRole = new GetRole();
+
+    checkAdd: any;
+    dashboardAccess: any
+    checkEdit: any;
+    checkDelete: any;
 
     constructor(
         private _commonService: CommonService,
@@ -25,7 +33,12 @@ export class ManageRolesComponent {
         private router: Router,
         private _roleService: RoleService,
         private changeDetection: ChangeDetectorRef
-    ) { }
+    ) {
+        this.checkAdd = (AppComponent.checkUrl("manageRolesAdd"))
+        this.checkEdit = (AppComponent.checkUrl("manageRolesEdit"))
+        this.checkDelete = (AppComponent.checkUrl("manageRolesDelete"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = [
         'position',

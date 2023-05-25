@@ -1,15 +1,10 @@
-<section
-    class="m-5 lg:m-10 p-4 lg:py-6 w-full lg:px-8 bg-white rounded-lg flex flex-col gap-4 overflow-x-hidden"
->
+<section class="m-5 lg:m-10 p-4 lg:py-6 w-full lg:px-8 bg-white rounded-lg flex flex-col gap-4 overflow-x-hidden">
     <div class="flex items-center justify-between">
         <div class="flex flex-col gap-2 justify-items-start">
             <!-- Breadcrumb -->
             <div class="lg:flex hidden gap-2 items-center">
-                <mat-icon
-                    class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-                    svgIcon="heroicons_outline:home"
-                    (click)="navigateToHome()"
-                >
+                <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+                    svgIcon="heroicons_outline:home" (click)="dashboardAccess ? navigateToHome() : ''">
                 </mat-icon>
                 <p>Accounts</p>
                 <span>/</span>
@@ -25,118 +20,74 @@
 
     <mat-form-field appearance="fill" class="mt-4 w-full sm:w-[25rem]">
         <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
-            <input
-                matStartDate
-                placeholder="Start date"
-                [(ngModel)]="getProfitAndLossModal.startDate"
-                (dateChange)="dateFilter()"
-            />
-            <input
-                matEndDate
-                placeholder="End date"
-                [(ngModel)]="getProfitAndLossModal.endDate"
-                (dateChange)="dateFilter()"
-            />
+            <input matStartDate placeholder="Start date" [(ngModel)]="getProfitAndLossModal.startDate"
+                (dateChange)="dateFilter()" />
+            <input matEndDate placeholder="End date" [(ngModel)]="getProfitAndLossModal.endDate"
+                (dateChange)="dateFilter()" />
         </mat-date-range-input>
 
-        <mat-icon
-            matDatepickerToggleIcon
-            class="cursor-pointer"
-            (click)="clearDate()"
-            *ngIf="
+        <mat-icon matDatepickerToggleIcon class="cursor-pointer" (click)="clearDate()" *ngIf="
                 getProfitAndLossModal.startDate != null &&
                 getProfitAndLossModal.endDate != null
-            "
-            >clear</mat-icon
-        >
+            ">clear</mat-icon>
 
-        <mat-datepicker-toggle
-            class="text-myAccent w-7"
-            matIconSuffix
-            [for]="picker"
-        ></mat-datepicker-toggle>
+        <mat-datepicker-toggle class="text-myAccent w-7" matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
 
-    <div
-        class="flex flex-col lg:flex-row items-center justify-between mt-4 gap-[5rem]"
-    >
+    <div class="flex flex-col lg:flex-row items-center justify-between mt-4 gap-[5rem]">
         <div
-            class="bg-[#BEDFFF] rounded-[1rem] border border-[#0081FF] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-        >
+            class="bg-[#BEDFFF] rounded-[1rem] border border-[#0081FF] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]">
             <div
-                class="flex flex-col items-center justify-center rounded-full bg-[#8BC6FF] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12"
-            >
+                class="flex flex-col items-center justify-center rounded-full bg-[#8BC6FF] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12">
                 <p class="font-bold text-lg">Total Income</p>
                 <p class="font-bold text-lg">
                     {{ profitAndLossData?.totalIncome | currency : "INR" }}
                 </p>
             </div>
 
-            <img
-                src="../../../../../../assets/images/logo/income.png"
-                alt="Total Income"
-                class="w-[70px] sm:w-[100px]"
-            />
+            <img src="../../../../../../assets/images/logo/income.png" alt="Total Income"
+                class="w-[70px] sm:w-[100px]" />
         </div>
         <div
-            class="bg-[#FFE5CB] rounded-[1rem] border border-[#FF8100] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-        >
+            class="bg-[#FFE5CB] rounded-[1rem] border border-[#FF8100] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]">
             <div
-                class="flex flex-col items-center justify-center rounded-full bg-[#FFCE9A] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12"
-            >
+                class="flex flex-col items-center justify-center rounded-full bg-[#FFCE9A] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12">
                 <p class="font-bold text-lg">Total Expense</p>
                 <p class="font-bold text-lg">
                     {{ profitAndLossData?.totalExpense | currency : "INR" }}
                 </p>
             </div>
 
-            <img
-                src="../../../../../../assets/images/logo/expense.png"
-                alt="Total Income"
-                class="w-[70px] sm:w-[100px]"
-            />
+            <img src="../../../../../../assets/images/logo/expense.png" alt="Total Income"
+                class="w-[70px] sm:w-[100px]" />
         </div>
     </div>
 
-    <div
-        *ngIf="profitAndLossData?.profit != 0"
-        class="bg-[#C2FFC5] mx-auto mt-[3rem] rounded-[1rem] border border-[#039E00] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full lg:w-1/2 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-    >
+    <div *ngIf="profitAndLossData?.profit != 0"
+        class="bg-[#C2FFC5] mx-auto mt-[3rem] rounded-[1rem] border border-[#039E00] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full lg:w-1/2 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]">
         <div
-            class="flex flex-col items-center justify-center rounded-full bg-[#85E489] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12"
-        >
+            class="flex flex-col items-center justify-center rounded-full bg-[#85E489] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12">
             <p class="font-bold text-lg">Profit</p>
             <p class="font-bold text-lg">
                 {{ profitAndLossData?.profit | currency : "INR" }}
             </p>
         </div>
 
-        <img
-            src="../../../../../../assets/images/logo/profit.png"
-            alt="Total Income"
-            class="w-[70px] sm:w-[100px]"
-        />
+        <img src="../../../../../../assets/images/logo/profit.png" alt="Total Income" class="w-[70px] sm:w-[100px]" />
     </div>
 
     <!-- Loss card -->
-    <div
-        *ngIf="profitAndLossData?.loss != 0"
-        class="bg-[#FFB9B9] mx-auto mt-[3rem] rounded-[1rem] border border-[#F90000] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full lg:w-1/2 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]"
-    >
+    <div *ngIf="profitAndLossData?.loss != 0"
+        class="bg-[#FFB9B9] mx-auto mt-[3rem] rounded-[1rem] border border-[#F90000] flex flex-col-reverse gap-4 sm:flex-row items-center justify-between px-8 py-10 w-full lg:w-1/2 shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]">
         <div
-            class="flex flex-col items-center justify-center rounded-full bg-[#F98E8E] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12"
-        >
+            class="flex flex-col items-center justify-center rounded-full bg-[#F98E8E] shadow-[inset_-12px_-8px_40px_rgba(0,_0,_0,_0.24)] py-4 px-8 sm:py-6 sm:px-12">
             <p class="font-bold text-lg">Profit</p>
             <p class="font-bold text-lg">
                 {{ profitAndLossData?.loss | currency : "INR" }}
             </p>
         </div>
 
-        <img
-            src="../../../../../../assets/images/logo/profit.png"
-            alt="Total Income"
-            class="w-[70px] sm:w-[100px]"
-        />
+        <img src="../../../../../../assets/images/logo/profit.png" alt="Total Income" class="w-[70px] sm:w-[100px]" />
     </div>
 </section>

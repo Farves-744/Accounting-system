@@ -6,6 +6,7 @@ import {
     Inject,
     Input,
     EventEmitter,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonService } from 'app/shared/services/common.service';
 import { getExpenseCategory } from 'app/shared/modals/expense-category';
@@ -25,6 +26,8 @@ import { MessageService } from 'primeng/api';
     selector: 'app-income-categories-dialog',
     templateUrl: './expense-categories-dialog.component.html',
     styleUrls: ['./expense-categories-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ExpenseCategoriesDialogComponent {
     env = environment;

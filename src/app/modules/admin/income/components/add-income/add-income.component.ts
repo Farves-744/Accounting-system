@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from 'app/shared/services/common.service';
 import { CollectDialogComponent } from '../collect-dialog/collect-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,11 +11,13 @@ import { GetTax } from 'app/shared/modals/tax';
 import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
 import { environment } from 'environments/environment';
 import { MessageService } from 'primeng/api';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-add-income',
     templateUrl: './add-income.component.html',
     styleUrls: ['./add-income.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddIncomeComponent {
     addIncomeForm: FormGroup;
@@ -38,6 +40,8 @@ export class AddIncomeComponent {
     getCategoryNameModal: getIncomeCategory = new getIncomeCategory();
     getTaxNameModal: GetTax = new GetTax();
     updateFormData: any;
+    isAccessToManageIncome: any;
+    dashboardAccess: any
 
     @ViewChild('exclude') exclude: any;
     @ViewChild('include') include: any;
@@ -51,7 +55,10 @@ export class AddIncomeComponent {
         private changeDetection: ChangeDetectorRef,
         public dialog: MatDialog,
         private messageService: MessageService
-    ) { }
+    ) {
+        this.isAccessToManageIncome = (AppComponent.checkUrl("manageIncomes"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     ngOnInit() {
         this.userId = this._commonService.getUserId();
@@ -79,6 +86,10 @@ export class AddIncomeComponent {
 
     get f() {
         return this.addIncomeForm.controls;
+    }
+
+    back() {
+        this._route.navigateByUrl('/income/manage-income')
     }
 
     calculateTax(value) {
@@ -410,7 +421,11 @@ export class AddIncomeComponent {
                         this.imageUrl = null;
                         // this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully' });
                         setTimeout(() => {
-                            this._route.navigateByUrl('income/manage-income');
+                            if (this.isAccessToManageIncome) {
+                                this._route.navigateByUrl('income/manage-income');
+                            } else {
+                                this._route.navigateByUrl('income/add-income');
+                            }
                         }, 1000);
                     }
                 });
@@ -426,7 +441,11 @@ export class AddIncomeComponent {
                         this.addIncomeForm.reset();
                         this.imageUrl = null;
                         setTimeout(() => {
-                            this._route.navigateByUrl('income/manage-income');
+                            if (this.isAccessToManageIncome) {
+                                this._route.navigateByUrl('income/manage-income');
+                            } else {
+                                this._route.navigateByUrl('income/add-income');
+                            }
                         }, 1000);
                     }
                 });

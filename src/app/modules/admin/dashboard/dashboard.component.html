@@ -1,111 +1,66 @@
-<section
-    class="m-5 sm:m-10 p-4 sm:p-6 bg-[#ECECEC] rounded-lg w-full flex flex-col gap-4 overflow-y-scroll"
->
+<section class="m-5 sm:m-10 p-4 sm:p-6 bg-[#ECECEC] rounded-lg w-full flex flex-col gap-4 overflow-y-scroll">
     <!-- Date Range Filter -->
     <div class="bg-transparent self-end">
         <mat-form-field appearance="fill" class="my-4 w-full sm:w-[25rem]">
-            <mat-date-range-input
-                [rangePicker]="picker"
-                placeholder="Select Date"
-            >
-                <input
-                    matStartDate
-                    placeholder="Start date"
-                    [(ngModel)]="startDate"
-                    (dateChange)="dateFilter()"
-                />
-                <input
-                    matEndDate
-                    placeholder="End date"
-                    [(ngModel)]="endDate"
-                    (dateChange)="dateFilter()"
-                />
+            <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
+                <input matStartDate placeholder="Start date" [(ngModel)]="startDate" (dateChange)="dateFilter()" />
+                <input matEndDate placeholder="End date" [(ngModel)]="endDate" (dateChange)="dateFilter()" />
             </mat-date-range-input>
 
-            <mat-icon
-                matDatepickerToggleIcon
-                class="cursor-pointer"
-                (click)="clearDate()"
-                *ngIf="
+            <mat-icon matDatepickerToggleIcon class="cursor-pointer" (click)="clearDate()" *ngIf="
                     graphModal.startDate != null && graphModal.endDate != null
-                "
-                >clear</mat-icon
-            >
+                ">clear</mat-icon>
 
-            <mat-datepicker-toggle
-                class="text-myAccent w-7"
-                matIconSuffix
-                [for]="picker"
-            ></mat-datepicker-toggle>
+            <mat-datepicker-toggle class="text-myAccent w-7" matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
     </div>
     <!-- Cards -->
     <div class="flex flex-col card-alignment items-center justify-center gap-4">
         <div
-            class="flex items-center justify-center w-full bg-[#8EC6FF] gap-6 md:gap-3 gap6 rounded-lg px-[2rem] py-[2rem] h-full"
-        >
-            <img
-                class="w-[80px] md:w-[60px] w80"
-                src="../../../../assets/images/total-income.png"
-                alt="Total Income"
-            />
+            class="flex items-center justify-center w-full bg-[#8EC6FF] gap-6 md:gap-3 gap6 rounded-lg px-[2rem] py-[2rem] h-full">
+            <img class="w-[80px] md:w-[60px] w80" src="../../../../assets/images/total-income.png" alt="Total Income" />
 
-            <div
-                class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]"
-            >
+            <div class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]">
                 <p class="font-bold">Total Incomes</p>
                 <p class="font-bold">
                     {{
-                        dashboardCardsData?.totalIncome == null
-                            ? 0
-                            : (dashboardCardsData?.totalIncome
-                              | currency : "INR")
+                    dashboardCardsData?.totalIncome == null
+                    ? 0
+                    : (dashboardCardsData?.totalIncome
+                    | currency : "INR")
                     }}
                 </p>
             </div>
         </div>
         <div
-            class="flex items-center justify-center w-full bg-[#FFC296] gap-6 md:gap-3 gap6 rounded-lg px-[2rem] py-[2rem] h-full"
-        >
-            <img
-                class="w-[80px] md:w-[60px] w80"
-                src="../../../../assets/images/total-expense.png"
-                alt="Total Income"
-            />
+            class="flex items-center justify-center w-full bg-[#FFC296] gap-6 md:gap-3 gap6 rounded-lg px-[2rem] py-[2rem] h-full">
+            <img class="w-[80px] md:w-[60px] w80" src="../../../../assets/images/total-expense.png"
+                alt="Total Income" />
 
-            <div
-                class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]"
-            >
+            <div class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]">
                 <p class="font-bold">Total Expenses</p>
                 <p class="font-bold">
                     {{
-                        dashboardCardsData?.totalExpense == null
-                            ? 0
-                            : (dashboardCardsData?.totalExpense
-                              | currency : "INR")
+                    dashboardCardsData?.totalExpense == null
+                    ? 0
+                    : (dashboardCardsData?.totalExpense
+                    | currency : "INR")
                     }}
                 </p>
             </div>
         </div>
         <div
-            class="flex items-center justify-center w-full bg-[#FFA8C2] gap-6 md:gap-3 gap6 rounded-lg px-[2rem] py-[2rem] h-full"
-        >
-            <img
-                class="w-[80px] md:w-[60px] w80"
-                src="../../../../assets/images/transactions.png"
-                alt="Total Income"
-            />
+            class="flex items-center justify-center w-full bg-[#FFA8C2] gap-6 md:gap-3 gap6 rounded-lg px-[2rem] py-[2rem] h-full">
+            <img class="w-[80px] md:w-[60px] w80" src="../../../../assets/images/transactions.png" alt="Total Income" />
 
-            <div
-                class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]"
-            >
+            <div class="text-[1rem] sm:text-[1.2rem] md:text-[1rem] lg:text-[1.3rem]">
                 <p class="font-bold">Transactions</p>
                 <p class="font-bold">
                     {{
-                        dashboardCardsData?.TotalTransaction == 0
-                            ? 0
-                            : dashboardCardsData?.TotalTransaction
+                    dashboardCardsData?.TotalTransaction == 0
+                    ? 0
+                    : dashboardCardsData?.TotalTransaction
                     }}
                 </p>
             </div>
@@ -114,62 +69,34 @@
 
     <div class="flex flex-col bg-white rounded-lg shadow gap-4 p-4">
         <mat-form-field class="w-fit mt-0 self-end">
-            <mat-select
-                matInfix
-                disableOptionCentering
-                placeholder="Filter By"
-                [(ngModel)]="dashboardModal.duration"
-                (valueChange)="filterByData($event)"
-            >
-                <mat-option *ngFor="let item of filterBy" [value]="item.id"
-                    >{{ item.name }}
+            <mat-select matInfix disableOptionCentering placeholder="Filter By" [(ngModel)]="dashboardModal.duration"
+                (valueChange)="filterByData($event)">
+                <mat-option *ngFor="let item of filterBy" [value]="item.id">{{ item.name }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
 
         <!-- Graphs -->
         <div class="grid grid-cols-3 w-full gap-4">
-            <div
-                class="w-full flex flex-col col-span-3 bg-backgroundColor lg:col-span-2 p-4 shadow rounded-lg"
-            >
+            <div class="w-full flex flex-col col-span-3 bg-backgroundColor lg:col-span-2 p-4 shadow rounded-lg">
                 <h5 class="font-bold">Cashflow</h5>
 
-                <apx-chart
-                    class="w-full"
-                    [chart]="cashflowChart.chart"
-                    [colors]="cashflowChart.colors"
-                    [dataLabels]="cashflowChart.dataLabels"
-                    [grid]="cashflowChart.grid"
-                    [labels]="cashflowChart.labels"
-                    [legend]="cashflowChart.legend"
-                    [plotOptions]="cashflowChart.plotOptions"
-                    [series]="cashflowChart.series"
-                    [states]="cashflowChart.states"
-                    [stroke]="cashflowChart.stroke"
-                    [tooltip]="cashflowChart.tooltip"
-                    [xaxis]="cashflowChart.xaxis"
-                    [yaxis]="cashflowChart.yaxis"
-                ></apx-chart>
+                <apx-chart class="w-full" [chart]="cashflowChart.chart" [colors]="cashflowChart.colors"
+                    [dataLabels]="cashflowChart.dataLabels" [grid]="cashflowChart.grid" [labels]="cashflowChart.labels"
+                    [legend]="cashflowChart.legend" [plotOptions]="cashflowChart.plotOptions"
+                    [series]="cashflowChart.series" [states]="cashflowChart.states" [stroke]="cashflowChart.stroke"
+                    [tooltip]="cashflowChart.tooltip" [xaxis]="cashflowChart.xaxis"
+                    [yaxis]="cashflowChart.yaxis"></apx-chart>
             </div>
-            <div
-                class="w-full bg-backgroundColor flex flex-col col-span-3 lg:col-span-1 p-4 shadow rounded-lg"
-            >
+            <div class="w-full bg-backgroundColor flex flex-col col-span-3 lg:col-span-1 p-4 shadow rounded-lg">
                 <h5 class="font-bold">Profit and Loss</h5>
 
-                <apx-chart
-                    class="w-full"
-                    [chart]="profitAndLossChart.chart"
-                    [colors]="profitAndLossChart.colors"
-                    [dataLabels]="profitAndLossChart.dataLabels"
-                    [markers]="profitAndLossChart.markers"
-                    [plotOptions]="profitAndLossChart.plotOptions"
-                    [series]="profitAndLossChart.series"
-                    [stroke]="profitAndLossChart.stroke"
-                    [tooltip]="profitAndLossChart.tooltip"
-                    [xaxis]="profitAndLossChart.xaxis"
-                    [yaxis]="profitAndLossChart.yaxis"
-                    [title]="profitAndLossChart.title"
-                ></apx-chart>
+                <apx-chart class="w-full" [chart]="profitAndLossChart.chart" [colors]="profitAndLossChart.colors"
+                    [dataLabels]="profitAndLossChart.dataLabels" [markers]="profitAndLossChart.markers"
+                    [plotOptions]="profitAndLossChart.plotOptions" [series]="profitAndLossChart.series"
+                    [stroke]="profitAndLossChart.stroke" [tooltip]="profitAndLossChart.tooltip"
+                    [xaxis]="profitAndLossChart.xaxis" [yaxis]="profitAndLossChart.yaxis"
+                    [title]="profitAndLossChart.title"></apx-chart>
             </div>
         </div>
     </div>
@@ -179,22 +106,13 @@
         <div class="flex items-center justify-between w-full">
             <h5 class="font-bold text-xl">Transaction History</h5>
 
-            <button
-                class="hover:text-myAccent transition-all"
-                (click)="goToTransactions()"
-            >
+            <button class="hover:text-myAccent transition-all" (click)="goToTransactions()">
                 See All
             </button>
         </div>
 
-        <div
-            class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg"
-        >
-            <table
-                mat-table
-                [dataSource]="dataSource"
-                class="mat-elevation-z8 w-full"
-            >
+        <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
                 <!--- Note that these columns can be defined in any order.
                       The actual rendered columns are set as a property on the row definition" -->
 
@@ -202,8 +120,8 @@
                     <th mat-header-cell *matHeaderCellDef>SN</th>
                     <td mat-cell *matCellDef="let element; let i = index">
                         {{
-                            paginatorRef.pageIndex * paginatorRef.pageSize +
-                                (i + 1)
+                        paginatorRef.pageIndex * paginatorRef.pageSize +
+                        (i + 1)
                         }}
                     </td>
                 </ng-container>
@@ -219,17 +137,17 @@
                     <th mat-header-cell *matHeaderCellDef>Payment Mode</th>
                     <td mat-cell *matCellDef="let element">
                         {{
-                            element.paymentMode == 0
-                                ? "Gpay"
-                                : element.paymentMode == 1
-                                ? "PhonePe"
-                                : element.paymentMode == 2
-                                ? "Credit Card / Debit Card"
-                                : element.paymentMode == 3
-                                ? "Cheque"
-                                : element.paymentMode == 4
-                                ? "Cash"
-                                : "-"
+                        element.paymentMode == 0
+                        ? "Gpay"
+                        : element.paymentMode == 1
+                        ? "PhonePe"
+                        : element.paymentMode == 2
+                        ? "Credit Card / Debit Card"
+                        : element.paymentMode == 3
+                        ? "Cheque"
+                        : element.paymentMode == 4
+                        ? "Cash"
+                        : "-"
                         }}
                     </td>
                 </ng-container>
@@ -237,7 +155,7 @@
                 <ng-container matColumnDef="date">
                     <th mat-header-cell *matHeaderCellDef>Date</th>
                     <td mat-cell *matCellDef="let element">
-                        {{ element.createdAt | date : "dd-MM-yyyy" }}
+                        {{ element.actualDate | date : "dd-MM-yyyy" }}
                     </td>
                 </ng-container>
 
@@ -259,11 +177,11 @@
                     <th mat-header-cell *matHeaderCellDef>Inclu / Exclu</th>
                     <td mat-cell *matCellDef="let element">
                         {{
-                            element.taxStatus == 1
-                                ? "Included"
-                                : element.taxStatus == 2
-                                ? "Excluded"
-                                : "-"
+                        element.taxStatus == 1
+                        ? "Included"
+                        : element.taxStatus == 2
+                        ? "Excluded"
+                        : "-"
                         }}
                     </td>
                 </ng-container>
@@ -297,16 +215,10 @@
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr
-                    mat-row
-                    *matRowDef="let row; columns: displayedColumns"
-                ></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
-            <mat-paginator
-                #paginatorRef
-                [pageSizeOptions]="[5, 10, 25, 100]"
-                [showFirstLastButtons]="true"
-            ></mat-paginator>
+            <mat-paginator #paginatorRef [pageSizeOptions]="[5, 10, 25, 100]"
+                [showFirstLastButtons]="true"></mat-paginator>
         </div>
     </div>
 </section>

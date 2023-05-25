@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
 import { environment } from 'environments/environment';
@@ -7,6 +7,8 @@ import { environment } from 'environments/environment';
     selector: 'app-receipt-dialog',
     templateUrl: './receipt-dialog.component.html',
     styleUrls: ['./receipt-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ReceiptDialogComponent implements OnInit {
     imageUrl: any;

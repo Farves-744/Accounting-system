@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GetAccounts } from 'app/shared/modals/accounts';
@@ -11,16 +11,17 @@ import { MessageService } from 'primeng/api';
     selector: 'app-collect-dialog',
     templateUrl: './collect-dialog.component.html',
     styleUrls: ['./collect-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CollectDialogComponent implements OnInit {
-    getAccountsModel: GetAccounts = new GetAccounts();
+    getAccountsModel: any = { userId: null, }
     isEdit: boolean = false;
     paymentsModal = [{ paymentMode: null, amount: null, accountId: null }];
     userId: any;
     fileToUpload: any;
     formData: any;
-    imageId;
-    any;
+    imageId: any;
+    any: any;
     accounts: any;
 
     constructor(
@@ -38,11 +39,11 @@ export class CollectDialogComponent implements OnInit {
     ngOnInit(): void {
         console.log(this.data);
         this.userId = this._commonService.getUserId();
+        this.getAccountsModel.userId = this._commonService.getUserId();
         console.log(this.userId);
         setTimeout(() => {
             this.getAccountName();
         });
-
     }
 
     async formatImage(file: any) {
@@ -50,6 +51,42 @@ export class CollectDialogComponent implements OnInit {
         this.fileToUpload = file;
         this.formData = new FormData();
         this.formData.append('image', this.fileToUpload);
+    }
+
+    //! Validate if the total amount exceeds
+    validateAmount() {
+        let totalAmount = 0
+        totalAmount = this.paymentsModal.map(item => item.amount).reduce((prev, curr) => prev + curr, 0);
+        if (totalAmount >= this.data.totalAmount) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    validate() {
+        this.validateAmount()
+        this.validateBalance()
+    }
+
+    validateBalance() {
+        const req = {
+            userId: this.userId,
+            id: null,
+        }
+        this.paymentsModal.forEach(item => {
+            let accountDetails
+            req.id = item.accountId
+            this._accountService.getAccountById(req).subscribe(res => {
+                console.log(this._commonService.decryptData(res));
+                accountDetails = this._commonService.decryptData(res)
+                this.changeDetection.detectChanges();
+            })
+
+            if (item.amount > accountDetails.runningBalance) {
+                this.messageService.add({ severity: 'info', summary: 'Success', detail: 'You have exceeded this account balance' });
+            }
+        })
     }
 
     addOrEditPayment() {
@@ -176,10 +213,9 @@ export class CollectDialogComponent implements OnInit {
     getAccountName() {
         console.log(this.getAccountsModel);
 
-        this.getAccountsModel.userId = this.userId;
 
         this._accountService
-            .getAccount(this.getAccountsModel)
+            .getAccountsByUserId(this.getAccountsModel)
             .subscribe((res) => {
                 console.log(this._commonService.decryptData(res));
                 this.accounts = this._commonService.decryptData(res);
@@ -190,3 +226,4 @@ export class CollectDialogComponent implements OnInit {
             });
     }
 }
+

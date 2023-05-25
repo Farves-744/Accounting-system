@@ -12,7 +12,7 @@ export class UserService {
         private http: HttpClient,
         private router: Router,
         private _commonService: CommonService
-    ) {}
+    ) { }
 
     addUser(value: any) {
         return this.http.post(
@@ -45,4 +45,5 @@ export class UserService {
             this._commonService.httpOptions
         );
     }
+
 }

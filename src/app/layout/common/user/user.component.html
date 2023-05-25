@@ -1,16 +1,9 @@
 <!-- Button -->
 <button mat-icon-button [matMenuTriggerFor]="userActions">
     <span class="relative">
-        <img
-            class="w-7 h-7 rounded-full"
-            *ngIf="showAvatar && user.avatar"
-            [src]="user.avatar"
-        />
-        <mat-icon
-            *ngIf="!showAvatar || !user.avatar"
-            class="text-textColor"
-            [svgIcon]="'heroicons_outline:user-circle'"
-        ></mat-icon>
+        <img class="w-7 h-7 rounded-full" *ngIf="showAvatar && user.avatar" [src]="user.avatar" />
+        <mat-icon *ngIf="!showAvatar || !user.avatar" class="text-textColor"
+            [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
         <!-- <span
             class="absolute right-0 bottom-0 w-2 h-2 rounded-full"
             [ngClass]="{
@@ -25,12 +18,12 @@
 </button>
 
 <mat-menu [xPosition]="'before'" #userActions="matMenu">
-    <button mat-menu-item>
+    <!-- <button mat-menu-item>
         <span class="flex flex-col leading-none">
             <span>Signed in as</span>
             <span class="mt-1.5 text-md font-medium">{{ user.email }}</span>
         </span>
-    </button>
+    </button> -->
     <!-- <mat-divider class="my-2"></mat-divider> -->
     <!-- <button mat-menu-item>
         <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
@@ -46,7 +39,6 @@
         ></mat-icon>
         <span>Status</span>
     </button> -->
-    <mat-divider class="my-2"></mat-divider>
     <button mat-menu-item (click)="signOut()">
         <mat-icon [svgIcon]="'heroicons_outline:logout'"></mat-icon>
         <span>Sign out</span>

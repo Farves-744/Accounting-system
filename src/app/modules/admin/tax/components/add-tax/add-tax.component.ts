@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AppComponent } from 'app/app.component';
 import { CommonService } from 'app/shared/services/common.service';
 import { TaxService } from 'app/shared/services/tax.service';
 import { MessageService } from 'primeng/api';
@@ -9,6 +10,8 @@ import { MessageService } from 'primeng/api';
     selector: 'app-add-tax',
     templateUrl: './add-tax.component.html',
     styleUrls: ['./add-tax.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AddTaxComponent implements OnInit {
     addTaxForm: FormGroup;
@@ -17,6 +20,9 @@ export class AddTaxComponent implements OnInit {
     isEdit: boolean = false; // this is for toggle button text add or edit
     // response: any;
 
+    isAccessToManageTax: any;
+    dashboardAccess: any
+
     constructor(
         private _commonService: CommonService,
         private _taxService: TaxService,
@@ -24,7 +30,10 @@ export class AddTaxComponent implements OnInit {
         private messageService: MessageService,
         private _route: Router,
         private changeDetection: ChangeDetectorRef
-    ) { }
+    ) {
+        this.isAccessToManageTax = (AppComponent.checkUrl("manageTax"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
@@ -37,6 +46,10 @@ export class AddTaxComponent implements OnInit {
 
     get f() {
         return this.addTaxForm.controls;
+    }
+
+    back() {
+        this._route.navigateByUrl('/tax/manage-tax')
     }
 
     ngAfterContentInit() {
@@ -68,7 +81,14 @@ export class AddTaxComponent implements OnInit {
                         console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tax updated successfully' });
                         this.addTaxForm.reset();
-                        this._route.navigateByUrl('tax/manage-tax');
+
+                        setTimeout(() => {
+                            if (this.isAccessToManageTax) {
+                                this._route.navigateByUrl('tax/manage-tax');
+                            } else {
+                                this._route.navigateByUrl('tax/add-tax');
+                            }
+                        }, 2000);
                         this.changeDetection.detectChanges();
                     }, error => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
@@ -80,7 +100,13 @@ export class AddTaxComponent implements OnInit {
                         console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tax added successfully' });
                         this.addTaxForm.reset();
-                        this._route.navigateByUrl('tax/manage-tax');
+                        setTimeout(() => {
+                            if (this.isAccessToManageTax) {
+                                this._route.navigateByUrl('tax/manage-tax');
+                            } else {
+                                this._route.navigateByUrl('tax/add-tax');
+                            }
+                        }, 2000);
                         this.changeDetection.detectChanges();
                     }, error => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });

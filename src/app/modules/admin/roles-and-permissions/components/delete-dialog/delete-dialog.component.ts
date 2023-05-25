@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
 import { RoleService } from 'app/shared/services/role.service';
@@ -9,6 +9,8 @@ import { MessageService } from 'primeng/api';
     selector: 'app-delete-dialog',
     templateUrl: './delete-dialog.component.html',
     styleUrls: ['./delete-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class DeleteDialogComponent implements OnInit {
     constructor(
@@ -37,7 +39,11 @@ export class DeleteDialogComponent implements OnInit {
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User deleted successfully' });
             },
             (err) => {
-                this.messageService.add({ severity: 'error', summary: 'You cannot delete', detail: 'This User is being used' });
+                console.log(err.status);
+
+                if (err.status === 605) {
+                    this.messageService.add({ severity: 'info', summary: 'You cannot delete', detail: 'This User is being used' });
+                }
             }
         );
         this._dialogRef.close(true);

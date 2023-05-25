@@ -1,318 +1,252 @@
 <section class="m-5 sm:m-10 p-4 sm:py-6 w-full sm:px-8 bg-white rounded-lg flex flex-col gap-4 overflow-x-hidden">
     <div class="flex items-center justify-between">
         <div class="flex flex-col gap-2 justify-items-start">
-            <!-- Breadcrumb -->
             <div class="sm:flex hidden gap-2 items-center">
                 <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-                    svgIcon="heroicons_outline:home" (click)="navigateToHome()">
+                    svgIcon="heroicons_outline:home" (click)="dashboardAccess ? navigateToHome() : ''">
                 </mat-icon>
                 <p>Roles and Permissions</p>
                 <span>/</span>
                 <p class="font-semibold text-myAccent">Add Role</p>
             </div>
 
-            <!-- Title -->
             <h3 class="font-bold text-[1.3rem]">Add Role</h3>
         </div>
     </div>
 
-    <form class="flex flex-col gap-4" #f="ngForm" (ngSubmit)="f.form.valid && addOrEditRole()">
+    <form class="flex flex-col gap-4">
         <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div class="flex flex-col items-start gap-2">
                 <label class="font-medium" for="role-name">Role Name</label>
 
-                <input id="role-name" name="roleName" #role="ngModel" required [(ngModel)]="roleModal.roleName"
-                    type="text" required placeholder="Enter Role Name"
-                    class="border border-myAccent p-2 rounded w-[15rem]" />
+                <input id="role-name" name="roleName" required [(ngModel)]="roleModal.roleName" type="text" required
+                    placeholder="Enter Role Name" class="border border-myAccent p-2 rounded w-[15rem]" />
 
-                <div *ngIf="
+                <!-- <div *ngIf="
                     (f.submitted && role.invalid) || role.touched
                 ">
                     <div class="text-[#dc2626]" *ngIf="role.errors?.['required']">
                         This field is required
                     </div>
-                </div>
+                </div> -->
             </div>
 
-            <div class="flex items-center gap-4">
-                <mat-checkbox (change)="selectAll($event)">Select All</mat-checkbox>
-            </div>
-        </div>
-
-        <!-- Table -->
-        <div class="flex flex-col gap-6">
-            <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
-                <table class="w-full table-auto">
-                    <thead class="uppercase text-center text-black font-bold bg-[#d9edff]">
-                        <tr class="thead">
-                            <th class="text-left p-3">
-                                <p>Privileges</p>
-                            </th>
-                            <th class="text-left p-3">
-                                <p>View</p>
-                            </th>
-                            <th class="text-left p-3">
-                                <p>Create</p>
-                            </th>
-                            <th class="text-left p-3">
-                                <p>Edit</p>
-                            </th>
-                            <th class="text-left p-3">
-                                <p>Delete</p>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="border-t">
-                        <tr>
-                            <td class="p-3 font-bold text-black">Dashboard</td>
-                            <td class="p-3">
-                                <mat-checkbox name="1" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">Income</td>
-                            <td class="p-3">
-                                <mat-checkbox name="2" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="3" (change)="addPermission($event)" [checked]="isDisabled">
-                                </mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="4" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="5" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-
-                        <tr class="td">
-                            <td class="p-3 text-black">Income Categories</td>
-                            <td class="p-3">
-                                <mat-checkbox name="6" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="7" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="8" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="9" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">Expense</td>
-                            <td class="p-3">
-                                <mat-checkbox name="10" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="11" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="12" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="13" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-
-                        <tr class="td">
-                            <td class="p-3 text-black">Expense Categories</td>
-                            <td class="p-3">
-                                <mat-checkbox name="14" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="15" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="16" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="17" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">Accounts</td>
-                            <td class="p-3">
-                                <mat-checkbox name="18" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="19" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="20" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="21" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-
-                        <tr class="td">
-                            <td class="p-3 text-black">Transactions</td>
-                            <td class="p-3">
-                                <mat-checkbox name="22" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 text-black">Profit and Loss</td>
-                            <td class="p-3">
-                                <mat-checkbox name="23" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">Tax</td>
-                            <td class="p-3">
-                                <mat-checkbox name="24" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="25" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="26" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="27" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-
-                        <tr class="td">
-                            <td class="p-3 text-black">Tax Statement</td>
-                            <td class="p-3">
-                                <mat-checkbox name="28" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">Reports</td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">
-                                Income Reports
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="29" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">
-                                Expense Reports
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="30" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">
-                                Tax Reports
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="31" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">
-                                Account Statement
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="32" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">
-                                Roles and Permissions
-                            </td>
-                        </tr>
-
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">Users</td>
-                            <td class="p-3">
-                                <mat-checkbox name="33" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="34" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="35" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="36" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-
-                        <tr class="td">
-                            <td class="p-3 font-bold text-black">
-                                Roles and Permissions
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="37" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="38" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="39" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                            <td class="p-3">
-                                <mat-checkbox name="40" (change)="addPermission($event)"
-                                    [checked]="isDisabled"></mat-checkbox>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="flex items-center gap-4 mt-4 self-end">
-                <button type="button"
-                    class="px-10 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2">
-                    Cancel
-                </button>
-                <button type="submit"
-                    class="px-10 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover border border-darkAccent hover:border-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2">
-                    {{
-                    updateFormData != undefined ? "Update Role" : "Add Role"
-                    }}
-                </button>
+            <div class="flex items-center gap-2">
+                <input type="checkbox" class="big-checkbox accent-accentHover" (change)="selectAll($event)">
+                <p>Select All</p>
+                <!-- <mat-checkbox (change)="selectAll($event)">Select All</mat-checkbox> -->
             </div>
         </div>
     </form>
+
+    <div class="flex flex-col gap-6">
+        <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
+            <table class="w-full table-auto" responsiveLayout="scroll">
+                <thead class="uppercase text-center text-black font-bold bg-[#d9edff]">
+                    <tr class="thead">
+                        <th class="text-left p-3">privileges</th>
+                        <th class="text-left">View</th>
+                        <th class="text-left">Create</th>
+                        <th class="text-left">Update</th>
+                        <th class="text-left">Delete</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let row of menuRows; index as i" class="border-t">
+                    <tr>
+                        <td class="p-3 font-normal text-black">
+                            <span [ngClass]="{'sub-headings': row.isChild==0}">{{row.name}}
+                            </span>
+                        </td>
+                        <td>
+                            <!-- <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.view"
+                                [disabled]="(row.length!=0  && row.length<1) || row.length==5"
+                                (change)="onCheck('view', i)" name="view"></mat-checkbox> -->
+
+                            <input class="big-checkbox accent-accentHover" type="checkbox" name="view"
+                                [(ngModel)]="row.view" [disabled]="(row.length!=0  && row.length<1) || row.length==5"
+                                (change)="onCheck('view', i)">
+                        </td>
+                        <td>
+                            <!-- <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.add"
+                                [disabled]="(row.length!=0  &&  row.length<2) || row.length==5"
+                                (change)="onCheck('add', i)" name="add"></mat-checkbox> -->
+
+                            <input class="big-checkbox accent-accentHover" type="checkbox" name="add"
+                                [(ngModel)]="row.add" [disabled]="(row.length!=0  && row.length<2) || row.length==5"
+                                (change)="onCheck('add', i)">
+                        </td>
+                        <td>
+                            <!-- <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.edit"
+                                [disabled]="(row.length!=0  &&  row.length<3) || row.length==5"
+                                (change)="onCheck('edit', i)" name="edit"></mat-checkbox> -->
+
+                            <input class="big-checkbox accent-accentHover" type="checkbox" name="edit"
+                                [(ngModel)]="row.edit" [disabled]="(row.length!=0  && row.length<3) || row.length==5"
+                                (change)="onCheck('edit', i)">
+                        </td>
+                        <td>
+                            <!-- <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.delete"
+                                [disabled]="(row.length!=0 &&  row.length<4) || row.length==5 "
+                                (change)="onCheck('delete', i)" name="delete"></mat-checkbox> -->
+
+                            <input class="big-checkbox accent-accentHover" type="checkbox" name="delete"
+                                [(ngModel)]="row.delete" [disabled]="(row.length!=0  && row.length<4) || row.length==5"
+                                (change)="onCheck('delete', i)">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex items-center gap-4 mt-4 self-end">
+            <button type="button" (click)="isAccessToManageRole ? back() : ''"
+                class="px-10 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2">
+                Cancel
+            </button>
+            <button (click)="updateRole()" type="submit"
+                class="px-10 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover border border-darkAccent hover:border-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2">
+                {{
+                updateFormData != undefined ? "Update Role" : "Add Role"
+                }}
+            </button>
+        </div>
+
+    </div>
+
+    <!-- <div class="flex flex-col gap-6">
+        <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
+            <table class="w-full table-auto">
+                <thead class="uppercase text-center text-black font-bold bg-[#d9edff]">
+                    <tr class="thead">
+                        <th class="text-left p-3">
+                            <p>Privileges</p>
+                        </th>
+                        <th class="text-left p-3">
+                            <p>View</p>
+                        </th>
+                        <th class="text-left p-3">
+                            <p>Create</p>
+                        </th>
+                        <th class="text-left p-3">
+                            <p>Edit</p>
+                        </th>
+                        <th class="text-left p-3">
+                            <p>Delete</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="border-t">
+
+
+                    <tr>
+                        <td class="p-3 font-bold text-black">Dashboard</td>
+                        <td class="p-3">
+                            <mat-checkbox #myInput [value]="1" (change)="addPermission($event)"
+                                [checked]="isDisabled"></mat-checkbox>
+                        </td>
+                    </tr>
+                    <tr class="td">
+                        <td class="p-3 font-bold text-black">Income</td>
+                        <td class="p-3">
+                            <mat-checkbox #myInput [value]="2" (change)="addPermission($event)"
+                                [checked]="isDisabled"></mat-checkbox>
+                        </td>
+                        <td class="p-3">
+                            <mat-checkbox #myInput [value]="3" (change)="addPermission($event)" [checked]="isDisabled">
+                            </mat-checkbox>
+                        </td>
+                        <td class="p-3">
+                            <mat-checkbox #myInput [value]="4" (change)="addPermission($event)"
+                                [checked]="isDisabled"></mat-checkbox>
+                        </td>
+                        <td class="p-3">
+                            <mat-checkbox #myInput [value]="5" (change)="addPermission($event)"
+                                [checked]="isDisabled"></mat-checkbox>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex items-center gap-4 mt-4 self-end">
+            <button type="button"
+                class="px-10 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2">
+                Cancel
+            </button>
+            <button type="submit"
+                class="px-10 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover border border-darkAccent hover:border-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2">
+                {{
+                updateFormData != undefined ? "Update Role" : "Add Role"
+                }}
+            </button>
+        </div>
+    </div> -->
 </section>
+<p-toast></p-toast>
+
+
+<!-- New code -->
+
+
+<!-- <div class="flex flex-col gap-6">
+    <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
+        <table class="w-full table-auto" responsiveLayout="scroll">
+            <thead class="uppercase text-center text-black font-bold bg-[#d9edff]">
+                <tr class="thead">
+                    <th class="text-left p-3">privileges</th>
+                    <th class="text-left p-3">View</th>
+                    <th class="text-left p-3">Create</th>
+                    <th class="text-left p-3">Update</th>
+                    <th class="text-left p-3">Delete</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let row of menuRows; index as i" class="border-t">
+                <tr>
+                    <td class="p-3 font-bold text-black">
+                        <span [ngClass]="{'sub-headings': row.isChild==0}">{{row.isChild==0?'':'-
+                            -'}}{{row.name}}
+                        </span>
+                    </td>
+                    <td>
+                        <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.view"
+                            [disabled]="(row.length!=0  && row.length<1) || row.length==5 "
+                            (change)="oncheck('view', i)" name="view"></mat-checkbox>
+                    </td>
+                    <td>
+                        <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.add"
+                            [disabled]="(row.length!=0  &&  row.length<2) || row.length==5 "
+                            (change)="oncheck('add', i)" name="add"></mat-checkbox>
+                    </td>
+                    <td>
+                        <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.edit"
+                            [disabled]="(row.length!=0  &&  row.length<3) || row.length==5 "
+                            (change)="oncheck('edit', i)" name="edit"></mat-checkbox>
+                    </td>
+                    <td>
+                        <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.delete"
+                            [disabled]="(row.length!=0 &&  row.length<4) || row.length==5 "
+                            (change)="oncheck('delete', i)" name="delete"></mat-checkbox>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex items-center gap-4 mt-4 self-end">
+        <button type="button"
+            class="px-10 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2">
+            Cancel
+        </button>
+        <button type="submit"
+            class="px-10 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover border border-darkAccent hover:border-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2">
+            {{
+            updateFormData != undefined ? "Update Role" : "Add Role"
+            }}
+        </button>
+    </div>
+
+</div> -->
+
 <p-toast></p-toast>

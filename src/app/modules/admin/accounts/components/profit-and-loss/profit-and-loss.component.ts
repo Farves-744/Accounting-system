@@ -1,5 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppComponent } from 'app/app.component';
 import {
     GetProfitAndLoss,
     ProfitAndLossData,
@@ -11,14 +12,20 @@ import { CommonService } from 'app/shared/services/common.service';
     selector: 'app-profit-and-loss',
     templateUrl: './profit-and-loss.component.html',
     styleUrls: ['./profit-and-loss.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ProfitAndLossComponent implements OnInit {
+    dashboardAccess: any
+
     constructor(
         private router: Router,
         private _commonService: CommonService,
         private _accountService: AccountService,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     userId: any;
     profitAndLossData: ProfitAndLossData;

@@ -189,3 +189,16 @@ input.ng-invalid.ng-touched:not(.date) {
 .input-border {
     border: 1px solid var(--accentHover);
 }
+
+.sub-headings {
+    font-weight: bold;
+}
+
+.big-checkbox {
+    width: 16px;
+    height: 16px;
+}
+
+body.light .mat-primary .mat-pseudo-checkbox-checked {
+    background: #7fbfff;
+}

@@ -12,9 +12,11 @@ import { mockApiServices } from 'app/mock-api';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MaterialExampleModule } from './material.module';
+import { AuthService } from './core/auth/auth.service';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -48,5 +50,19 @@ const routerConfig: ExtraOptions = {
         HttpClientModule,
     ],
     bootstrap: [AppComponent],
+    providers: [
+        AuthService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        }
+    ]
 })
-export class AppModule {}
+export class AppModule { }
+
+// [AuthService, AdminGuard, SecureInnerPagesGuard, CookieService, DecimalPipe,{
+//     provide: HTTP_INTERCEPTORS,
+//     useClass: InterceptorService,
+//     multi: true
+//   },MessageService],

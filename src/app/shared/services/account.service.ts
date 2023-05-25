@@ -14,7 +14,7 @@ export class AccountService {
         private http: HttpClient,
         private router: Router,
         private _commonService: CommonService
-    ) {}
+    ) { }
 
     addAccount(value: any) {
         return this.http.post(
@@ -79,6 +79,14 @@ export class AccountService {
     getProfitAndLoss(value: any) {
         return this.http.post(
             environment.BASE_URL + '/profit/loss',
+            { data: this._commonService.encryptData(value) },
+            this._commonService.httpOptions
+        );
+    }
+
+    getAccountsByUserId(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/accounts/based/on/users',
             { data: this._commonService.encryptData(value) },
             this._commonService.httpOptions
         );

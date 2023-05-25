@@ -21,3 +21,19 @@ export class GetRoleById {
     id: number = null;
 }
 
+export class privilege {
+    id: number;
+    privilege: string;
+    action: number;
+    parentId: number;
+    length: number;
+    hasChild: number;
+    isChild: number;
+    name: string;
+    //extra
+    view: boolean;
+    add: boolean;
+    edit: boolean;
+    delete: boolean;
+}
+

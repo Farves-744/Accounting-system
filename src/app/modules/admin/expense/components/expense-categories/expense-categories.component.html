@@ -3,7 +3,7 @@
         <!-- Breadcrumb -->
         <div class="sm:flex hidden gap-2 items-center">
             <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-                svgIcon="heroicons_outline:home" (click)="navigateToHome()">
+                svgIcon="heroicons_outline:home" (click)="dashboardAccess ? navigateToHome() : ''">
             </mat-icon>
             <p>Income</p>
             <span>/</span>
@@ -42,7 +42,7 @@
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
 
-        <button
+        <button *ngIf="checkAdd"
             class="px-10 border text-textColor hover:border-accentHover border-darkAccent  py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
             (click)="addCategory()">
             <p class="font-semibold">Add Expense category</p>
@@ -82,10 +82,10 @@
                 </th>
                 <td mat-cell *matCellDef="let element">
                     <div class="flex gap-2 justify-center sm:justify-end">
-                        <button matTooltip="Edit Category" (click)="editCategory(element)">
+                        <button *ngIf="checkEdit" matTooltip="Edit Category" (click)="editCategory(element)">
                             <img src="assets/icons/edit.svg" alt="Edit" class="w-[24px] h-[24px] cursor-pointer ml-5" />
                         </button>
-                        <button (click)="openDeleteDialog(element.id)" matTooltip="Delete Category">
+                        <button *ngIf="checkDelete" (click)="openDeleteDialog(element.id)" matTooltip="Delete Category">
                             <img src="assets\images\trash-can.png" alt="Delete"
                                 class="w-[24px] h-[24px] cursor-pointer" />
                         </button>
@@ -100,3 +100,4 @@
         <mat-paginator #paginatorRef [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator>
     </div>
 </section>
+<p-toast></p-toast>

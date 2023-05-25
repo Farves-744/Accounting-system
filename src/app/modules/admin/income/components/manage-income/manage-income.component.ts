@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
@@ -13,11 +13,14 @@ import { GetIncomeReports } from 'app/shared/modals/reports';
 import { getIncome } from 'app/shared/modals/income';
 import { environment } from 'environments/environment';
 import { getIncomeCategory } from 'app/shared/modals/income-category';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-manage-income',
     templateUrl: './manage-income.component.html',
     styleUrls: ['./manage-income.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ManageIncomeComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -27,6 +30,10 @@ export class ManageIncomeComponent implements OnInit {
     getCategoryNameModal: getIncomeCategory = new getIncomeCategory();
     categoryData: any;
 
+    checkAdd: any;
+    dashboardAccess: any
+    checkEdit: any;
+
     constructor(
         private _commonService: CommonService,
         private _incomeService: IncomeService,
@@ -34,7 +41,11 @@ export class ManageIncomeComponent implements OnInit {
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.checkAdd = (AppComponent.checkUrl("manageIncomesAdd"))
+        this.checkEdit = (AppComponent.checkUrl("manageIncomesEdit"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = [
         'position',
@@ -48,10 +59,10 @@ export class ManageIncomeComponent implements OnInit {
         'actions',
     ];
 
+
     ngOnInit(): void {
         this.getIncomeModal.userId = this._commonService.getUserId();
         this.getCategoryNameModal.userId = this._commonService.getUserId();
-
         this.getIncome();
         this.getCategoryIcon();
     }

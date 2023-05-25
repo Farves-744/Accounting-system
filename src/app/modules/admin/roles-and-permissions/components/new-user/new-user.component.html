@@ -1,12 +1,17 @@
 <section class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4">
     <!-- Breadcrumb -->
-    <div class="sm:flex hidden gap-2 items-center">
-        <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-            svgIcon="heroicons_outline:home" (click)="navigateToHome()">
-        </mat-icon>
-        <p>Roles and Permission</p>
-        <span>/</span>
-        <p class="font-semibold text-myAccent">Add User</p>
+    <div class="flex items-center justify-between">
+        <div class="sm:flex hidden gap-2 items-center">
+            <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+                svgIcon="heroicons_outline:home" (click)="dashboardAccess ? navigateToHome() : ''">
+            </mat-icon>
+            <p>Roles and Permission</p>
+            <span>/</span>
+            <p class="font-semibold text-myAccent">Add User</p>
+        </div>
+
+        <img *ngIf="isAccessToManageUser" class="w-[30px] cursor-pointer" matTooltip="Go Back"
+            src="assets/icons/back-arrow.svg" alt="Back" (click)="back()">
     </div>
 
     <!-- Title -->
@@ -82,9 +87,9 @@
                     characters</div>
             </div>
             <div class="flex flex-col gap-2" *ngIf="updateFormData != undefined">
-                <label class="font-medium" for="user-password">Password Edit<span class="text-red-600">*</span></label>
+                <label class="font-medium" for="user-password">Password Edit <span class="text-red-600">*</span></label>
                 <div class="flex items-center w-full relative">
-                    <input #passwordField id="user-password" type="password" required placeholder="Enter Password"
+                    <input #passwordField id="user-password" type="password" placeholder="Enter Password"
                         formControlName="editPassword" class="border w-full border-myAccent p-2 rounded" />
 
                     <button mat-icon-button type="button" (click)="
@@ -100,14 +105,14 @@
                     </button>
                 </div>
 
-                <div *ngIf="
+                <!-- <div *ngIf="
                             f.editPassword.invalid &&
                             (f.editPassword.dirty || f.editPassword.touched)
                         ">
                     <span class="text-[#dc2626]" *ngIf="f.editPassword.errors?.['required']">
                         This field is required
                     </span>
-                </div>
+                </div> -->
 
                 <div class="text-[#dc2626]" *ngIf="f.editPassword.errors?.['minlength']">Password must be at least 6
                     characters</div>

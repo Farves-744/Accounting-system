@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
@@ -11,11 +11,14 @@ import { environment } from 'environments/environment';
 import { getExpenseCategory } from 'app/shared/modals/expense-category';
 import { ExpenseService } from 'app/shared/services/expense.service';
 import { ReportsService } from 'app/shared/services/reports.service';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-manage-expense',
     templateUrl: './manage-expense.component.html',
     styleUrls: ['./manage-expense.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ManageExpenseComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -25,6 +28,10 @@ export class ManageExpenseComponent implements OnInit {
     getCategoryNameModal: getExpenseCategory = new getExpenseCategory();
     categoryData: any;
 
+    checkAdd: any;
+    checkEdit: any;
+    dashboardAccess: any
+
     constructor(
         private _commonService: CommonService,
         private _expenseService: ExpenseService,
@@ -32,7 +39,11 @@ export class ManageExpenseComponent implements OnInit {
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.checkAdd = (AppComponent.checkUrl("manageExpensesAdd"))
+        this.checkEdit = (AppComponent.checkUrl("manageExpensesEdit"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = [
         'position',

@@ -52,7 +52,7 @@
                 <p class="font-semibold text-[1.1rem] text-myAccent">
                     Account Balance
                 </p>
-                <p>{{ response.runningBalance | currency : "INR" }}</p>
+                <p>{{ response.runningBalance ? response.runningBalance : '0' | currency : "INR" }}</p>
             </div>
         </div>
 

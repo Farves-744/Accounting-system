@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
@@ -7,11 +7,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GetAccountName } from 'app/shared/modals/reports';
 import { ReportsService } from 'app/shared/services/reports.service';
 import { AccountTransactionsComponent } from '../account-transactions/account-transactions.component';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-accounts-statement',
     templateUrl: './accounts-statement.component.html',
     styleUrls: ['./accounts-statement.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AccountsStatementComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -20,6 +23,7 @@ export class AccountsStatementComponent {
 
     textInputDisabled: boolean = true;
     showTrans: boolean = true;
+    dashboardAccess: any
 
     toggleTextInput() {
         this.textInputDisabled = !this.textInputDisabled;
@@ -31,7 +35,9 @@ export class AccountsStatementComponent {
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     displayedColumns: string[] = ['position', 'holderName', 'transactions'];
 

@@ -9,13 +9,13 @@ import { Router } from '@angular/router';
     providedIn: 'root',
 })
 export class CommonService {
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(private http: HttpClient, private router: Router) { }
     env = environment;
 
     httpOptions = {
         headers: new HttpHeaders({
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            // Authorization: `Bearer ${localStorage.getItem('token')}`,
         }),
     };
 

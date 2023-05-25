@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { PaymentModel } from 'app/shared/modals/income';
@@ -13,9 +13,11 @@ import { MessageService } from 'primeng/api';
     selector: 'app-collect-dialog',
     templateUrl: './collect-dialog.component.html',
     styleUrls: ['./collect-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class CollectDialogComponent implements OnInit {
-    getAccountsModel: GetAccounts = new GetAccounts();
+    getAccountsModel: any = { userId: null, }
     isEdit: boolean = false;
     paymentsModal = [{ paymentMode: null, amount: null, accountId: null }];
     userId: any;
@@ -40,6 +42,7 @@ export class CollectDialogComponent implements OnInit {
     ngOnInit(): void {
         console.log(this.data);
         this.userId = this._commonService.getUserId();
+        this.getAccountsModel.userId = this._commonService.getUserId();
         console.log(this.userId);
         setTimeout(() => {
             this.getAccountName();
@@ -51,6 +54,18 @@ export class CollectDialogComponent implements OnInit {
         this.fileToUpload = file;
         this.formData = new FormData();
         this.formData.append('image', this.fileToUpload);
+    }
+
+
+    //! Validate if the total amount exceeds
+    validateAmount() {
+        let totalAmount = 0
+        totalAmount = this.paymentsModal.map(item => item.amount).reduce((prev, curr) => prev + curr, 0);
+        if (totalAmount >= this.data.totalAmount) {
+            return true
+        } else {
+            return false
+        }
     }
 
     addOrEditPayment() {
@@ -180,10 +195,9 @@ export class CollectDialogComponent implements OnInit {
     getAccountName() {
         console.log(this.getAccountsModel);
 
-        this.getAccountsModel.userId = this.userId;
 
         this._accountService
-            .getAccount(this.getAccountsModel)
+            .getAccountsByUserId(this.getAccountsModel)
             .subscribe((res) => {
                 console.log(this._commonService.decryptData(res));
                 this.accounts = this._commonService.decryptData(res);

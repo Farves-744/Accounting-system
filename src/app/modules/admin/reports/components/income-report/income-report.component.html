@@ -1,15 +1,10 @@
-<section
-    class="m-5 sm:m-10 p-4 sm:py-6 w-full sm:px-8 bg-white rounded-lg flex flex-col gap-4 overflow-x-hidden"
->
+<section class="m-5 sm:m-10 p-4 sm:py-6 w-full sm:px-8 bg-white rounded-lg flex flex-col gap-4 overflow-x-hidden">
     <div class="flex items-center justify-between">
         <div class="flex flex-col gap-2 justify-items-start">
             <!-- Breadcrumb -->
             <div class="sm:flex hidden gap-2 items-center">
-                <mat-icon
-                    class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-                    svgIcon="heroicons_outline:home"
-                    (click)="navigateToHome()"
-                >
+                <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+                    svgIcon="heroicons_outline:home" (click)="dashboardAccess ? navigateToHome() : ''">
                 </mat-icon>
                 <p>Reports</p>
                 <span>/</span>
@@ -106,117 +101,63 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
     </div>
 
     <!-- Content -->
-    <div
-        class="flex w-full flex-col md:flex-row gap-4 justify-center items-center"
-    >
+    <div class="flex w-full flex-col md:flex-row gap-4 justify-center items-center">
         <!-- Search -->
-        <div
-            class="border border-myAccent w-full flex items-center justify-between rounded pr-2"
-        >
-            <input
-                type="search"
-                name="account-search"
-                id="account-search"
-                placeholder="Search "
-                (keyup)="searchIncomeReport($event)"
-                class="px-4 py-2 w-full rounded caret-myAccent"
-            />
+        <div class="border border-myAccent w-full flex items-center justify-between rounded pr-2">
+            <input type="search" name="account-search" id="account-search" placeholder="Search "
+                (keyup)="searchIncomeReport($event)" class="px-4 py-2 w-full rounded caret-myAccent" />
 
-            <mat-icon
-                class="text-myAccent w-[24px] h-[24px] cursor-pointer search-icon"
-                svgIcon="heroicons_outline:search"
-            ></mat-icon>
+            <mat-icon class="text-myAccent w-[24px] h-[24px] cursor-pointer search-icon"
+                svgIcon="heroicons_outline:search"></mat-icon>
         </div>
 
         <mat-form-field appearance="fill" class="mt-0 w-full">
-            <mat-date-range-input
-                [rangePicker]="picker"
-                placeholder="Select Date"
-            >
-                <input
-                    matStartDate
-                    placeholder="Start date"
-                    [(ngModel)]="getIncomeReportsModal.startDate"
-                    (dateChange)="dateFilter()"
-                />
+            <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
+                <input matStartDate placeholder="Start date" [(ngModel)]="getIncomeReportsModal.startDate"
+                    (dateChange)="dateFilter()" />
 
-                <input
-                    matEndDate
-                    placeholder="End date"
-                    [(ngModel)]="getIncomeReportsModal.endDate"
-                    (dateChange)="dateFilter()"
-                />
+                <input matEndDate placeholder="End date" [(ngModel)]="getIncomeReportsModal.endDate"
+                    (dateChange)="dateFilter()" />
             </mat-date-range-input>
 
-            <mat-icon
-                matDatepickerToggleIcon
-                class="cursor-pointer"
-                (click)="clearDate()"
-                *ngIf="
+            <mat-icon matDatepickerToggleIcon class="cursor-pointer" (click)="clearDate()" *ngIf="
                     getIncomeReportsModal.startDate != null &&
                     getIncomeReportsModal.endDate != null
-                "
-                >clear</mat-icon
-            >
+                ">clear</mat-icon>
 
-            <mat-datepicker-toggle
-                class="text-myAccent w-7"
-                matIconSuffix
-                [for]="picker"
-            ></mat-datepicker-toggle>
+            <mat-datepicker-toggle class="text-myAccent w-7" matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
 
         <!-- Filter by category name -->
         <div>
             <mat-menu #menu1="matMenu" class="">
-                <button
-                    mat-menu-item
-                    [matMenuTriggerFor]="menu2"
-                    class="hover:bg-darkAccent hover:text-textColor transition"
-                >
+                <button mat-menu-item [matMenuTriggerFor]="menu2"
+                    class="hover:bg-darkAccent hover:text-textColor transition">
                     Filter By Category Name
                 </button>
             </mat-menu>
 
             <mat-menu #menu2="matMenu" class="max-h-[15rem]">
-                <button
-                    (click)="filterByCategory(category.id)"
-                    *ngFor="let category of categoryData"
-                    mat-menu-item
-                    class="hover:bg-darkAccent hover:text-textColor transition"
-                >
+                <button (click)="filterByCategory(category.id)" *ngFor="let category of categoryData" mat-menu-item
+                    class="hover:bg-darkAccent hover:text-textColor transition">
                     {{ category.categoryName }}
                 </button>
             </mat-menu>
 
             <button [matMenuTriggerFor]="menu1">
-                <svg
-                    version="1.0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="512.000000pt"
-                    height="512.000000pt"
-                    viewBox="0 0 512.000000 512.000000"
-                    preserveAspectRatio="xMidYMid meet"
-                    class="fill-black hover:fill-myAccent w-[30px] h-[30px] transition"
-                    matTooltip="Filter"
-                >
-                    <g
-                        transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                        stroke="none"
-                    >
-                        <path
-                            d="M402 5102 c-116 -46 -180 -185 -139 -300 7 -18 61 -100 121 -182
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt"
+                    viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet"
+                    class="fill-black hover:fill-myAccent w-[30px] h-[30px] transition" matTooltip="Filter">
+                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" stroke="none">
+                        <path d="M402 5102 c-116 -46 -180 -185 -139 -300 7 -18 61 -100 121 -182
 l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
-161 -32 9 -522 12 -2150 11 -1959 0 -2112 -1 -2152 -17z"
-                        />
-                        <path
-                            d="M732 4147 c9 -12 273 -373 588 -801 315 -429 580 -796 589 -815 14
+161 -32 9 -522 12 -2150 11 -1959 0 -2112 -1 -2152 -17z" />
+                        <path d="M732 4147 c9 -12 273 -373 588 -801 315 -429 580 -796 589 -815 14
 -32 17 -152 21 -1191 l5 -1155 24 -48 c27 -56 94 -110 159 -128 49 -13 128 -7
 169 14 27 14 384 276 598 438 178 135 251 211 286 299 11 29 15 189 19 890 5
 814 6 857 24 890 10 19 278 388 595 820 318 432 580 791 585 798 6 9 -364 12
--1835 12 l-1841 0 14 -23z"
-                        />
+-1835 12 l-1841 0 14 -23z" />
                     </g>
                 </svg>
             </button>
@@ -225,16 +166,12 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
 
     <!-- Angular Table -->
     <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
-        <table
-            mat-table
-            [dataSource]="dataSource"
-            class="mat-elevation-z8 w-full"
-        >
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef>SN</th>
                 <td mat-cell *matCellDef="let element; let i = index">
                     {{
-                        paginatorRef.pageIndex * paginatorRef.pageSize + (i + 1)
+                    paginatorRef.pageIndex * paginatorRef.pageSize + (i + 1)
                     }}
                 </td>
             </ng-container>
@@ -243,11 +180,8 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
                 <th mat-header-cell *matHeaderCellDef>Category Name</th>
                 <td mat-cell *matCellDef="let element" class="">
                     <div class="flex items-center gap-2">
-                        <img
-                            class="w-[24px]"
-                            [src]="url + '/' + element.categoryImage"
-                            [alt]="element.categoryName"
-                        />
+                        <img *ngIf="element.categoryImage" class="w-[24px]" [src]="url + '/' + element.categoryImage"
+                            [alt]="element.categoryName" />
                         <span>{{ element.categoryName }}</span>
                     </div>
                 </td>
@@ -256,14 +190,14 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
             <ng-container matColumnDef="description">
                 <th mat-header-cell *matHeaderCellDef>Description</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.description }}
+                    {{ element.description ? element.description : '-' }}
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef>Created Date</th>
+                <th mat-header-cell *matHeaderCellDef>Date</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.createDate | date : "dd-MM-yyyy" }}
+                    {{ element.actualDate | date : "dd-MM-yyyy" }}
                 </td>
             </ng-container>
 
@@ -284,10 +218,8 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
             <ng-container matColumnDef="receipt">
                 <th mat-header-cell *matHeaderCellDef>Receipt</th>
                 <td mat-cell *matCellDef="let element">
-                    <button
-                        (click)="openReceiptDialog(element.receiptImage)"
-                        class="shadow-[inset_4px_4px_13px_rgba(0,0,0,0.25)] px-3 py-1 bg-darkAccent rounded transition hover:bg-accentHover text-textColor"
-                    >
+                    <button (click)="openReceiptDialog(element.receiptImage)"
+                        class="shadow-[inset_4px_4px_13px_rgba(0,0,0,0.25)] px-3 py-1 bg-darkAccent rounded transition hover:bg-accentHover text-textColor">
                         View
                     </button>
                 </td>
@@ -296,11 +228,8 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
             <ng-container matColumnDef="details">
                 <th mat-header-cell *matHeaderCellDef>Details</th>
                 <td mat-cell *matCellDef="let element">
-                    <mat-icon
-                        svgIcon="heroicons_outline:eye"
-                        (click)="openPaymentDialog(element.id)"
-                        class="text-myAccent ml-5 cursor-pointer"
-                    ></mat-icon>
+                    <mat-icon svgIcon="heroicons_outline:eye" (click)="openPaymentDialog(element.id)"
+                        class="text-myAccent ml-5 cursor-pointer"></mat-icon>
                 </td>
             </ng-container>
 
@@ -308,10 +237,6 @@ l109 -150 2066 0 2067 0 91 123 c143 192 169 257 142 354 -17 62 -96 143 -155
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
-        <mat-paginator
-            #paginatorRef
-            [pageSizeOptions]="[5, 10, 25, 100]"
-            [showFirstLastButtons]="true"
-        ></mat-paginator>
+        <mat-paginator #paginatorRef [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true"></mat-paginator>
     </div>
 </section>

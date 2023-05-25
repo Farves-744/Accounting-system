@@ -1,7 +1,7 @@
 <div mat-dialog-title class="flex items-center gap-4">
     <h2 class="mb-2">Add Payment</h2>
 
-    <svg fill="#000000" class="fill-myAccent w-[48px] mb-2 cursor-pointer" viewBox="0 0 24 24"
+    <svg *ngIf="!validateAmount()" fill="#000000" class="fill-myAccent w-[48px] mb-2 cursor-pointer" viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg" (click)="addForm()">
         <path
             d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Zm4-9H13V8a1,1,0,0,0-2,0v3H8a1,1,0,0,0,0,2h3v3a1,1,0,0,0,2,0V13h3a1,1,0,0,0,0-2Z" />
@@ -19,7 +19,7 @@
                     <mat-form-field class="w-full mt-0">
                         <mat-select #account="ngModel" required [disabled]="isEdit" matInfix
                             [(ngModel)]="payment.accountId" disableOptionCentering placeholder="Select Account"
-                            id="{{ i }}">
+                            name="account{{ i }}" id="{{ i }}">
                             <mat-option *ngFor="let account of accounts" [value]="account.id">{{ account.accountName }}
                             </mat-option>
                         </mat-select>
@@ -38,7 +38,8 @@
                     <label for="payment-mode{{ i }}" class="">Payment Mode <span class="text-red-600">*</span></label>
                     <mat-form-field class="w-full mt-0">
                         <mat-select #payMode="ngModel" required [disabled]="isEdit" matInfix disableOptionCentering
-                            [(ngModel)]="payment.paymentMode" placeholder="Select Payment Mode" id="{{ i }}">
+                            [(ngModel)]="payment.paymentMode" name="payment{{ i }}" placeholder="Select Payment Mode"
+                            id="{{ i }}">
                             <mat-option *ngFor="let mode of paymentMode" [value]="mode.id">{{ mode.name }}
                             </mat-option>
                         </mat-select>
@@ -56,14 +57,15 @@
                 <div class="flex flex-col gap-2 w-full">
                     <label class="font-medium" for="amount">Amount <span class="text-red-600">*</span></label>
 
-                    <input id="amount{{ i }}" type="number" placeholder="Enter Amount" [ngStyle]="{
+                    <input (change)="validate()" id="amount{{ i }}" type="number" placeholder="Enter Amount"
+                        #amount="ngModel" name="amount{{ i }}" [ngStyle]="{
                             'border-color':
                                 f.submitted && amount.invalid ? '#dc2626' : ''
                         }" class="border input-border p-2 rounded" [(ngModel)]="payment.amount" />
 
                     <div *ngIf="
-                            (f.submitted && amount.invalid) || amount.touched
-                        ">
+                        (f.submitted && amount.invalid) || amount.touched
+                    ">
                         <div class="text-[#dc2626]" *ngIf="amount.errors?.['required']">
                             This field is required
                         </div>
@@ -90,9 +92,10 @@
         </mat-dialog-content>
 
         <mat-dialog-actions align="end" class="flex gap-4 items-center mt-4">
-            <button
+            <button type="button"
                 class="px-10 text-accentHover border border-accentHover py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2"
                 mat-dialog-close>
+
                 Cancel
             </button>
             <button

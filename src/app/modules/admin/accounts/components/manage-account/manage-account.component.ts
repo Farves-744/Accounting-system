@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CommonService } from 'app/shared/services/common.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
@@ -12,11 +12,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-manage-account',
     templateUrl: './manage-account.component.html',
     styleUrls: ['./manage-account.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ManageAccountComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -28,6 +31,11 @@ export class ManageAccountComponent implements OnInit {
     filterForm: any;
     pipe: DatePipe;
 
+    checkAdd: any;
+    dashboardAccess: any
+    checkEdit: any;
+    checkDelete: any;
+
     constructor(
         private _commonService: CommonService,
         private _accountService: AccountService,
@@ -36,7 +44,12 @@ export class ManageAccountComponent implements OnInit {
         private changeDetection: ChangeDetectorRef,
         public newAccount: NewAccountComponent,
         private _formBuilder: FormBuilder
-    ) {}
+    ) {
+        this.checkAdd = (AppComponent.checkUrl("manageAccountsAdd"))
+        this.checkEdit = (AppComponent.checkUrl("manageAccountsEdit"))
+        this.checkDelete = (AppComponent.checkUrl("manageAccountsDelete"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     ngOnInit(): void {
         this.getAccountModal.userId = this._commonService.getUserId();

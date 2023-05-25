@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from 'app/shared/services/common.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,16 +7,24 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { GetUser } from 'app/shared/modals/user';
 import { UserService } from 'app/shared/services/user.service';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-manage-user',
     templateUrl: './manage-user.component.html',
     styleUrls: ['./manage-user.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ManageUserComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     dataSource: MatTableDataSource<any>;
     getUserModal: GetUser = new GetUser();
+
+    checkAdd: any;
+    dashboardAccess: any
+    checkEdit: any;
+    checkDelete: any;
 
     displayedColumns: string[] = [
         'position',
@@ -33,7 +41,12 @@ export class ManageUserComponent implements OnInit {
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef
-    ) {}
+    ) {
+        this.checkAdd = (AppComponent.checkUrl("manageUsersAdd"))
+        this.checkEdit = (AppComponent.checkUrl("manageUsersEdit"))
+        this.checkDelete = (AppComponent.checkUrl("manageUsersDelete"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     ngOnInit(): void {
         this.getUserModal.userId = this._commonService.getUserId();

@@ -13,6 +13,8 @@ export interface FuseNavigationItem {
     active?: boolean;
     disabled?: boolean;
     tooltip?: string;
+    tag?: string;
+    parentId?: number;
     link?: string;
     fragment?: string;
     preserveFragment?: boolean;

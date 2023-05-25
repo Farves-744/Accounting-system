@@ -1,14 +1,19 @@
 <section class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4">
     <!-- Breadcrumb -->
-    <div class="sm:flex hidden gap-2 items-center">
-        <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
-            svgIcon="heroicons_outline:home" (click)="navigateToHome()">
-        </mat-icon>
-        <p>Expense</p>
-        <span>/</span>
-        <p class="font-semibold text-myAccent">
-            {{ updateFormData != undefined ? "Update Expense" : "Add Expense" }}
-        </p>
+    <div class="flex items-center justify-between">
+        <div class="sm:flex hidden gap-2 items-center">
+            <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
+                svgIcon="heroicons_outline:home" (click)="dashboardAccess ? navigateToHome() : ''">
+            </mat-icon>
+            <p>Expense</p>
+            <span>/</span>
+            <p class="font-semibold text-myAccent">
+                {{ updateFormData != undefined ? "Update Expense" : "Add Expense" }}
+            </p>
+        </div>
+
+        <img *ngIf="isAccessToManageExpense" class="w-[30px] cursor-pointer" matTooltip="Go Back"
+            src="assets/icons/back-arrow.svg" alt="Back" (click)="back()">
     </div>
 
     <!-- Title -->

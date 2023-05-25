@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AppComponent } from 'app/app.component';
 import { GetAccounts } from 'app/shared/modals/accounts';
 import { GetRole } from 'app/shared/modals/role';
 import { AccountService } from 'app/shared/services/account.service';
@@ -13,6 +14,8 @@ import { MessageService } from 'primeng/api';
     selector: 'app-new-user',
     templateUrl: './new-user.component.html',
     styleUrls: ['./new-user.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class NewUserComponent {
     addUserForm: FormGroup;
@@ -24,6 +27,8 @@ export class NewUserComponent {
     rolesData: any;
     accounts: any;
 
+    isAccessToManageUser: any;
+    dashboardAccess: any
     constructor(
         private _commonService: CommonService,
         private _userService: UserService,
@@ -33,7 +38,10 @@ export class NewUserComponent {
         private messageService: MessageService,
         private _route: Router,
         private changeDetection: ChangeDetectorRef
-    ) { }
+    ) {
+        this.isAccessToManageUser = (AppComponent.checkUrl("manageAccounts"))
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+    }
 
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
@@ -42,12 +50,13 @@ export class NewUserComponent {
             name: ['', Validators.required],
             email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
             password: ['', [Validators.required, Validators.minLength(6)]],
-            editPassword: ['', [Validators.required, Validators.minLength(6)]],
+            editPassword: [''],
             roleId: [null, Validators.required],
             userId: this.userId,
-            accountId: [null, Validators.required]
+            accountId: [[], Validators.required]
         });
         this.getRolesName();
+        this.getAccountName();
     }
 
     ngAfterContentInit() {
@@ -64,15 +73,27 @@ export class NewUserComponent {
         return this.addUserForm.controls;
     }
 
+    back() {
+        this._route.navigateByUrl('/roles-and-permissions/manage-user')
+    }
+
+
+
     addOrEditUser() {
+        console.log(this.addUserForm.value);
         if (this.addUserForm.invalid) {
+            console.log('hey invalid');
+
             for (const control of Object.keys(this.addUserForm.controls)) {
                 this.addUserForm.controls[control].markAsTouched();
             }
             return;
         }
 
+
         if (this.addUserForm.valid) {
+            console.log(this.addUserForm.value);
+            console.log('hey valid');
             if (history.state.data) {
                 console.log(history.state.data);
                 console.log(this.addUserForm.value);
@@ -95,13 +116,22 @@ export class NewUserComponent {
                         this._route.navigateByUrl(
                             'roles-and-permissions/manage-user'
                         );
+                        setTimeout(() => {
+                            if (this.isAccessToManageUser) {
+                                this._route.navigateByUrl(
+                                    'roles-and-permissions/manage-user'
+                                );
+                            } else {
+                                this._route.navigateByUrl(
+                                    'roles-and-permissions/new-user'
+                                );
+                            }
+                        }, 2000);
                         this.changeDetection.detectChanges();
                     }, error => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     });
             } else {
-                console.log(this.addUserForm.value);
-
                 this._userService
                     .addUser(this.addUserForm.value)
                     .subscribe((res) => {
@@ -111,6 +141,17 @@ export class NewUserComponent {
                         this._route.navigateByUrl(
                             'roles-and-permissions/manage-user'
                         );
+                        setTimeout(() => {
+                            if (this.isAccessToManageUser) {
+                                this._route.navigateByUrl(
+                                    'roles-and-permissions/new-user'
+                                );
+                            } else {
+                                this._route.navigateByUrl(
+                                    'roles-and-permissions/manage-user'
+                                );
+                            }
+                        }, 2000);
                         this.changeDetection.detectChanges();
                     }, error => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });

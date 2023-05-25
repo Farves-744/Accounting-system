@@ -10,13 +10,18 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from 'app/core/auth/auth.service';
 // import { AuthUtils } from 'app/core/auth/auth.utils';
 import { environment } from 'environments/environment';
+import { AuthUtils } from './auth.utils';
+import { CommonService } from 'app/shared/services/common.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
     /**
      * Constructor
      */
-    constructor(private _authService: AuthService) {}
+    constructor(private _authService: AuthService, private _commonService: CommonService, private _router: Router) {
+
+    }
 
     env = environment;
     /**
@@ -32,6 +37,8 @@ export class AuthInterceptor implements HttpInterceptor {
         // Clone the request object
         let newReq = req.clone();
 
+
+
         // Request
         //
         // If the access token didn't expire, add the Authorization header.
@@ -44,9 +51,19 @@ export class AuthInterceptor implements HttpInterceptor {
         //     this._authService.accessToken &&
         //     !AuthUtils.isTokenExpired(this._authService.accessToken)
         // ) {
-        //     newReq = req.clone({
-        //         headers: req.headers.set('Authorization', '' + this.env.TOKEN),
-        //     });
+        // newReq = req.clone({
+        //     headers: req.headers.set('Authorization', '' + localStorage.getItem('token')),
+        // });
+
+        const authToken = localStorage.getItem('token');
+
+        if (authToken) {
+            newReq = newReq.clone({
+                setHeaders: {
+                    Authorization: `Bearer ${authToken}`
+                }
+            });
+        }
         // }
 
         // Response
@@ -54,18 +71,20 @@ export class AuthInterceptor implements HttpInterceptor {
             catchError((error) => {
                 // Catch "401 Unauthorized" responses
                 if (
-                    error instanceof HttpErrorResponse &&
-                    error.status === 401
+                    error.status === 603
                 ) {
                     // Sign out
                     this._authService.signOut();
-
+                    // localStorage.clear()
+                    this._router.navigateByUrl('sign-in')
                     // Reload the app
-                    location.reload();
+                    // location.reload();
                 }
 
                 return throwError(error);
             })
         );
     }
+
+
 }

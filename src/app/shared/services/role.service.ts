@@ -12,7 +12,7 @@ export class RoleService {
         private http: HttpClient,
         private router: Router,
         private _commonService: CommonService
-    ) {}
+    ) { }
 
     addRole(value: any) {
         return this.http.post(
@@ -47,6 +47,22 @@ export class RoleService {
     }
 
     getRoleById(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/role/by/id',
+            { data: this._commonService.encryptData(value) },
+            this._commonService.httpOptions
+        );
+    }
+
+    getPermissions(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/get',
+            value,
+            this._commonService.httpOptions
+        );
+    }
+
+    getPrivilegesByRoleId(value: any) {
         return this.http.post(
             environment.BASE_URL + '/role/by/id',
             { data: this._commonService.encryptData(value) },

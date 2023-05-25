@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
 import { ExpenseService } from 'app/shared/services/expense.service';
@@ -8,6 +8,8 @@ import { MessageService } from 'primeng/api';
     selector: 'app-delete-dialog',
     templateUrl: './delete-dialog.component.html',
     styleUrls: ['./delete-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class DeleteDialogComponent implements OnInit {
     constructor(
@@ -36,7 +38,7 @@ export class DeleteDialogComponent implements OnInit {
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income deleted successfully' });
             },
             (err) => {
-                this.messageService.add({ severity: 'error', summary: 'You cannot delete', detail: 'This category is being used' });
+                this.messageService.add({ severity: 'info', summary: 'You cannot delete', detail: 'This category is being used' });
             }
         );
         this._dialogRef.close(true);

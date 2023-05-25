@@ -6,6 +6,7 @@ import {
     ChangeDetectorRef,
     Input,
     ElementRef,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExpenseCategoriesDialogComponent } from '../expense-categories-dialog/expense-categories-dialog.component';
@@ -18,11 +19,14 @@ import { ExpenseService } from 'app/shared/services/expense.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'environments/environment';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-expense-categories',
     templateUrl: './expense-categories.component.html',
     styleUrls: ['./expense-categories.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class ExpenseCategoriesComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,6 +36,11 @@ export class ExpenseCategoriesComponent implements OnInit {
     incomeResult: any;
     url = environment.BASE_URL;
 
+    dashboardAccess: any
+    checkAdd: any;
+    checkEdit: any;
+    checkDelete: any;
+
     constructor(
         private router: Router,
         private _commonService: CommonService,
@@ -39,7 +48,13 @@ export class ExpenseCategoriesComponent implements OnInit {
         private changeDetection: ChangeDetectorRef,
         // private datePipe: DatePipe,
         private _expenseService: ExpenseService
-    ) {}
+    ) {
+
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+        this.checkAdd = (AppComponent.checkUrl("expenseCategoriesAdd"))
+        this.checkEdit = (AppComponent.checkUrl("expenseCategoriesEdit"))
+        this.checkDelete = (AppComponent.checkUrl("expenseCategoriesDelete"))
+    }
 
     ngOnInit(): void {
         this.getCategoryModal.userId = this._commonService.getUserId();

@@ -6,6 +6,7 @@ import {
     ChangeDetectorRef,
     Input,
     ElementRef,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { IncomeCategoriesDialogComponent } from '../income-categories-dialog/income-categories-dialog.component';
@@ -18,11 +19,14 @@ import { IncomeService } from 'app/shared/services/income.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'environments/environment';
+import { AppComponent } from 'app/app.component';
 
 @Component({
     selector: 'app-income-categories',
     templateUrl: './income-categories.component.html',
     styleUrls: ['./income-categories.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class IncomeCategoriesComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,6 +36,11 @@ export class IncomeCategoriesComponent {
     incomeResult: any;
     url = environment.BASE_URL;
 
+    dashboardAccess: any
+    checkAdd: any;
+    checkEdit: any;
+    checkDelete: any;
+
     constructor(
         private router: Router,
         private _commonService: CommonService,
@@ -39,7 +48,12 @@ export class IncomeCategoriesComponent {
         private changeDetection: ChangeDetectorRef,
         // private datePipe: DatePipe,
         private _incomeService: IncomeService
-    ) {}
+    ) {
+        this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
+        this.checkAdd = (AppComponent.checkUrl("incomeCategoriesAdd"))
+        this.checkEdit = (AppComponent.checkUrl("incomeCategoriesEdit"))
+        this.checkDelete = (AppComponent.checkUrl("incomeCategoriesDelete"))
+    }
 
     ngOnInit(): void {
         this.getCategoryModal.userId = this._commonService.getUserId();
@@ -135,7 +149,7 @@ export class IncomeCategoriesComponent {
     // }
     // confirm() {}
 
-    ngAfterViewInit() {}
+    ngAfterViewInit() { }
 
     // onSuccessAdd(event) {
     //     if (event == 'added') {

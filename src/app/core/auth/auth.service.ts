@@ -4,6 +4,7 @@ import { catchError, Observable, of, switchMap, throwError } from 'rxjs';
 // import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { environment } from 'environments/environment';
+import { CommonService } from 'app/shared/services/common.service';
 
 @Injectable()
 export class AuthService {
@@ -14,8 +15,10 @@ export class AuthService {
      */
     constructor(
         private _httpClient: HttpClient,
-        private _userService: UserService
-    ) {}
+        private _userService: UserService,
+        private _commonService: CommonService
+
+    ) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -25,11 +28,11 @@ export class AuthService {
      * Setter & getter for access token
      */
     set accessToken(token: string) {
-        localStorage.setItem('accessToken', token);
+        localStorage.setItem('token', token);
     }
 
     get accessToken(): string {
-        return localStorage.getItem('accessToken') ?? '';
+        return localStorage.getItem('token') ?? '';
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -66,7 +69,9 @@ export class AuthService {
         }
 
         return this._httpClient
-            .post(environment.BASE_URL + '/login', credentials)
+            .post(environment.BASE_URL + '/login', {
+                data: this._commonService.encryptData(credentials),
+            })
             .pipe(
                 switchMap((response: any) => {
                     // Store the access token in the local storage
@@ -127,7 +132,8 @@ export class AuthService {
      */
     signOut(): Observable<any> {
         // Remove the access token from the local storage
-        localStorage.removeItem('accessToken');
+        localStorage.removeItem('token');
+        localStorage.clear();
 
         // Set the authenticated flag to false
         this._authenticated = false;
