@@ -18,7 +18,7 @@ import { AuthService } from 'app/core/auth/auth.service';
     selector: 'user',
     templateUrl: './user.component.html',
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+
     exportAs: 'user',
 })
 export class UserComponent implements OnInit, OnDestroy {

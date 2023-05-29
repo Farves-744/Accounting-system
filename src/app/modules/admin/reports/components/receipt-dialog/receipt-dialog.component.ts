@@ -6,8 +6,8 @@ import { environment } from 'environments/environment';
 @Component({
     selector: 'app-receipt-dialog',
     templateUrl: './receipt-dialog.component.html',
-    styleUrls: ['./receipt-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./receipt-dialog.component.scss']
+
 
 })
 export class ReceiptDialogComponent implements OnInit {

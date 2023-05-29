@@ -8,11 +8,16 @@ import { GetAccountStatement } from 'app/shared/modals/reports';
 import { ReportsService } from 'app/shared/services/reports.service';
 import { AppComponent } from 'app/app.component';
 
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { DatePipe } from '@angular/common';
+import { TableUtil } from 'app/shared/tableUtil';
+
 @Component({
     selector: 'app-account-transactions',
     templateUrl: './account-transactions.component.html',
-    styleUrls: ['./account-transactions.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./account-transactions.component.scss']
+
 
 })
 export class AccountTransactionsComponent implements OnInit {
@@ -22,10 +27,15 @@ export class AccountTransactionsComponent implements OnInit {
 
     dashboardAccess: any
 
+    cols: any[];
+    exportColumns;
+    accountTransactionsData: any
+
     constructor(
         private _commonService: CommonService,
         private _reportService: ReportsService,
         public dialog: MatDialog,
+        private datePipe: DatePipe,
         private router: Router,
         private changeDetection: ChangeDetectorRef
     ) {
@@ -46,6 +56,21 @@ export class AccountTransactionsComponent implements OnInit {
         this.getAccountStatementModel.userId = this._commonService.getUserId();
         this.getAccountStatement();
         console.log(history.state.data);
+
+        this.cols = [
+            { field: "sn", header: "SN" },
+            { field: "description", header: "DESCRIPTION" },
+            { field: "paymentMode", header: "PAYMENT MODE" },
+            { field: "actualDate", header: "DATE" },
+            { field: "credit", header: "CREDIT AMOUNT" },
+            { field: "debit", header: "DEBIT AMOUNT" },
+            { field: "runningBalance", header: "BALANCE" },
+        ];
+
+        this.exportColumns = this.cols.map(col => ({
+            title: col.header,
+            dataKey: col.field
+        }));
     }
 
     applyFilter() {
@@ -72,6 +97,8 @@ export class AccountTransactionsComponent implements OnInit {
                     this._commonService.decryptData(res)
                 );
 
+                this.accountTransactionsData = this._commonService.decryptData(res)
+
                 this.dataSource.paginator = this.paginator;
                 // this.dataSource.sort = this.sort;
                 this.changeDetection.detectChanges();
@@ -80,6 +107,49 @@ export class AccountTransactionsComponent implements OnInit {
 
     dateFilter() {
         this.getAccountStatement();
+    }
+
+    exportPdf() {
+        const doc = new jsPDF('p', 'pt', 'a4');
+        console.log(this.accountTransactionsData);
+        let rows = []
+
+        this.accountTransactionsData.forEach((element, i) => {
+            var temp = [i + 1, element.description ? element.description : '-', element.payment_mode == 0
+                ? "Gpay"
+                : element.payment_mode == 1
+                    ? "PhonePe"
+                    : element.payment_mode == 2
+                        ? "Credit Card / Debit Card"
+                        : element.payment_mode == 3
+                            ? "Cheque"
+                            : element.payment_mode == 4
+                                ? "Cash"
+                                : "-", this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.credit ? element.credit : '-', element.debit ? element.debit : '-', element.running_balance];
+            rows.push(temp);
+        });
+        doc['autoTable'](this.exportColumns, rows);
+        doc.save("Accounts Transactions.pdf");
+    }
+
+    exportExcel() {
+        var rows = [];
+        const date = new Date();
+        this.accountTransactionsData.forEach((element, i) => {
+            var temp = [i + 1, element.description ? element.description : '-', element.payment_mode == 0
+                ? "Gpay"
+                : element.payment_mode == 1
+                    ? "PhonePe"
+                    : element.payment_mode == 2
+                        ? "Credit Card / Debit Card"
+                        : element.payment_mode == 3
+                            ? "Cheque"
+                            : element.payment_mode == 4
+                                ? "Cash"
+                                : "-", this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.credit ? element.credit : '-', element.debit ? element.debit : '-', element.running_balance];
+            rows.push(temp);
+        });
+        TableUtil.exportArrayToExcel(rows, "Transactions " + this.datePipe.transform(date, 'dd-MMM-yyyy'));
     }
 
     clearDate() {

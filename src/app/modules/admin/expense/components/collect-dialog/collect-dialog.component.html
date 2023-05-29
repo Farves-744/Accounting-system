@@ -98,7 +98,7 @@
 
                 Cancel
             </button>
-            <button
+            <button [disabled]="disableButton"
                 class="px-10 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2"
                 cdkFocusInitial type="submit">
                 {{ isEdit ? "Update Expense" : "Add Expense" }}

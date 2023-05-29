@@ -14,8 +14,7 @@ import { ExpenseReceiptDialogComponent } from './components/expense-receipt-dial
 import { AccountTransactionsComponent } from './components/account-transactions/account-transactions.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
-import { ToasterContainerComponent } from 'app/shared/toaster/toaster-container/toaster-container.component';
-import { ToasterComponent } from 'app/shared/toaster/toaster/toaster.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -37,5 +36,6 @@ import { ToasterComponent } from 'app/shared/toaster/toaster/toaster.component';
         FormsModule,
         SharedModule,
     ],
+    providers: [DatePipe]
 })
-export class ReportsModule {}
+export class ReportsModule { }

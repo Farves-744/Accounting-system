@@ -8,8 +8,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-delete-role-dialog',
     templateUrl: './delete-role-dialog.component.html',
-    styleUrls: ['./delete-role-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./delete-role-dialog.component.scss']
+
 
 })
 export class DeleteRoleDialogComponent implements OnInit {

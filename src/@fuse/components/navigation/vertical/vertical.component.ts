@@ -17,7 +17,7 @@ import { forEach } from 'lodash';
     styleUrls: ['./vertical.component.scss'],
     animations: fuseAnimations,
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+
     exportAs: 'fuseVerticalNavigation'
 })
 export class FuseVerticalNavigationComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
@@ -272,6 +272,7 @@ export class FuseVerticalNavigationComponent implements OnChanges, OnInit, After
     navigationMenus = []
 
     checkMenus() {
+        let logName
         let filteredChild = []
         for (let nav of this.navigation) {
             if (nav.hasOwnProperty('children')) {
@@ -282,25 +283,32 @@ export class FuseVerticalNavigationComponent implements OnChanges, OnInit, After
                             if (c.parentId === nav.parentId) {
                                 filteredChild.push(c)
                             }
+                            if (pri.includes('logs')) {
+                                console.log('yes it has logs');
+                                logName = 'logs'
+                            }
                         }
                     }
                 }
             }
         }
         console.log(filteredChild);
+        console.log(this.navigation);
+
         for (let m of this.navigation) {
             if (m.hasOwnProperty('children')) {
                 m.children = []
                 for (let fc of filteredChild) {
                     if (m.parentId == fc.parentId) {
-                        //console.log(fc);
+                        console.log(fc);
                         //console.log(m);
                         m.children.push(fc)
                     }
                 }
             }
         }
-        this.navigation = this.navigation.filter(item => (item.children && item.children.length > 0) || !item.children);
+        console.log(this.navigation);
+        this.navigation = this.navigation.filter(item => (item.children && item.children.length > 0) || item.tag == logName || (!item.children && item.tag == 'dashboards'));
         console.log(this.navigation);
     }
 

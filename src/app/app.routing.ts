@@ -170,6 +170,13 @@ export const appRoutes: Route[] = [
                         './modules/admin/roles-and-permissions/roles-and-permissions.module'
                     ).then((m) => m.RolesAndPermissionsModule),
             },
+            {
+                path: 'logs',
+                loadChildren: () =>
+                    import('app/modules/admin/log/log.module').then(
+                        (m) => m.LogModule
+                    ),
+            },
         ],
     },
 ];

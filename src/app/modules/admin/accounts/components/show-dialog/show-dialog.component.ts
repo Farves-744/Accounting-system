@@ -12,8 +12,8 @@ import { CommonService } from 'app/shared/services/common.service';
 @Component({
     selector: 'app-show-dialog',
     templateUrl: './show-dialog.component.html',
-    styleUrls: ['./show-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./show-dialog.component.scss']
+
 })
 export class ShowDialogComponent {
     userId: any;
@@ -25,7 +25,7 @@ export class ShowDialogComponent {
         private changeDetection: ChangeDetectorRef,
         public _dialogRef: MatDialogRef<ShowDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.userId = parseInt(localStorage.getItem('userId'));

@@ -8,8 +8,8 @@ import { ReportsService } from 'app/shared/services/reports.service';
 @Component({
     selector: 'app-expense-payment-dialog',
     templateUrl: './expense-payment-dialog.component.html',
-    styleUrls: ['./expense-payment-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./expense-payment-dialog.component.scss']
+
 
 })
 export class ExpensePaymentDialogComponent implements OnInit {

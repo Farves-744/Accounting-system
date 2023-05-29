@@ -13,8 +13,8 @@ import { AppComponent } from 'app/app.component';
 @Component({
     selector: 'app-manage-roles',
     templateUrl: './manage-roles.component.html',
-    styleUrls: ['./manage-roles.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./manage-roles.component.scss']
+
 
 })
 export class ManageRolesComponent {

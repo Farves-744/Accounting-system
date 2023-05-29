@@ -16,8 +16,8 @@ import { AppComponent } from 'app/app.component';
 @Component({
     selector: 'app-add-income',
     templateUrl: './add-income.component.html',
-    styleUrls: ['./add-income.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./add-income.component.scss']
+
 })
 export class AddIncomeComponent {
     addIncomeForm: FormGroup;
@@ -68,7 +68,7 @@ export class AddIncomeComponent {
             taxApplicable: 0,
             taxId: [{ value: null, disabled: true }],
             imageId: this.imageId,
-            image_url: '',
+            imageUrl: '',
             categoryId: [null, Validators.required],
             payments: [[]],
             file: null,
@@ -108,10 +108,11 @@ export class AddIncomeComponent {
             this.addIncomeForm.value.totalAmount =
                 (this.addIncomeForm.value.totalAmount * 100) /
                 (100 + parseInt(value));
+
+            this.addIncomeForm.value.totalAmount = this.addIncomeForm.value.totalAmount + this.addIncomeForm.value.taxAmount;
             console.log(this.addIncomeForm.value.totalAmount);
             this.addIncomeForm.value.finalAmount =
-                this.addIncomeForm.value.totalAmount +
-                this.addIncomeForm.value.taxAmount;
+                this.addIncomeForm.value.totalAmount
             this.finalAmount = this.addIncomeForm.value.finalAmount;
 
             console.log(this.addIncomeForm.value.finalAmount);
@@ -122,7 +123,6 @@ export class AddIncomeComponent {
                     (this.addIncomeForm.value.totalAmount * 100) /
                     (100 + value),
             });
-
             console.log(this.addIncomeForm.value.taxAmount);
 
             this.addIncomeForm.value.totalAmount =
@@ -132,8 +132,11 @@ export class AddIncomeComponent {
                 this.addIncomeForm.value.taxAmount
             );
             this.finalAmount = this.addIncomeForm.value.finalAmount;
-
             console.log(this.addIncomeForm.value.finalAmount);
+
+            // this.addIncomeForm.value.totalAmount = this.finalAmount
+            console.log(this.addIncomeForm.value.totalAmount);
+
         }
     }
 

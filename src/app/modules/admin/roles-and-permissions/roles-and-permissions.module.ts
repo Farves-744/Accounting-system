@@ -12,6 +12,7 @@ import { AddRoleComponent } from './components/add-role/add-role.component';
 import { DeleteRoleDialogComponent } from './components/delete-role-dialog/delete-role-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'app/shared/shared.module';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -31,5 +32,6 @@ import { SharedModule } from 'app/shared/shared.module';
         SharedModule,
         ReactiveFormsModule,
     ],
+    providers: [DatePipe]
 })
 export class RolesAndPermissionsModule { }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ChangeDetectionStrategy, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
@@ -15,12 +15,16 @@ import { environment } from 'environments/environment';
 import { getIncomeCategory } from 'app/shared/modals/income-category';
 import { AppComponent } from 'app/app.component';
 
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { DatePipe } from '@angular/common';
+import { TableUtil } from 'app/shared/tableUtil';
+
+
 @Component({
     selector: 'app-manage-income',
     templateUrl: './manage-income.component.html',
-    styleUrls: ['./manage-income.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
-
+    styleUrls: ['./manage-income.component.scss']
 })
 export class ManageIncomeComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -34,13 +38,18 @@ export class ManageIncomeComponent implements OnInit {
     dashboardAccess: any
     checkEdit: any;
 
+    cols: any[];
+    exportColumns;
+    incomeData: any
+
     constructor(
         private _commonService: CommonService,
         private _incomeService: IncomeService,
         private _reportService: ReportsService,
         public dialog: MatDialog,
         private router: Router,
-        private changeDetection: ChangeDetectorRef
+        private changeDetection: ChangeDetectorRef,
+        private datePipe: DatePipe
     ) {
         this.checkAdd = (AppComponent.checkUrl("manageIncomesAdd"))
         this.checkEdit = (AppComponent.checkUrl("manageIncomesEdit"))
@@ -65,11 +74,26 @@ export class ManageIncomeComponent implements OnInit {
         this.getCategoryNameModal.userId = this._commonService.getUserId();
         this.getIncome();
         this.getCategoryIcon();
+
+        this.cols = [
+            { field: "sn", header: "SN" },
+            { field: "categoryName", header: "CATEGORY NAME" },
+            { field: "description", header: "DESCRIPTION" },
+            { field: "actualDate", header: "DATE" },
+            { field: "taxAmount", header: "TAX AMOUNT" },
+            { field: "totalAmount", header: "AMOUNT" },
+        ];
+
+        this.exportColumns = this.cols.map(col => ({
+            title: col.header,
+            dataKey: col.field
+        }));
     }
 
     navigateToHome() {
         this._commonService.navigateToHome();
     }
+
 
     applyFilter() {
         this.dataSource.filter = '' + Math.random();
@@ -91,6 +115,29 @@ export class ManageIncomeComponent implements OnInit {
         });
     }
 
+    exportPdf() {
+        const doc = new jsPDF('p', 'pt', 'a4');
+        console.log(this.incomeData);
+        let rows = []
+        this.incomeData.forEach(element => {
+            var temp = [element.id, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
+            rows.push(temp);
+        });
+        doc['autoTable'](this.exportColumns, rows);
+        doc.save("Incomes.pdf");
+    }
+
+    exportExcel() {
+        var rows = [];
+        const date = new Date();
+        this.incomeData.forEach((element, i) => {
+            var temp = [i + 1, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
+            rows.push(temp);
+        });
+        TableUtil.exportArrayToExcel(rows, "Incomes " + this.datePipe.transform(date, 'dd-MMM-yyyy'));
+    }
+
+
     getIncome() {
         console.log(this.getIncomeModal);
 
@@ -103,6 +150,8 @@ export class ManageIncomeComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );
+
+                this.incomeData = this._commonService.decryptData(res)
 
                 this.dataSource.paginator = this.paginator;
                 // this.dataSource.sort = this.sort;

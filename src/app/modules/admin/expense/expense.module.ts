@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 import { ExpenseRoutingModule } from './expense-routing.module';
 import { AddExpenseComponent } from './components/add-expense/add-expense.component';
@@ -33,5 +34,6 @@ import { ExpenseCategoriesDialogComponent } from './components/expense-categorie
         FormsModule,
         SharedModule,
     ],
+    providers: [DatePipe,],
 })
-export class ExpenseModule {}
+export class ExpenseModule { }

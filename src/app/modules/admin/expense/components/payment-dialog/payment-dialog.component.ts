@@ -8,8 +8,8 @@ import { ReportsService } from 'app/shared/services/reports.service';
 @Component({
     selector: 'app-payment-dialog',
     templateUrl: './payment-dialog.component.html',
-    styleUrls: ['./payment-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./payment-dialog.component.scss']
+
 
 })
 export class PaymentDialogComponent implements OnInit {

@@ -231,14 +231,15 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
-    // {
-    //     id: 'log',
-    //     title: 'System Log',
-    //     type: 'basic',
-    //     icon: 'heroicons_outline:document-report',
-    //     link: '/log',
-    // },
-    //
+    {
+        id: 'log',
+        title: 'System Log',
+        type: 'basic',
+        tag: 'logs',
+        parentId: 8,
+        icon: 'heroicons_outline:document-report',
+        link: '/logs',
+    },
 ];
 // export const compactNavigation: FuseNavigationItem[] = [
 //     {

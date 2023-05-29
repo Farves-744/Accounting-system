@@ -1,5 +1,6 @@
 <section class="m-5 sm:m-10 p-4 sm:p-6 bg-white rounded-lg w-full flex flex-col gap-4">
     <!-- Breadcrumb -->
+
     <div class="flex items-center justify-between">
         <div class="sm:flex hidden gap-2 items-center">
             <mat-icon class="text-black hover:text-myAccent transition-all w-[22px] h-[22px] cursor-pointer"
@@ -40,8 +41,8 @@
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="user-email">Email <span class="text-red-600">*</span></label>
 
-                <input autocomplete="off" id="user-email" type="email" placeholder="Enter Email" formControlName="email"
-                    class="border border-myAccent p-2 rounded" />
+                <input autocomplete="off" id="user-email" type="email" (change)="validateEmail($event)"
+                    placeholder="Enter Email" formControlName="email" class="border border-myAccent p-2 rounded" />
 
                 <div *ngIf="
                             f.email.invalid &&

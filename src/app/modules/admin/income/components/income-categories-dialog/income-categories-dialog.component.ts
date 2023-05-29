@@ -25,8 +25,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-income-categories-dialog',
     templateUrl: './income-categories-dialog.component.html',
-    styleUrls: ['./income-categories-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./income-categories-dialog.component.scss']
+
 })
 export class IncomeCategoriesDialogComponent {
     env = environment;
@@ -62,7 +62,7 @@ export class IncomeCategoriesDialogComponent {
             categoryType: 0,
             imageId: this.imageId,
             userId: this.userId,
-            image_url: '',
+            imageUrl: '',
             deleteImageId: null,
         });
         this.editCategory(this.data);
@@ -81,7 +81,7 @@ export class IncomeCategoriesDialogComponent {
             this.isEdit = true;
             this.addCategoryForm.patchValue(this.updateFormData);
             console.log(this.addCategoryForm.value.image_url);
-            this.imageUrl = this.env.BASE_URL + '/' + data.image_url;
+            this.imageUrl = this.env.BASE_URL + '/' + data.imageUrl;
             console.log(this.updateFormData);
             console.log(this.url);
         }

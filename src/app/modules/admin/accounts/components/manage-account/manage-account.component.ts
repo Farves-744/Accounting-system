@@ -17,8 +17,8 @@ import { AppComponent } from 'app/app.component';
 @Component({
     selector: 'app-manage-account',
     templateUrl: './manage-account.component.html',
-    styleUrls: ['./manage-account.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./manage-account.component.scss']
+
 
 })
 export class ManageAccountComponent implements OnInit {

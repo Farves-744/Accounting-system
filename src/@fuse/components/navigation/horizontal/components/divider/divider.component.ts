@@ -5,12 +5,11 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
 
 @Component({
-    selector       : 'fuse-horizontal-navigation-divider-item',
-    templateUrl    : './divider.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'fuse-horizontal-navigation-divider-item',
+    templateUrl: './divider.component.html',
+
 })
-export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnDestroy
-{
+export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnDestroy {
     @Input() item: FuseNavigationItem;
     @Input() name: string;
 
@@ -23,8 +22,7 @@ export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnD
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -34,8 +32,7 @@ export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnD
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Get the parent navigation component
         this._fuseHorizontalNavigationComponent = this._fuseNavigationService.getComponent(this.name);
 
@@ -52,8 +49,7 @@ export class FuseHorizontalNavigationDividerItemComponent implements OnInit, OnD
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();

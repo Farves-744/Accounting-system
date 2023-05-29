@@ -10,8 +10,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-add-role',
     templateUrl: './add-role.component.html',
-    styleUrls: ['./add-role.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./add-role.component.scss']
+
 
 })
 export class AddRoleComponent implements OnInit {
@@ -30,7 +30,7 @@ export class AddRoleComponent implements OnInit {
     roleModal: AddRole = new AddRole();
     getRoleByIdModal: GetRoleById = new GetRoleById()
     permissionData: any
-    // addRoleForm: FormGroup;
+    addRoleForm: FormGroup;
     // dataSource = rolesData;
     userId: any;
     updateFormData: any = undefined;
@@ -127,7 +127,9 @@ export class AddRoleComponent implements OnInit {
         'manageRoles',
         'manageRolesAdd',
         'manageRolesEdit',
-        'manageRolesDelete']
+        'manageRolesDelete',
+        'logs'
+    ]
     selected = [];
     roleFormGroup: FormGroup;
 
@@ -154,6 +156,7 @@ export class AddRoleComponent implements OnInit {
         // });
     }
 
+
     // getRoleById() {
     //     this._roleService.getRoleById(history.state.data).subscribe((res) => {
     //         console.log(this._commonService.decryptData(res));
@@ -162,9 +165,12 @@ export class AddRoleComponent implements OnInit {
     // }
 
     // get f() {
-
     //     return this.addRoleForm.controls;
     // }
+
+    showRequiredError() {
+        this.messageService.add({ severity: 'warning', summary: 'Warning', detail: 'Enter Role Name' });
+    }
 
     ngAfterContentInit() {
         if (history.state.data) {

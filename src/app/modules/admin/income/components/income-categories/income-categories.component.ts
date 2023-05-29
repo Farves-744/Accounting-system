@@ -24,8 +24,8 @@ import { AppComponent } from 'app/app.component';
 @Component({
     selector: 'app-income-categories',
     templateUrl: './income-categories.component.html',
-    styleUrls: ['./income-categories.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./income-categories.component.scss']
+
 
 })
 export class IncomeCategoriesComponent {

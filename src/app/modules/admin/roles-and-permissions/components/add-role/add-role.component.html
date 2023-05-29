@@ -54,7 +54,7 @@
                 <tbody *ngFor="let row of menuRows; index as i" class="border-t">
                     <tr>
                         <td class="p-3 font-normal text-black">
-                            <span [ngClass]="{'sub-headings': row.isChild==0}">{{row.name}}
+                            <span [ngClass]="{'sub-headings': row.isChild==0 || row.name != 'logs'}">{{row.name}}
                             </span>
                         </td>
                         <td>
@@ -110,7 +110,6 @@
                 }}
             </button>
         </div>
-
     </div>
 
     <!-- <div class="flex flex-col gap-6">

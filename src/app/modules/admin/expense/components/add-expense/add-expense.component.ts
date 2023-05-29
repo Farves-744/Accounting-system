@@ -14,8 +14,8 @@ import { AppComponent } from 'app/app.component';
 @Component({
     selector: 'app-add-expense',
     templateUrl: './add-expense.component.html',
-    styleUrls: ['./add-expense.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./add-expense.component.scss']
+
 
 })
 export class AddExpenseComponent implements OnInit {
@@ -67,7 +67,7 @@ export class AddExpenseComponent implements OnInit {
             taxApplicable: 0,
             taxId: [{ value: null, disabled: true }],
             imageId: this.imageId,
-            image_url: '',
+            imageUrl: '',
             categoryId: [null, Validators.required],
             payments: [[]],
             file: null,
@@ -108,6 +108,7 @@ export class AddExpenseComponent implements OnInit {
             this.addExpenseForm.value.totalAmount =
                 (this.addExpenseForm.value.totalAmount * 100) /
                 (100 + parseInt(value));
+            // this.addExpenseForm.value.totalAmount = this.addExpenseForm.value.totalAmount + this.addExpenseForm.value.taxAmount;
             console.log(this.addExpenseForm.value.totalAmount);
             this.addExpenseForm.value.finalAmount =
                 this.addExpenseForm.value.totalAmount +
@@ -132,7 +133,6 @@ export class AddExpenseComponent implements OnInit {
                 this.addExpenseForm.value.taxAmount
             );
             this.finalAmount = this.addExpenseForm.value.finalAmount;
-
             console.log(this.addExpenseForm.value.finalAmount);
         }
     }

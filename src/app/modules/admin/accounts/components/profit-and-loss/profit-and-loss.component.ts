@@ -11,8 +11,7 @@ import { CommonService } from 'app/shared/services/common.service';
 @Component({
     selector: 'app-profit-and-loss',
     templateUrl: './profit-and-loss.component.html',
-    styleUrls: ['./profit-and-loss.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./profit-and-loss.component.scss']
 
 })
 export class ProfitAndLossComponent implements OnInit {

@@ -9,11 +9,16 @@ import { AccountService } from 'app/shared/services/account.service';
 import { CommonService } from 'app/shared/services/common.service';
 import { environment } from 'environments/environment';
 
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { DatePipe } from '@angular/common';
+import { TableUtil } from 'app/shared/tableUtil';
+
 @Component({
     selector: 'app-transactions',
     templateUrl: './transactions.component.html',
-    styleUrls: ['./transactions.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./transactions.component.scss']
+
 
 })
 export class TransactionsComponent {
@@ -25,12 +30,17 @@ export class TransactionsComponent {
 
     dashboardAccess: any
 
+    cols: any[];
+    exportColumns;
+    transactionsData: any
+
     constructor(
         private _commonService: CommonService,
         private _accountService: AccountService,
         public dialog: MatDialog,
         private router: Router,
-        private changeDetection: ChangeDetectorRef
+        private changeDetection: ChangeDetectorRef,
+        private datePipe: DatePipe
     ) {
         this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
     }
@@ -57,6 +67,25 @@ export class TransactionsComponent {
         this.getTransactionsModal.userId = this._commonService.getUserId();
 
         this.getTransactions();
+
+        this.cols = [
+            { field: "sn", header: "SN" },
+            { field: "holderName", header: "HOLDER NAME" },
+            { field: "paymentMode", header: "PAYMENT MODE" },
+            { field: "actualDate", header: "DATE" },
+            { field: "credit", header: "CREDIT AMOUNT" },
+            { field: "debit", header: "DEBIT AMOUNT" },
+            { field: "taxStatus", header: "INCLU / EXCLU" },
+            { field: "taxRate", header: "TAX RATE" },
+            { field: "taxAmount", header: "TAX AMOUNT" },
+            { field: "description", header: "DESCRIPTION" },
+            { field: "runningBalance", header: "BALANCE" },
+        ];
+
+        this.exportColumns = this.cols.map(col => ({
+            title: col.header,
+            dataKey: col.field
+        }));
     }
 
     applyFilter() {
@@ -82,6 +111,57 @@ export class TransactionsComponent {
         // }
     }
 
+
+    exportPdf() {
+        const doc = new jsPDF('p', 'pt', 'a4');
+        console.log(this.transactionsData);
+        let rows = []
+        this.transactionsData.forEach((element, i) => {
+            var temp = [i + 1, element.accountName, element.paymentMode == 0
+                ? "Gpay"
+                : element.paymentMode == 1
+                    ? "PhonePe"
+                    : element.paymentMode == 2
+                        ? "Credit Card / Debit Card"
+                        : element.paymentMode == 3
+                            ? "Cheque"
+                            : element.paymentMode == 4
+                                ? "Cash"
+                                : "-", this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.credit ? element.credit : '-', element.debit ? element.debit : '-', element.taxStatus == 1
+                ? "Included"
+                : element.taxStatus == 2
+                    ? "Excluded"
+                    : "-", element.taxRate ? element.taxRate + "%" : "-", element.taxAmount ? element.taxAmount : "-", element.description ? element.description : '-', element.runningBalance];
+            rows.push(temp);
+        });
+        doc['autoTable'](this.exportColumns, rows);
+        doc.save("Transactions.pdf");
+    }
+
+    exportExcel() {
+        var rows = [];
+        const date = new Date();
+        this.transactionsData.forEach((element, i) => {
+            var temp = [i + 1, element.accountName, element.paymentMode == 0
+                ? "Gpay"
+                : element.paymentMode == 1
+                    ? "PhonePe"
+                    : element.paymentMode == 2
+                        ? "Credit Card / Debit Card"
+                        : element.paymentMode == 3
+                            ? "Cheque"
+                            : element.paymentMode == 4
+                                ? "Cash"
+                                : "-", this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.credit ? element.credit : '-', element.debit ? element.debit : '-', element.taxStatus == 1
+                ? "Included"
+                : element.taxStatus == 2
+                    ? "Excluded"
+                    : "-", element.taxRate ? element.taxRate + "%" : "-", element.taxAmount ? element.taxAmount : "-", element.description ? element.description : '-', element.runningBalance];
+            rows.push(temp);
+        });
+        TableUtil.exportArrayToExcel(rows, "Transactions " + this.datePipe.transform(date, 'dd-MMM-yyyy'));
+    }
+
     getTransactions() {
         console.log(this.getTransactionsModal);
 
@@ -93,6 +173,7 @@ export class TransactionsComponent {
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );
+                this.transactionsData = this._commonService.decryptData(res)
                 this.dataSource.paginator = this.paginator;
                 this.changeDetection.detectChanges();
             });

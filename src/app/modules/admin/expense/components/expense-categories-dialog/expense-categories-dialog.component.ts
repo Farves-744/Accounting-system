@@ -25,8 +25,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-income-categories-dialog',
     templateUrl: './expense-categories-dialog.component.html',
-    styleUrls: ['./expense-categories-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./expense-categories-dialog.component.scss']
+
 
 })
 export class ExpenseCategoriesDialogComponent {

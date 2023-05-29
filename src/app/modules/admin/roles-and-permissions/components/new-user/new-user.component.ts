@@ -13,8 +13,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-new-user',
     templateUrl: './new-user.component.html',
-    styleUrls: ['./new-user.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./new-user.component.scss']
+
 
 })
 export class NewUserComponent {
@@ -39,7 +39,7 @@ export class NewUserComponent {
         private _route: Router,
         private changeDetection: ChangeDetectorRef
     ) {
-        this.isAccessToManageUser = (AppComponent.checkUrl("manageAccounts"))
+        this.isAccessToManageUser = (AppComponent.checkUrl("manageUsers"))
         this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
     }
 
@@ -77,7 +77,24 @@ export class NewUserComponent {
         this._route.navigateByUrl('/roles-and-permissions/manage-user')
     }
 
-
+    validateEmail(event) {
+        var req = {
+            "tableName": 'users',
+            "columnName": 'email',
+            "value": event.target.value,
+            "userId": this.userId,
+        }
+        this._commonService.uniqueCheck(req).subscribe((res) => {
+            console.log(this._commonService.decryptData(res));
+            const response = this._commonService.decryptData(res);
+            this.changeDetection.detectChanges();
+        }, err => {
+            if (err.status === 604) {
+                this.messageService.add({ severity: 'info', summary: 'Warning', detail: 'This user email is already exist.' });
+                event.target.value = '';
+            }
+        });
+    }
 
     addOrEditUser() {
         console.log(this.addUserForm.value);
@@ -113,18 +130,21 @@ export class NewUserComponent {
                         console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User updated successfully' });
                         this.addUserForm.reset();
-                        this._route.navigateByUrl(
-                            'roles-and-permissions/manage-user'
-                        );
+                        // this._route.navigateByUrl(
+                        //     'roles-and-permissions/manage-user'
+                        // );
                         setTimeout(() => {
                             if (this.isAccessToManageUser) {
                                 this._route.navigateByUrl(
                                     'roles-and-permissions/manage-user'
                                 );
+                                console.log('have access to manage user');
+
                             } else {
                                 this._route.navigateByUrl(
                                     'roles-and-permissions/new-user'
                                 );
+                                console.log('have not access to manage user');
                             }
                         }, 2000);
                         this.changeDetection.detectChanges();

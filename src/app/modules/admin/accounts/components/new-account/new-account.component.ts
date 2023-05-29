@@ -9,8 +9,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-new-account',
     templateUrl: './new-account.component.html',
-    styleUrls: ['./new-account.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./new-account.component.scss']
+
 })
 export class NewAccountComponent {
     addAccountForm: FormGroup;
@@ -41,23 +41,53 @@ export class NewAccountComponent {
         { type: 'Current Account', id: 2 },
     ];
 
-
-
     validateAccountNumber(event) {
-        const req = {
-            userId: this.userId,
-            accountNo: event.target.value,
-        };
-        this._accountService.accountNumberValidate(req).subscribe((res) => {
+        var req = {
+            "tableName": 'accounts',
+            "columnName": 'account_no',
+            "value": event.target.value,
+            "userId": this.userId,
+        }
+
+        console.log(req);
+
+        this._commonService.uniqueCheck(req).subscribe((res) => {
             console.log(this._commonService.decryptData(res));
-            this.response = this._commonService.decryptData(res);
-            if (this.response.status === 'failure') {
-                this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'This account number is already exist.' });
+            const response = this._commonService.decryptData(res);
+            this.changeDetection.detectChanges();
+        }, err => {
+            if (err.status === 604) {
+                this.messageService.add({ severity: 'info', summary: 'Warning', detail: 'This account number is already exist.' });
                 event.target.value = '';
             }
-            this.changeDetection.detectChanges();
         });
     }
+
+    // checkUniqEmail(event) {
+    //     console.log(this.previousEmailForUniqCheck)
+    //     console.log(event.target.value)
+    //     if (this.previousEmailForUniqCheck != event.target.value) {
+    //         var req = {
+    //             "tableName": 'users',
+    //             "columnName": 'email',
+    //             "value": event.target.value,
+    //             "userId": parseInt(localStorage.getItem('userId')),
+    //         }
+    //         this.commonService.checkUnique(req).subscribe(data => {
+    //             console.log(data)
+    //             var retData = JSON.parse(JSON.stringify(data))
+    //             if (retData.authStatus != false) {
+    //                 if (retData.status == 'notExist') {
+    //                     this.isEmailValid = false
+    //                     $('.emailError').html('')
+    //                 } else {
+    //                     this.isEmailValid = true
+    //                     $('.emailError').html('This Email is already exist')
+    //                 }
+    //             }
+    //         })
+    //     }
+    // }
 
     back() {
         this._route.navigateByUrl('/accounts/manage-account')

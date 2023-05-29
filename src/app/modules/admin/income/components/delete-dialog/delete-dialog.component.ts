@@ -8,7 +8,7 @@ import { MessageService } from 'primeng/api';
     selector: 'app-delete-dialog',
     templateUrl: './delete-dialog.component.html',
     styleUrls: ['./delete-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+
 
 })
 export class DeleteDialogComponent implements OnInit {

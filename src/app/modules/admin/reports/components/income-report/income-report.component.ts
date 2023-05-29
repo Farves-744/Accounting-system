@@ -2,22 +2,27 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChil
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CommonService } from 'app/shared/services/common.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { environment } from 'environments/environment';
 import { ReceiptDialogComponent } from '../receipt-dialog/receipt-dialog.component';
 import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
 import { GetIncomeReports } from 'app/shared/modals/reports';
 import { ReportsService } from 'app/shared/services/reports.service';
 import { IncomeService } from 'app/shared/services/income.service';
 import { getIncomeCategory } from 'app/shared/modals/income-category';
-import { environment } from 'environments/environment';
 import { AppComponent } from 'app/app.component';
+
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { DatePipe } from '@angular/common';
+import { TableUtil } from 'app/shared/tableUtil';
 
 @Component({
     selector: 'app-income-report',
     templateUrl: './income-report.component.html',
-    styleUrls: ['./income-report.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./income-report.component.scss']
+
 
 })
 export class IncomeReportComponent implements OnInit {
@@ -30,12 +35,17 @@ export class IncomeReportComponent implements OnInit {
 
     dashboardAccess: any
 
+    cols: any[];
+    exportColumns;
+    incomeReportsData: any
+
     constructor(
         private _commonService: CommonService,
         private _incomeService: IncomeService,
         private _reportService: ReportsService,
         public dialog: MatDialog,
         private router: Router,
+        private datePipe: DatePipe,
         private changeDetection: ChangeDetectorRef
     ) {
         this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
@@ -61,6 +71,42 @@ export class IncomeReportComponent implements OnInit {
         this.getCategoryNameModal.userId = this._commonService.getUserId();
         this.getIncomeReports();
         this.getCategoryName();
+
+        this.cols = [
+            { field: "sn", header: "SN" },
+            { field: "categoryName", header: "CATEGORY NAME" },
+            { field: "description", header: "DESCRIPTION" },
+            { field: "actualDate", header: "DATE" },
+            { field: "taxAmount", header: "TAX AMOUNT" },
+            { field: "totalAmount", header: "AMOUNT" },
+        ];
+
+        this.exportColumns = this.cols.map(col => ({
+            title: col.header,
+            dataKey: col.field
+        }));
+    }
+
+    exportPdf() {
+        const doc = new jsPDF('p', 'pt', 'a4');
+        console.log(this.incomeReportsData);
+        let rows = []
+        this.incomeReportsData.forEach((element, i) => {
+            var temp = [i + 1, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
+            rows.push(temp);
+        });
+        doc['autoTable'](this.exportColumns, rows);
+        doc.save("Income Reports.pdf");
+    }
+
+    exportExcel() {
+        var rows = [];
+        const date = new Date();
+        this.incomeReportsData.forEach((element, i) => {
+            var temp = [i + 1, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
+            rows.push(temp);
+        });
+        TableUtil.exportArrayToExcel(rows, "Income Reports " + this.datePipe.transform(date, 'dd-MMM-yyyy'));
     }
 
     applyFilter() {
@@ -85,6 +131,8 @@ export class IncomeReportComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );
+
+                this.incomeReportsData = this._commonService.decryptData(res)
 
                 this.dataSource.paginator = this.paginator;
                 // this.dataSource.sort = this.sort;

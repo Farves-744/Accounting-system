@@ -12,8 +12,8 @@ import { AppComponent } from 'app/app.component';
 @Component({
     selector: 'app-accounts-statement',
     templateUrl: './accounts-statement.component.html',
-    styleUrls: ['./accounts-statement.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./accounts-statement.component.scss']
+
 
 })
 export class AccountsStatementComponent {

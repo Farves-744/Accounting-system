@@ -13,12 +13,15 @@ import { ExpenseService } from 'app/shared/services/expense.service';
 import { ReportsService } from 'app/shared/services/reports.service';
 import { AppComponent } from 'app/app.component';
 
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { DatePipe } from '@angular/common';
+import { TableUtil } from 'app/shared/tableUtil';
+
 @Component({
     selector: 'app-manage-expense',
     templateUrl: './manage-expense.component.html',
-    styleUrls: ['./manage-expense.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
-
+    styleUrls: ['./manage-expense.component.scss']
 })
 export class ManageExpenseComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,13 +35,18 @@ export class ManageExpenseComponent implements OnInit {
     checkEdit: any;
     dashboardAccess: any
 
+    cols: any[];
+    exportColumns;
+    expenseData: any
+
     constructor(
         private _commonService: CommonService,
         private _expenseService: ExpenseService,
         private _reportService: ReportsService,
         public dialog: MatDialog,
         private router: Router,
-        private changeDetection: ChangeDetectorRef
+        private changeDetection: ChangeDetectorRef,
+        private datePipe: DatePipe
     ) {
         this.checkAdd = (AppComponent.checkUrl("manageExpensesAdd"))
         this.checkEdit = (AppComponent.checkUrl("manageExpensesEdit"))
@@ -88,6 +96,30 @@ export class ManageExpenseComponent implements OnInit {
         this.router.navigate(['/expense/add-expense'], {
             state: { data: id },
         });
+        console.log(id);
+
+    }
+
+    exportPdf() {
+        const doc = new jsPDF('p', 'pt', 'a4');
+        console.log(this.expenseData);
+        let rows = []
+        this.expenseData.forEach(element => {
+            var temp = [element.id, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
+            rows.push(temp);
+        });
+        doc['autoTable'](this.exportColumns, rows);
+        doc.save("Expenses.pdf");
+    }
+
+    exportExcel() {
+        var rows = [];
+        const date = new Date();
+        this.expenseData.forEach((element, i) => {
+            var temp = [i + 1, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
+            rows.push(temp);
+        });
+        TableUtil.exportArrayToExcel(rows, "Expenses " + this.datePipe.transform(date, 'dd-MMM-yyyy'));
     }
 
     getExpense() {
@@ -102,6 +134,8 @@ export class ManageExpenseComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );
+
+                this.expenseData = this._commonService.decryptData(res)
 
                 this.dataSource.paginator = this.paginator;
                 // this.dataSource.sort = this.sort;

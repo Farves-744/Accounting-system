@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 import { AccountsRoutingModule } from './accounts-routing.module';
 import { ManageAccountComponent } from './components/manage-account/manage-account.component';
@@ -30,6 +31,6 @@ import { SharedModule } from 'app/shared/shared.module';
         FormsModule,
 
     ],
-    providers: [NewAccountComponent],
+    providers: [NewAccountComponent, DatePipe],
 })
 export class AccountsModule { }

@@ -14,11 +14,16 @@ import { environment } from 'environments/environment';
 import { ToasterService } from 'app/shared/services/toaster.service';
 import { AppComponent } from 'app/app.component';
 
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { DatePipe } from '@angular/common';
+import { TableUtil } from 'app/shared/tableUtil';
+
 @Component({
     selector: 'app-expense-report',
     templateUrl: './expense-report.component.html',
-    styleUrls: ['./expense-report.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./expense-report.component.scss']
+
 
 })
 export class ExpenseReportComponent implements OnInit {
@@ -30,6 +35,10 @@ export class ExpenseReportComponent implements OnInit {
     url = environment.BASE_URL;
     dashboardAccess: any
 
+    cols: any[];
+    exportColumns;
+    expenseReportsData: any
+
     constructor(
         private _commonService: CommonService,
         private _reportService: ReportsService,
@@ -37,7 +46,8 @@ export class ExpenseReportComponent implements OnInit {
         public dialog: MatDialog,
         private router: Router,
         private changeDetection: ChangeDetectorRef,
-        private toaster: ToasterService
+        private toaster: ToasterService,
+        private datePipe: DatePipe,
     ) {
         this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
     }
@@ -66,10 +76,47 @@ export class ExpenseReportComponent implements OnInit {
         this.getCategoryNameModal.userId = this._commonService.getUserId();
         this.getExpenseReports();
         this.getCategoryName();
+
+
+        this.cols = [
+            { field: "sn", header: "SN" },
+            { field: "categoryName", header: "CATEGORY NAME" },
+            { field: "description", header: "DESCRIPTION" },
+            { field: "actualDate", header: "DATE" },
+            { field: "taxAmount", header: "TAX AMOUNT" },
+            { field: "totalAmount", header: "AMOUNT" },
+        ];
+
+        this.exportColumns = this.cols.map(col => ({
+            title: col.header,
+            dataKey: col.field
+        }));
     }
 
     applyFilter() {
         this.dataSource.filter = '' + Math.random();
+    }
+
+    exportPdf() {
+        const doc = new jsPDF('p', 'pt', 'a4');
+        console.log(this.expenseReportsData);
+        let rows = []
+        this.expenseReportsData.forEach((element, i) => {
+            var temp = [i + 1, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
+            rows.push(temp);
+        });
+        doc['autoTable'](this.exportColumns, rows);
+        doc.save("Expense Reports.pdf");
+    }
+
+    exportExcel() {
+        var rows = [];
+        const date = new Date();
+        this.expenseReportsData.forEach((element, i) => {
+            var temp = [i + 1, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
+            rows.push(temp);
+        });
+        TableUtil.exportArrayToExcel(rows, "Expense Reports " + this.datePipe.transform(date, 'dd-MMM-yyyy'));
     }
 
     searchExpenseReport(event: any) {
@@ -90,6 +137,7 @@ export class ExpenseReportComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );
+                this.expenseReportsData = this._commonService.decryptData(res)
 
                 this.dataSource.paginator = this.paginator;
                 // this.dataSource.sort = this.sort;

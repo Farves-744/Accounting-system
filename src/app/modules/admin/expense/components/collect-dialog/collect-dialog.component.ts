@@ -10,8 +10,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-collect-dialog',
     templateUrl: './collect-dialog.component.html',
-    styleUrls: ['./collect-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./collect-dialog.component.scss']
+
 })
 export class CollectDialogComponent implements OnInit {
     getAccountsModel: any = { userId: null, }
@@ -23,6 +23,8 @@ export class CollectDialogComponent implements OnInit {
     imageId: any;
     any: any;
     accounts: any;
+    accountsDetails: any;
+    disableButton: boolean = false
 
     constructor(
         public dialogRef: MatDialogRef<CollectDialogComponent>,
@@ -77,15 +79,20 @@ export class CollectDialogComponent implements OnInit {
         this.paymentsModal.forEach(item => {
             let accountDetails
             req.id = item.accountId
+
             this._accountService.getAccountById(req).subscribe(res => {
                 console.log(this._commonService.decryptData(res));
-                accountDetails = this._commonService.decryptData(res)
+                this.accountsDetails = this._commonService.decryptData(res)
+                console.log(accountDetails);
                 this.changeDetection.detectChanges();
+                for (let account of this.accountsDetails) {
+                    if (item.amount > account.runningBalance) {
+                        this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Account Balance limit reached' });
+                        this.disableButton = true;
+                    }
+                }
+                console.log(this.accountsDetails);
             })
-
-            if (item.amount > accountDetails.runningBalance) {
-                this.messageService.add({ severity: 'info', summary: 'Success', detail: 'You have exceeded this account balance' });
-            }
         })
     }
 

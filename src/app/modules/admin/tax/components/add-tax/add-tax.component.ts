@@ -9,8 +9,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-add-tax',
     templateUrl: './add-tax.component.html',
-    styleUrls: ['./add-tax.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./add-tax.component.scss']
+
 
 })
 export class AddTaxComponent implements OnInit {

@@ -41,4 +41,12 @@ export class CommonService {
     getUserId() {
         return parseInt(localStorage.getItem('userId'));
     }
+
+    uniqueCheck(value: any) {
+        return this.http.post(
+            environment.BASE_URL + '/unique/check',
+            { data: this.encryptData(value) },
+            this.httpOptions
+        );
+    }
 }

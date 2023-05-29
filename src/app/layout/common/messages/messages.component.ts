@@ -7,14 +7,13 @@ import { Message } from 'app/layout/common/messages/messages.types';
 import { MessagesService } from 'app/layout/common/messages/messages.service';
 
 @Component({
-    selector       : 'messages',
-    templateUrl    : './messages.component.html',
-    encapsulation  : ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    exportAs       : 'messages'
+    selector: 'messages',
+    templateUrl: './messages.component.html',
+    encapsulation: ViewEncapsulation.None,
+
+    exportAs: 'messages'
 })
-export class MessagesComponent implements OnInit, OnDestroy
-{
+export class MessagesComponent implements OnInit, OnDestroy {
     @ViewChild('messagesOrigin') private _messagesOrigin: MatButton;
     @ViewChild('messagesPanel') private _messagesPanel: TemplateRef<any>;
 
@@ -31,8 +30,7 @@ export class MessagesComponent implements OnInit, OnDestroy
         private _messagesService: MessagesService,
         private _overlay: Overlay,
         private _viewContainerRef: ViewContainerRef
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -42,8 +40,7 @@ export class MessagesComponent implements OnInit, OnDestroy
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Subscribe to message changes
         this._messagesService.messages$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -63,15 +60,13 @@ export class MessagesComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
 
         // Dispose the overlay
-        if ( this._overlayRef )
-        {
+        if (this._overlayRef) {
             this._overlayRef.dispose();
         }
     }
@@ -83,17 +78,14 @@ export class MessagesComponent implements OnInit, OnDestroy
     /**
      * Open the messages panel
      */
-    openPanel(): void
-    {
+    openPanel(): void {
         // Return if the messages panel or its origin is not defined
-        if ( !this._messagesPanel || !this._messagesOrigin )
-        {
+        if (!this._messagesPanel || !this._messagesOrigin) {
             return;
         }
 
         // Create the overlay if it doesn't exist
-        if ( !this._overlayRef )
-        {
+        if (!this._overlayRef) {
             this._createOverlay();
         }
 
@@ -104,16 +96,14 @@ export class MessagesComponent implements OnInit, OnDestroy
     /**
      * Close the messages panel
      */
-    closePanel(): void
-    {
+    closePanel(): void {
         this._overlayRef.detach();
     }
 
     /**
      * Mark all messages as read
      */
-    markAllAsRead(): void
-    {
+    markAllAsRead(): void {
         // Mark all as read
         this._messagesService.markAllAsRead().subscribe();
     }
@@ -121,8 +111,7 @@ export class MessagesComponent implements OnInit, OnDestroy
     /**
      * Toggle read status of the given message
      */
-    toggleRead(message: Message): void
-    {
+    toggleRead(message: Message): void {
         // Toggle the read status
         message.read = !message.read;
 
@@ -133,8 +122,7 @@ export class MessagesComponent implements OnInit, OnDestroy
     /**
      * Delete the given message
      */
-    delete(message: Message): void
-    {
+    delete(message: Message): void {
         // Delete the message
         this._messagesService.delete(message.id).subscribe();
     }
@@ -145,8 +133,7 @@ export class MessagesComponent implements OnInit, OnDestroy
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
 
@@ -157,43 +144,42 @@ export class MessagesComponent implements OnInit, OnDestroy
     /**
      * Create the overlay
      */
-    private _createOverlay(): void
-    {
+    private _createOverlay(): void {
         // Create the overlay
         this._overlayRef = this._overlay.create({
-            hasBackdrop     : true,
-            backdropClass   : 'fuse-backdrop-on-mobile',
-            scrollStrategy  : this._overlay.scrollStrategies.block(),
+            hasBackdrop: true,
+            backdropClass: 'fuse-backdrop-on-mobile',
+            scrollStrategy: this._overlay.scrollStrategies.block(),
             positionStrategy: this._overlay.position()
-                                  .flexibleConnectedTo(this._messagesOrigin._elementRef.nativeElement)
-                                  .withLockedPosition(true)
-                                  .withPush(true)
-                                  .withPositions([
-                                      {
-                                          originX : 'start',
-                                          originY : 'bottom',
-                                          overlayX: 'start',
-                                          overlayY: 'top'
-                                      },
-                                      {
-                                          originX : 'start',
-                                          originY : 'top',
-                                          overlayX: 'start',
-                                          overlayY: 'bottom'
-                                      },
-                                      {
-                                          originX : 'end',
-                                          originY : 'bottom',
-                                          overlayX: 'end',
-                                          overlayY: 'top'
-                                      },
-                                      {
-                                          originX : 'end',
-                                          originY : 'top',
-                                          overlayX: 'end',
-                                          overlayY: 'bottom'
-                                      }
-                                  ])
+                .flexibleConnectedTo(this._messagesOrigin._elementRef.nativeElement)
+                .withLockedPosition(true)
+                .withPush(true)
+                .withPositions([
+                    {
+                        originX: 'start',
+                        originY: 'bottom',
+                        overlayX: 'start',
+                        overlayY: 'top'
+                    },
+                    {
+                        originX: 'start',
+                        originY: 'top',
+                        overlayX: 'start',
+                        overlayY: 'bottom'
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'bottom',
+                        overlayX: 'end',
+                        overlayY: 'top'
+                    },
+                    {
+                        originX: 'end',
+                        originY: 'top',
+                        overlayX: 'end',
+                        overlayY: 'bottom'
+                    }
+                ])
         });
 
         // Detach the overlay from the portal on backdrop click
@@ -207,12 +193,10 @@ export class MessagesComponent implements OnInit, OnDestroy
      *
      * @private
      */
-    private _calculateUnreadCount(): void
-    {
+    private _calculateUnreadCount(): void {
         let count = 0;
 
-        if ( this.messages && this.messages.length )
-        {
+        if (this.messages && this.messages.length) {
             count = this.messages.filter(message => !message.read).length;
         }
 

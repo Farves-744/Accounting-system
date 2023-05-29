@@ -12,8 +12,8 @@ import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-collect-dialog',
     templateUrl: './collect-dialog.component.html',
-    styleUrls: ['./collect-dialog.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./collect-dialog.component.scss']
+
 
 })
 export class CollectDialogComponent implements OnInit {

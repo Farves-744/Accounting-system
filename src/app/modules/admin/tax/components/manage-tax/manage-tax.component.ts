@@ -13,8 +13,8 @@ import { AppComponent } from 'app/app.component';
 @Component({
     selector: 'app-manage-tax',
     templateUrl: './manage-tax.component.html',
-    styleUrls: ['./manage-tax.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./manage-tax.component.scss']
+
 
 })
 export class ManageTaxComponent {
