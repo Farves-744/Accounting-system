@@ -1,7 +1,7 @@
 <section class="m-5 sm:m-10 p-4 sm:p-6 bg-[#ECECEC] rounded-lg w-full flex flex-col gap-4 overflow-y-scroll">
     <!-- Date Range Filter -->
     <div class="bg-transparent self-end">
-        <mat-form-field appearance="fill" class="my-4 w-full sm:w-[25rem]">
+        <mat-form-field appearance="fill" class="my-4 w-[15.5rem] sm:w-[25rem]">
             <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
                 <input matStartDate placeholder="Start date" [(ngModel)]="startDate" (dateChange)="dateFilter()" />
                 <input matEndDate placeholder="End date" [(ngModel)]="endDate" (dateChange)="dateFilter()" />
@@ -111,7 +111,7 @@
             </button>
         </div>
 
-        <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
+        <div class="whitespace-nowrap w-full overflow-x-auto shadow rounded-lg">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
                 <!--- Note that these columns can be defined in any order.
                       The actual rendered columns are set as a property on the row definition" -->

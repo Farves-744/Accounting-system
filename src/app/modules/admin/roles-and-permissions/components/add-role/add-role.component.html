@@ -14,13 +14,14 @@
         </div>
     </div>
 
-    <form class="flex flex-col gap-4">
+    <form (ngSubmit)="f.form.valid" #f="ngForm" class="flex flex-col gap-4">
         <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div class="flex flex-col items-start gap-2">
                 <label class="font-medium" for="role-name">Role Name</label>
 
-                <input id="role-name" name="roleName" required [(ngModel)]="roleModal.roleName" type="text" required
-                    placeholder="Enter Role Name" class="border border-myAccent p-2 rounded w-[15rem]" />
+                <input id="role-name" #role=ngModel name="roleName" required [(ngModel)]="roleModal.roleName"
+                    type="text" required placeholder="Enter Role Name"
+                    class="border border-myAccent p-2 rounded w-[15rem]" />
 
                 <!-- <div *ngIf="
                     (f.submitted && role.invalid) || role.touched
@@ -29,6 +30,14 @@
                         This field is required
                     </div>
                 </div> -->
+
+                <div *ngIf="
+                            (f.submitted && role.invalid) || role.touched
+                        ">
+                    <div class="text-[#dc2626]" *ngIf="role.errors?.['required']">
+                        This field is required
+                    </div>
+                </div>
             </div>
 
             <div class="flex items-center gap-2">
@@ -54,41 +63,25 @@
                 <tbody *ngFor="let row of menuRows; index as i" class="border-t">
                     <tr>
                         <td class="p-3 font-normal text-black">
-                            <span [ngClass]="{'sub-headings': row.isChild==0 || row.name != 'logs'}">{{row.name}}
+                            <span [ngClass]="{'sub-headings': row.isChild==0}">{{row.name}}
                             </span>
                         </td>
                         <td>
-                            <!-- <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.view"
-                                [disabled]="(row.length!=0  && row.length<1) || row.length==5"
-                                (change)="onCheck('view', i)" name="view"></mat-checkbox> -->
-
                             <input class="big-checkbox accent-accentHover" type="checkbox" name="view"
                                 [(ngModel)]="row.view" [disabled]="(row.length!=0  && row.length<1) || row.length==5"
                                 (change)="onCheck('view', i)">
                         </td>
                         <td>
-                            <!-- <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.add"
-                                [disabled]="(row.length!=0  &&  row.length<2) || row.length==5"
-                                (change)="onCheck('add', i)" name="add"></mat-checkbox> -->
-
                             <input class="big-checkbox accent-accentHover" type="checkbox" name="add"
                                 [(ngModel)]="row.add" [disabled]="(row.length!=0  && row.length<2) || row.length==5"
                                 (change)="onCheck('add', i)">
                         </td>
                         <td>
-                            <!-- <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.edit"
-                                [disabled]="(row.length!=0  &&  row.length<3) || row.length==5"
-                                (change)="onCheck('edit', i)" name="edit"></mat-checkbox> -->
-
                             <input class="big-checkbox accent-accentHover" type="checkbox" name="edit"
                                 [(ngModel)]="row.edit" [disabled]="(row.length!=0  && row.length<3) || row.length==5"
                                 (change)="onCheck('edit', i)">
                         </td>
                         <td>
-                            <!-- <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.delete"
-                                [disabled]="(row.length!=0 &&  row.length<4) || row.length==5 "
-                                (change)="onCheck('delete', i)" name="delete"></mat-checkbox> -->
-
                             <input class="big-checkbox accent-accentHover" type="checkbox" name="delete"
                                 [(ngModel)]="row.delete" [disabled]="(row.length!=0  && row.length<4) || row.length==5"
                                 (change)="onCheck('delete', i)">
@@ -103,7 +96,7 @@
                 class="px-10 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2">
                 Cancel
             </button>
-            <button (click)="updateRole()" type="submit"
+            <button (click)="role.valid ? updateRole() : showRequiredError()" type="submit"
                 class="px-10 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover border border-darkAccent hover:border-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2">
                 {{
                 updateFormData != undefined ? "Update Role" : "Add Role"
@@ -111,141 +104,4 @@
             </button>
         </div>
     </div>
-
-    <!-- <div class="flex flex-col gap-6">
-        <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
-            <table class="w-full table-auto">
-                <thead class="uppercase text-center text-black font-bold bg-[#d9edff]">
-                    <tr class="thead">
-                        <th class="text-left p-3">
-                            <p>Privileges</p>
-                        </th>
-                        <th class="text-left p-3">
-                            <p>View</p>
-                        </th>
-                        <th class="text-left p-3">
-                            <p>Create</p>
-                        </th>
-                        <th class="text-left p-3">
-                            <p>Edit</p>
-                        </th>
-                        <th class="text-left p-3">
-                            <p>Delete</p>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="border-t">
-
-
-                    <tr>
-                        <td class="p-3 font-bold text-black">Dashboard</td>
-                        <td class="p-3">
-                            <mat-checkbox #myInput [value]="1" (change)="addPermission($event)"
-                                [checked]="isDisabled"></mat-checkbox>
-                        </td>
-                    </tr>
-                    <tr class="td">
-                        <td class="p-3 font-bold text-black">Income</td>
-                        <td class="p-3">
-                            <mat-checkbox #myInput [value]="2" (change)="addPermission($event)"
-                                [checked]="isDisabled"></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox #myInput [value]="3" (change)="addPermission($event)" [checked]="isDisabled">
-                            </mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox #myInput [value]="4" (change)="addPermission($event)"
-                                [checked]="isDisabled"></mat-checkbox>
-                        </td>
-                        <td class="p-3">
-                            <mat-checkbox #myInput [value]="5" (change)="addPermission($event)"
-                                [checked]="isDisabled"></mat-checkbox>
-                        </td>
-                    </tr>
-
-
-                </tbody>
-            </table>
-        </div>
-
-        <div class="flex items-center gap-4 mt-4 self-end">
-            <button type="button"
-                class="px-10 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2">
-                Cancel
-            </button>
-            <button type="submit"
-                class="px-10 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover border border-darkAccent hover:border-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2">
-                {{
-                updateFormData != undefined ? "Update Role" : "Add Role"
-                }}
-            </button>
-        </div>
-    </div> -->
-</section>
-<p-toast></p-toast>
-
-
-<!-- New code -->
-
-
-<!-- <div class="flex flex-col gap-6">
-    <div class="whitespace-nowrap w-full overflow-x-scroll shadow rounded-lg">
-        <table class="w-full table-auto" responsiveLayout="scroll">
-            <thead class="uppercase text-center text-black font-bold bg-[#d9edff]">
-                <tr class="thead">
-                    <th class="text-left p-3">privileges</th>
-                    <th class="text-left p-3">View</th>
-                    <th class="text-left p-3">Create</th>
-                    <th class="text-left p-3">Update</th>
-                    <th class="text-left p-3">Delete</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let row of menuRows; index as i" class="border-t">
-                <tr>
-                    <td class="p-3 font-bold text-black">
-                        <span [ngClass]="{'sub-headings': row.isChild==0}">{{row.isChild==0?'':'-
-                            -'}}{{row.name}}
-                        </span>
-                    </td>
-                    <td>
-                        <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.view"
-                            [disabled]="(row.length!=0  && row.length<1) || row.length==5 "
-                            (change)="oncheck('view', i)" name="view"></mat-checkbox>
-                    </td>
-                    <td>
-                        <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.add"
-                            [disabled]="(row.length!=0  &&  row.length<2) || row.length==5 "
-                            (change)="oncheck('add', i)" name="add"></mat-checkbox>
-                    </td>
-                    <td>
-                        <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.edit"
-                            [disabled]="(row.length!=0  &&  row.length<3) || row.length==5 "
-                            (change)="oncheck('edit', i)" name="edit"></mat-checkbox>
-                    </td>
-                    <td>
-                        <mat-checkbox type="checkbox" class="accent-yellow-500 text-4xl" [(ngModel)]="row.delete"
-                            [disabled]="(row.length!=0 &&  row.length<4) || row.length==5 "
-                            (change)="oncheck('delete', i)" name="delete"></mat-checkbox>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="flex items-center gap-4 mt-4 self-end">
-        <button type="button"
-            class="px-10 text-accentHover border border-accentHover  py-2 w-fit whitespace-nowrap rounded bg-backgroundColor justify-between transition-all flex items-center gap-2">
-            Cancel
-        </button>
-        <button type="submit"
-            class="px-10 text-textColor py-2 w-fit whitespace-nowrap rounded hover:bg-accentHover border border-darkAccent hover:border-accentHover bg-darkAccent justify-between transition-all flex items-center gap-2">
-            {{
-            updateFormData != undefined ? "Update Role" : "Add Role"
-            }}
-        </button>
-    </div>
-
-</div> -->
-
-<p-toast></p-toast>
+    <p-toast></p-toast>

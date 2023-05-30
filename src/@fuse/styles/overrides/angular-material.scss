@@ -35,6 +35,7 @@
         &:not(.mat-expanded) {
             .mat-expansion-panel-header {
                 &:not([aria-disabled="true"]) {
+
                     &.cdk-keyboard-focused,
                     &.cdk-program-focused,
                     &:hover {
@@ -98,7 +99,8 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        z-index: 2; /* Move mat-button-wrapper above the ripple and focus overlay */
+        z-index: 2;
+        /* Move mat-button-wrapper above the ripple and focus overlay */
     }
 
     .mat-button-focus-overlay,
@@ -143,6 +145,7 @@
 .mat-mini-fab,
 .mat-raised-button,
 .mat-stroked-button {
+
     /* mat-progress-spinner inside buttons */
     .mat-progress-spinner {
         &.mat-progress-spinner-indeterminate-animation[mode="indeterminate"] {
@@ -204,6 +207,7 @@
 .mat-button,
 .mat-icon-button,
 .mat-stroked-button {
+
     /* Apply primary color */
     &.mat-primary:not(.mat-button-disabled) {
         .mat-icon {
@@ -254,6 +258,7 @@
     &.mat-primary:not(.mat-button-disabled),
     &.mat-accent:not(.mat-button-disabled),
     &.mat-warn:not(.mat-button-disabled) {
+
         &:hover,
         &.cdk-keyboard-focused,
         &.cdk-program-focused {
@@ -288,6 +293,7 @@
 
 /* Stroked buttons */
 .mat-stroked-button {
+
     /* Border color */
     &:not(.mat-button-disabled) {
         @apply border-gray-300 dark:border-gray-500 #{'!important'};
@@ -306,7 +312,7 @@
     @apply space-x-1;
 
     &.mat-button-toggle-group-appearance-standard {
-        .mat-button-toggle + .mat-button-toggle {
+        .mat-button-toggle+.mat-button-toggle {
             background-clip: padding-box;
         }
     }
@@ -407,10 +413,7 @@ body.light .mat-calendar-body-selected {
     background-color: var(--myAccent) !important;
 }
 
-body.light
-    .mat-calendar-body-today:not(.mat-calendar-body-selected):not(
-        .mat-calendar-body-comparison-identical
-    ) {
+body.light .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
     border-color: var(--myAccent) !important;
 }
 
@@ -421,11 +424,13 @@ element.style {
     left: 957px;
     transform: translateX(-16px);
 }
+
 // .cdk-overlay-pane {
 //     top: 390px !important;
 // }
 
 .mat-form-field.mat-form-field-appearance-fill {
+
     /* Disabled */
     &.mat-form-field-disabled {
         opacity: 0.7 !important;
@@ -434,7 +439,16 @@ element.style {
     /* Invalid */
     &.mat-form-field-invalid {
         .mat-form-field-wrapper {
+
             /* Border color */
+            .mat-form-field-flex {
+                // @apply border-warn dark:border-warn #{'!important'};
+            }
+        }
+    }
+
+    &.mat-form-field.ng-invalid.ng-touched {
+        .mat-form-field-wrapper {
             .mat-form-field-flex {
                 @apply border-warn dark:border-warn #{'!important'};
             }
@@ -444,6 +458,7 @@ element.style {
     /* Focused */
     &.mat-focused {
         .mat-form-field-wrapper {
+
             /* Background color */
             .mat-form-field-flex {
                 @apply bg-card dark:bg-card #{'!important'};
@@ -454,6 +469,7 @@ element.style {
     /* Focused and valid fields */
     &.mat-focused:not(.mat-form-field-invalid) {
         .mat-form-field-wrapper {
+
             /* Border color */
             .mat-form-field-flex {
                 @apply border-myAccent dark:border-primary #{'!important'};
@@ -516,46 +532,44 @@ element.style {
             border-radius: 4px;
             padding: 0 16px;
             border-width: 1px;
-            @apply shadow-sm bg-transparent border-myAccent  #{'!important'};
+            @apply shadow-sm bg-transparent border-myAccent #{'!important'};
 
             .mat-form-field-prefix {
-                > .mat-icon {
+                >.mat-icon {
                     margin-right: 12px;
                 }
 
-                > .mat-icon-button {
+                >.mat-icon-button {
                     margin: 0 4px 0 -10px;
                 }
 
-                > .mat-select {
+                >.mat-select {
                     margin-right: 10px;
                 }
 
-                > .mat-datepicker-toggle {
+                >.mat-datepicker-toggle {
                     margin-left: -8px;
                 }
 
-                > *:not(.mat-icon):not(.mat-icon-button):not(.mat-select):not(
-                        .mat-datepicker-toggle
-                    ) {
+                >*:not(.mat-icon):not(.mat-icon-button):not(.mat-select):not(.mat-datepicker-toggle) {
                     margin-right: 12px;
                 }
             }
 
             .mat-form-field-suffix {
-                > .mat-icon {
+                >.mat-icon {
                     margin-left: 12px;
                 }
 
-                > .mat-icon-button {
+                >.mat-icon-button {
                     margin: 0 -10px 0 4px;
                 }
 
-                > .mat-select {
+                >.mat-select {
                     margin-left: 10px;
                 }
 
-                > .mat-datepicker-toggle {
+                >.mat-datepicker-toggle {
                     margin-right: -8px;
                 }
             }
@@ -613,9 +627,7 @@ element.style {
 
                             .mat-select-arrow-wrapper {
                                 .mat-select-arrow {
-                                    border-top-color: var(
-                                        --fuse-primary
-                                    ) !important;
+                                    border-top-color: var(--fuse-primary) !important;
                                 }
                             }
                         }
@@ -692,7 +704,7 @@ element.style {
                             .mat-select-value-text {
                                 display: inline-flex;
 
-                                > * {
+                                >* {
                                     overflow: hidden;
                                     white-space: nowrap;
                                     text-overflow: ellipsis;
@@ -772,6 +784,7 @@ element.style {
     &.fuse-mat-textarea {
         .mat-form-field-wrapper {
             .mat-form-field-flex {
+
                 .mat-form-field-prefix,
                 .mat-form-field-suffix {
                     align-items: flex-start;
@@ -816,25 +829,23 @@ element.style {
                     .mat-form-field-prefix {
                         border-radius: 24px 0 0 24px;
 
-                        > .mat-icon {
+                        >.mat-icon {
                             margin-right: 12px;
                         }
 
-                        > .mat-icon-button {
+                        >.mat-icon-button {
                             margin-right: 2px;
                         }
 
-                        > .mat-select {
+                        >.mat-select {
                             margin-right: 8px;
                         }
 
-                        > .mat-datepicker-toggle {
+                        >.mat-datepicker-toggle {
                             margin-right: 4px;
                         }
 
-                        > *:not(.mat-icon):not(.mat-icon-button):not(
-                                .mat-select
-                            ):not(.mat-datepicker-toggle) {
+                        >*:not(.mat-icon):not(.mat-icon-button):not(.mat-select):not(.mat-datepicker-toggle) {
                             margin-right: 12px;
                         }
                     }
@@ -842,25 +853,23 @@ element.style {
                     .mat-form-field-suffix {
                         border-radius: 0 24px 24px 0;
 
-                        > .mat-icon {
+                        >.mat-icon {
                             margin-left: 12px !important;
                         }
 
-                        > .mat-icon-button {
+                        >.mat-icon-button {
                             margin-left: 2px !important;
                         }
 
-                        > .mat-select {
+                        >.mat-select {
                             margin-left: 12px !important;
                         }
 
-                        > .mat-datepicker-toggle {
+                        >.mat-datepicker-toggle {
                             margin-left: 4px !important;
                         }
 
-                        > *:not(.mat-icon):not(.mat-icon-button):not(
-                                .mat-select
-                            ):not(.mat-datepicker-toggle) {
+                        >*:not(.mat-icon):not(.mat-icon-button):not(.mat-select):not(.mat-datepicker-toggle) {
                             margin-left: 12px !important;
                         }
                     }
@@ -886,14 +895,14 @@ element.style {
                 }
 
                 .mat-form-field-prefix {
-                    > .mat-icon-button {
+                    >.mat-icon-button {
                         margin-left: -6px;
                         margin-right: 12px;
                     }
                 }
 
                 .mat-form-field-suffix {
-                    > .mat-icon-button {
+                    >.mat-icon-button {
                         margin-left: 12px;
                         margin-right: -6px;
                     }
@@ -942,25 +951,23 @@ element.style {
                     border-radius: 6px 0 0 6px;
                     border-right-width: 1px;
 
-                    > .mat-icon {
+                    >.mat-icon {
                         margin-right: 16px;
                     }
 
-                    > .mat-icon-button {
+                    >.mat-icon-button {
                         margin: 0 6px 0 -10px;
                     }
 
-                    > .mat-select {
+                    >.mat-select {
                         margin-right: 12px;
                     }
 
-                    > .mat-datepicker-toggle {
+                    >.mat-datepicker-toggle {
                         margin-right: 8px;
                     }
 
-                    > *:not(.mat-icon):not(.mat-icon-button):not(
-                            .mat-select
-                        ):not(.mat-datepicker-toggle) {
+                    >*:not(.mat-icon):not(.mat-icon-button):not(.mat-select):not(.mat-datepicker-toggle) {
                         margin-right: 16px;
                     }
                 }
@@ -971,25 +978,23 @@ element.style {
                     border-radius: 0 6px 6px 0;
                     border-left-width: 1px;
 
-                    > .mat-icon {
+                    >.mat-icon {
                         margin-left: 16px;
                     }
 
-                    > .mat-icon-button {
+                    >.mat-icon-button {
                         margin: 0 -10px 0 6px;
                     }
 
-                    > .mat-select {
+                    >.mat-select {
                         margin: 0 -4px 0 16px;
                     }
 
-                    > .mat-datepicker-toggle {
+                    >.mat-datepicker-toggle {
                         margin-left: 8px;
                     }
 
-                    > *:not(.mat-icon):not(.mat-icon-button):not(
-                            .mat-select
-                        ):not(.mat-datepicker-toggle) {
+                    >*:not(.mat-icon):not(.mat-icon-button):not(.mat-select):not(.mat-datepicker-toggle) {
                         margin-left: 16px;
                     }
                 }
@@ -1040,11 +1045,9 @@ body.light .mat-datepicker-content .mat-calendar-next-button {
 .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover,
 .cdk-keyboard-focused .mat-calendar-body-active,
 .cdk-program-focused .mat-calendar-body-active {
-    & > .mat-calendar-body-cell-content {
-        &:not(.mat-calendar-body-selected):not(
-                .mat-calendar-body-comparison-identical
-            ) {
-            @apply bg-myAccent text-white  #{'!important'};
+    &>.mat-calendar-body-cell-content {
+        &:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+            @apply bg-myAccent text-white #{'!important'};
         }
     }
 }
@@ -1093,6 +1096,7 @@ body.light .mat-datepicker-content .mat-calendar-next-button {
 /* Invalid */
 .mat-form-field-invalid {
     .mat-input-element {
+
         /* Placeholder color */
         &::placeholder {
             @apply text-warn #{'!important'};
@@ -1216,7 +1220,7 @@ body.light .mat-datepicker-content .mat-calendar-next-button {
             .mat-select-value-text {
                 display: inline-flex;
 
-                > * {
+                >* {
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
@@ -1237,7 +1241,16 @@ body.light .mat-datepicker-content .mat-calendar-next-button {
 /* Invalid */
 .mat-form-field-invalid {
     .mat-select {
+
         /* Placeholder color */
+        .mat-select-placeholder {
+            // @apply text-warn #{'!important'};
+        }
+    }
+}
+
+.mat-form-field.ng-invalid.ng-touched {
+    .mat-select {
         .mat-select-placeholder {
             @apply text-warn #{'!important'};
         }
@@ -1263,6 +1276,7 @@ body.light .mat-datepicker-content .mat-calendar-next-button {
 /*  @ Stepper
 /* ----------------------------------------------------------------------------------------------------- */
 .mat-step-icon {
+
     /* Do not override the mat-icon color */
     .mat-icon {
         color: currentColor !important;
@@ -1278,6 +1292,7 @@ body.light .mat-datepicker-content .mat-calendar-next-button {
 /*  @ Tabs
 /* ----------------------------------------------------------------------------------------------------- */
 .mat-tab-group {
+
     /* No header */
     &.fuse-mat-no-header {
         .mat-tab-header {
@@ -1309,7 +1324,7 @@ body.light .mat-datepicker-content .mat-calendar-next-button {
                             @apply text-default #{'!important'};
                         }
 
-                        + .mat-tab-label {
+                        +.mat-tab-label {
                             margin-left: 4px;
                         }
 
@@ -1346,6 +1361,7 @@ textarea.mat-input-element {
 /*  @ Toolbar
 /* ----------------------------------------------------------------------------------------------------- */
 .mat-toolbar {
+
     /* Apply primary contrast color */
     &.mat-primary {
         .mat-icon {

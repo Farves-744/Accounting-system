@@ -169,7 +169,7 @@ export class AddRoleComponent implements OnInit {
     // }
 
     showRequiredError() {
-        this.messageService.add({ severity: 'warning', summary: 'Warning', detail: 'Enter Role Name' });
+        this.messageService.add({ severity: 'warn', summary: 'Warning', detail: 'Enter Role Name' });
     }
 
     ngAfterContentInit() {
@@ -405,6 +405,8 @@ export class AddRoleComponent implements OnInit {
     }
 
     onCheck(field, index) {
+        console.log(this.menuRows);
+
         console.log(field + "--" + index + "--" + this.menuRows[index][field]);
         if (field == 'view' && this.menuRows[index]['view'] == false) {
             console.log("ViewFalse")
@@ -420,15 +422,17 @@ export class AddRoleComponent implements OnInit {
             if (parentId == Id) {
                 var parentIndex = this.menuRows.findIndex(x => x.id == parentId)
                 console.log(parentIndex)
-                console.log(this.menuRows[parentIndex]['length'])
+                console.log(this.menuRows[parentIndex])
                 var childTrue = 0;
-                if (this.menuRows[parentIndex]['length'] > 0)
-                    for (let i = parentIndex + 1; i <= (this.menuRows[parentIndex]['length'] + parentIndex); i++) {
-                        console.log(this.menuRows[i]['view'])
+                if (this.menuRows[parentIndex]['length'] > 0) {
+                    for (let i = parentIndex + 1; i <= (this.menuRows[parentIndex]['length'] + parentIndex - 1); i++) {
+                        console.log(i)
+                        console.log(this.menuRows[i])
                         if (this.menuRows[i]['view'] == true) {
                             childTrue = 1;
                         }
                     }
+                }
                 if (childTrue == 0) {
                     console.log('view')
                     this.menuRows[parentIndex]['view'] = false
@@ -448,7 +452,6 @@ export class AddRoleComponent implements OnInit {
                 this.selected[checkIndex] = this.menuRows[index]
             }
         }
-
 
         if (this.menuRows[index]['view'] == true) {
             // console.log("ViewTrue")
@@ -471,10 +474,11 @@ export class AddRoleComponent implements OnInit {
                 }
             }
         }
-
         console.log(this.selected);
         this.changeDetection.detectChanges();
     }
+
+
 
     updateRole() {
         var privilegeArray = []

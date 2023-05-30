@@ -3,6 +3,7 @@
         flex-direction: row !important;
     }
 }
+
 @media (min-width: 1170px) {
     .gap6 {
         gap: 1.5rem !important;
@@ -11,4 +12,8 @@
     .w80 {
         width: 80px !important;
     }
+}
+
+.search-icon {
+    margin-left: -49px;
 }

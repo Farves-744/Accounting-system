@@ -130,21 +130,15 @@ export class NewUserComponent {
                         console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User updated successfully' });
                         this.addUserForm.reset();
-                        // this._route.navigateByUrl(
-                        //     'roles-and-permissions/manage-user'
-                        // );
                         setTimeout(() => {
                             if (this.isAccessToManageUser) {
                                 this._route.navigateByUrl(
                                     'roles-and-permissions/manage-user'
                                 );
-                                console.log('have access to manage user');
-
                             } else {
                                 this._route.navigateByUrl(
                                     'roles-and-permissions/new-user'
                                 );
-                                console.log('have not access to manage user');
                             }
                         }, 2000);
                         this.changeDetection.detectChanges();
@@ -158,20 +152,17 @@ export class NewUserComponent {
                         console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User added successfully' });
                         this.addUserForm.reset();
-                        this._route.navigateByUrl(
-                            'roles-and-permissions/manage-user'
-                        );
-                        setTimeout(() => {
-                            if (this.isAccessToManageUser) {
-                                this._route.navigateByUrl(
-                                    'roles-and-permissions/new-user'
-                                );
-                            } else {
-                                this._route.navigateByUrl(
-                                    'roles-and-permissions/manage-user'
-                                );
-                            }
-                        }, 2000);
+                        // setTimeout(() => {
+                        //     if (this.isAccessToManageUser) {
+                        //         this._route.navigateByUrl(
+                        //             'roles-and-permissions/manage-user'
+                        //         );
+                        //     } else {
+                        //         this._route.navigateByUrl(
+                        //             'roles-and-permissions/new-user'
+                        //         );
+                        //     }
+                        // }, 2000);
                         this.changeDetection.detectChanges();
                     }, error => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
