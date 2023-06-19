@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 import { GetAccounts } from 'app/shared/modals/accounts';
 import { GetRole } from 'app/shared/modals/role';
 import { AccountService } from 'app/shared/services/account.service';
@@ -46,11 +47,12 @@ export class NewUserComponent {
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
 
+
         this.addUserForm = this._formBuilder.group({
-            name: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-            password: ['', [Validators.required, Validators.minLength(6)]],
-            editPassword: [''],
+            name: ['', [Validators.required, Validators.maxLength(50)]],
+            email: ['', [Validators.required, Validators.maxLength(70), Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+            password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)]],
+            editPassword: ['', [Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)]],
             roleId: [null, Validators.required],
             userId: this.userId,
             accountId: [[], Validators.required]
@@ -66,6 +68,7 @@ export class NewUserComponent {
             this.addUserForm.patchValue(this.updateFormData);
             console.log(this.updateFormData);
             this.addUserForm.value.password = '';
+            // console.log('update');
         }
     }
 
@@ -85,7 +88,7 @@ export class NewUserComponent {
             "userId": this.userId,
         }
         this._commonService.uniqueCheck(req).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             const response = this._commonService.decryptData(res);
             this.changeDetection.detectChanges();
         }, err => {
@@ -97,9 +100,12 @@ export class NewUserComponent {
     }
 
     addOrEditUser() {
+        console.log(this.addUserForm.valid);
         console.log(this.addUserForm.value);
+
+
         if (this.addUserForm.invalid) {
-            console.log('hey invalid');
+            // console.log('hey invalid');
 
             for (const control of Object.keys(this.addUserForm.controls)) {
                 this.addUserForm.controls[control].markAsTouched();
@@ -107,11 +113,32 @@ export class NewUserComponent {
             return;
         }
 
+        console.log('hey');
 
-        if (this.addUserForm.valid) {
+    }
+
+    addOrEditUser1() {
+        // console.log(this.addUserForm.value);
+        if (this.addUserForm.invalid) {
+            // console.log('hey invalid');
+
+            for (const control of Object.keys(this.addUserForm.controls)) {
+                this.addUserForm.controls[control].markAsTouched();
+            }
+            return;
+        }
+
+        // if (history.state.data) {
+        console.log('update values are here');
+
+        // }
+        return
+
+        if (this.addUserForm.invalid) {
             console.log(this.addUserForm.value);
             console.log('hey valid');
             if (history.state.data) {
+                console.log('update');
                 console.log(history.state.data);
                 console.log(this.addUserForm.value);
                 this.addUserForm.value.userId = this.userId;
@@ -144,25 +171,28 @@ export class NewUserComponent {
                         this.changeDetection.detectChanges();
                     }, error => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
+                        console.log(error);
+
                     });
             } else {
+                return
                 this._userService
                     .addUser(this.addUserForm.value)
                     .subscribe((res) => {
-                        console.log(this._commonService.decryptData(res));
+                        // console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User added successfully' });
                         this.addUserForm.reset();
-                        // setTimeout(() => {
-                        //     if (this.isAccessToManageUser) {
-                        //         this._route.navigateByUrl(
-                        //             'roles-and-permissions/manage-user'
-                        //         );
-                        //     } else {
-                        //         this._route.navigateByUrl(
-                        //             'roles-and-permissions/new-user'
-                        //         );
-                        //     }
-                        // }, 2000);
+                        setTimeout(() => {
+                            if (this.isAccessToManageUser) {
+                                this._route.navigateByUrl(
+                                    'roles-and-permissions/manage-user'
+                                );
+                            } else {
+                                this._route.navigateByUrl(
+                                    'roles-and-permissions/new-user'
+                                );
+                            }
+                        }, 2000);
                         this.changeDetection.detectChanges();
                     }, error => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
@@ -175,33 +205,31 @@ export class NewUserComponent {
         this._commonService.navigateToHome();
     }
 
-
-
     getRolesName() {
         this.roleModel.userId = this.userId;
 
         this._roleService.getRole(this.roleModel).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             this.rolesData = this._commonService.decryptData(res);
-            console.log(this.rolesData);
+            // console.log(this.rolesData);
             this.changeDetection.detectChanges();
         });
     }
 
     getAccountName() {
-        console.log(this.getAccountsModel);
+        // console.log(this.getAccountsModel);
 
         this.getAccountsModel.userId = this.userId;
 
         this._accountService
             .getAccount(this.getAccountsModel)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.accounts = this._commonService.decryptData(res);
-                console.log(this.accounts);
+                // console.log(this.accounts);
                 this.changeDetection.detectChanges();
             }, (error) => {
-                console.log(error);
+                // console.log(error);
             });
     }
 }

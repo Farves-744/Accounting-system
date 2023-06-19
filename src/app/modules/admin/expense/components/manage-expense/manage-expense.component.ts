@@ -17,6 +17,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { DatePipe } from '@angular/common';
 import { TableUtil } from 'app/shared/tableUtil';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-manage-expense',
@@ -38,6 +39,7 @@ export class ManageExpenseComponent implements OnInit {
     cols: any[];
     exportColumns;
     expenseData: any
+    urlList: any = []
 
     constructor(
         private _commonService: CommonService,
@@ -65,10 +67,16 @@ export class ManageExpenseComponent implements OnInit {
         'actions',
     ];
 
+    checkUrl(option) {
+        for (let roleOption of this.urlList)
+            if (option == roleOption)
+                return true
+        return false;
+    }
+
     ngOnInit(): void {
         this.getExpenseModal.userId = this._commonService.getUserId();
         this.getCategoryNameModal.userId = this._commonService.getUserId();
-
         this.getExpense();
         this.getCategoryIcon();
     }
@@ -96,13 +104,13 @@ export class ManageExpenseComponent implements OnInit {
         this.router.navigate(['/expense/add-expense'], {
             state: { data: id },
         });
-        console.log(id);
+        // console.log(id);
 
     }
 
     exportPdf() {
         const doc = new jsPDF('p', 'pt', 'a4');
-        console.log(this.expenseData);
+        // console.log(this.expenseData);
         let rows = []
         this.expenseData.forEach(element => {
             var temp = [element.id, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
@@ -123,13 +131,13 @@ export class ManageExpenseComponent implements OnInit {
     }
 
     getExpense() {
-        console.log(this.getExpenseModal);
+        // console.log(this.getExpenseModal);
 
         this._reportService
             .getIncomeReports(this.getExpenseModal)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
 
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
@@ -147,9 +155,9 @@ export class ManageExpenseComponent implements OnInit {
         this._expenseService
             .getCategory(this.getCategoryNameModal)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.categoryData = this._commonService.decryptData(res);
-                console.log(this.categoryData);
+                // console.log(this.categoryData);
 
                 this.changeDetection.detectChanges();
             });
@@ -166,14 +174,14 @@ export class ManageExpenseComponent implements OnInit {
     }
 
     openReceiptDialog(imageUrl) {
-        console.log(imageUrl);
+        // console.log(imageUrl);
 
         const dialogRef = this.dialog.open(ReceiptDialogComponent, {
             width: '900px',
             data: { imageUrl },
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+            // console.log(`Dialog result: ${result}`);
         });
     }
     openPaymentDialog(id: number) {
@@ -182,7 +190,7 @@ export class ManageExpenseComponent implements OnInit {
             data: { id },
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+            // console.log(`Dialog result: ${result}`);
         });
     }
 }

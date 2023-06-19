@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 import { CommonService } from 'app/shared/services/common.service';
 import { TaxService } from 'app/shared/services/tax.service';
 import { MessageService } from 'primeng/api';
@@ -38,7 +39,7 @@ export class AddTaxComponent implements OnInit {
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
         this.addTaxForm = this._formBuilder.group({
-            taxName: ['', Validators.required],
+            taxName: ['', [Validators.required, Validators.maxLength(50)]],
             taxRate: ['', Validators.required],
             userId: this.userId,
         });
@@ -57,7 +58,7 @@ export class AddTaxComponent implements OnInit {
             this.updateFormData = history.state.data;
             this.isEdit = true;
             this.addTaxForm.patchValue(this.updateFormData);
-            console.log(this.updateFormData);
+            // console.log(this.updateFormData);
         }
     }
 
@@ -78,7 +79,7 @@ export class AddTaxComponent implements OnInit {
                 this._taxService
                     .updateTax(this.addTaxForm.value)
                     .subscribe((res) => {
-                        console.log(this._commonService.decryptData(res));
+                        // console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tax updated successfully' });
                         this.addTaxForm.reset();
 
@@ -97,7 +98,7 @@ export class AddTaxComponent implements OnInit {
                 this._taxService
                     .addTax(this.addTaxForm.value)
                     .subscribe((res) => {
-                        console.log(this._commonService.decryptData(res));
+                        // console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Tax added successfully' });
                         this.addTaxForm.reset();
                         setTimeout(() => {

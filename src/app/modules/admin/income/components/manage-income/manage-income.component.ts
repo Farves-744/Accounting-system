@@ -13,12 +13,13 @@ import { GetIncomeReports } from 'app/shared/modals/reports';
 import { getIncome } from 'app/shared/modals/income';
 import { environment } from 'environments/environment';
 import { getIncomeCategory } from 'app/shared/modals/income-category';
-import { AppComponent } from 'app/app.component';
 
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { DatePipe } from '@angular/common';
 import { TableUtil } from 'app/shared/tableUtil';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
+import { AppComponent } from 'app/app.component';
 
 
 @Component({
@@ -117,7 +118,7 @@ export class ManageIncomeComponent implements OnInit {
 
     exportPdf() {
         const doc = new jsPDF('p', 'pt', 'a4');
-        console.log(this.incomeData);
+        // console.log(this.incomeData);
         let rows = []
         this.incomeData.forEach(element => {
             var temp = [element.id, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
@@ -139,13 +140,13 @@ export class ManageIncomeComponent implements OnInit {
 
 
     getIncome() {
-        console.log(this.getIncomeModal);
+        // console.log(this.getIncomeModal);
 
         this._reportService
             .getIncomeReports(this.getIncomeModal)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
 
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
@@ -163,9 +164,9 @@ export class ManageIncomeComponent implements OnInit {
         this._incomeService
             .getCategory(this.getCategoryNameModal)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.categoryData = this._commonService.decryptData(res);
-                console.log(this.categoryData);
+                // console.log(this.categoryData);
 
                 this.changeDetection.detectChanges();
             });
@@ -182,14 +183,14 @@ export class ManageIncomeComponent implements OnInit {
     }
 
     openReceiptDialog(imageUrl) {
-        console.log(imageUrl);
+        // console.log(imageUrl);
 
         const dialogRef = this.dialog.open(ReceiptDialogComponent, {
             width: '900px',
             data: { imageUrl },
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+            // console.log(`Dialog result: ${result}`);
         });
     }
 
@@ -199,7 +200,7 @@ export class ManageIncomeComponent implements OnInit {
             data: { id },
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+            // console.log(`Dialog result: ${result}`);
         });
     }
 

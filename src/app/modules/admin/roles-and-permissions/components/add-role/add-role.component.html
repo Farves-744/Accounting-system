@@ -7,10 +7,10 @@
                 </mat-icon>
                 <p>Roles and Permissions</p>
                 <span>/</span>
-                <p class="font-semibold text-myAccent">Add Role</p>
+                <p class="font-semibold text-myAccent">{{updateFormData != undefined ? "Update Role" : "Add Role"}}</p>
             </div>
 
-            <h3 class="font-bold text-[1.3rem]">Add Role</h3>
+            <h3 class="font-bold text-[1.3rem]">{{updateFormData != undefined ? "Update Role" : "Add Role"}}</h3>
         </div>
     </div>
 
@@ -19,9 +19,10 @@
             <div class="flex flex-col items-start gap-2">
                 <label class="font-medium" for="role-name">Role Name</label>
 
-                <input id="role-name" #role=ngModel name="roleName" required [(ngModel)]="roleModal.roleName"
-                    type="text" required placeholder="Enter Role Name"
-                    class="border border-myAccent p-2 rounded w-[15rem]" />
+                <input maxlength="45"
+                    onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\., ]/g) === null"
+                    id="role-name" #role=ngModel name="roleName" required [(ngModel)]="roleModal.roleName" type="text"
+                    required placeholder="Enter Role Name" class="border border-myAccent p-2 rounded w-[15rem]" />
 
                 <!-- <div *ngIf="
                     (f.submitted && role.invalid) || role.touched

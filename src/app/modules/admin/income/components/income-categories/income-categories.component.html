@@ -18,7 +18,8 @@
     <div class="flex w-full flex-col md:flex-row gap-4 justify-center items-center">
         <!-- Search -->
         <div class="border border-myAccent w-full flex items-center justify-between rounded pr-2">
-            <input type="search" name="incomeCategory-search" id="incomeCategory-search" placeholder="Search Category"
+            <input onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\., ]/g) === null"
+                type="search" name="incomeCategory-search" id="incomeCategory-search" placeholder="Search Category"
                 (keyup)="searchAccount($event)" class="px-4 py-2 rounded w-full caret-myAccent" />
 
             <mat-icon class="text-myAccent w-[24px] h-[24px] cursor-pointer search-icon"
@@ -27,10 +28,10 @@
 
         <mat-form-field appearance="fill" class="mt-0 w-full">
             <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
-                <input matStartDate placeholder="Start date" [(ngModel)]="getCategoryModal.startDate"
-                    (dateChange)="dateFilter()" />
-                <input matEndDate placeholder="End date" [(ngModel)]="getCategoryModal.endDate"
-                    (dateChange)="dateFilter()" />
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^0-9/]/g) === null" matStartDate
+                    placeholder="Start date" [(ngModel)]="getCategoryModal.startDate" (dateChange)="dateFilter()" />
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^0-9/]/g) === null" matEndDate
+                    placeholder="End date" [(ngModel)]="getCategoryModal.endDate" (dateChange)="dateFilter()" />
             </mat-date-range-input>
 
             <mat-icon matDatepickerToggleIcon class="cursor-pointer" (click)="clearDate()" *ngIf="

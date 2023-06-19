@@ -13,9 +13,8 @@ import { AuthService } from 'app/core/auth/auth.service';
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss']
-
-
 })
+
 export class DashboardComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     dataSource: MatTableDataSource<any>;
@@ -30,6 +29,7 @@ export class DashboardComponent {
     areaGraphData: any;
     polarGraphData: any;
     formattedLabels: any;
+    // static urlList: any = []
 
     constructor(
         private _router: Router,
@@ -37,7 +37,13 @@ export class DashboardComponent {
         private _dashboardService: DashboardService,
         private changeDetection: ChangeDetectorRef,
         private _authService: AuthService
-    ) { }
+    ) {
+        // if (localStorage.getItem('privileges')) {
+        //     var menusFilterList = localStorage.getItem('privileges').toString()
+        //     DashboardComponent.urlList = menusFilterList.split(',')
+        // }
+        // console.log(DashboardComponent.urlList);
+    }
 
     displayedColumns: string[] = [
         'position',
@@ -58,6 +64,13 @@ export class DashboardComponent {
         { name: 'Yearly', id: 2 },
     ];
 
+    // static checkUrl(option) {
+    //     for (let roleOption of DashboardComponent.urlList)
+    //         if (option == roleOption)
+    //             return true
+    //     return false;
+    // }
+
     ngOnInit(): void {
         this.dashboardModal.userId = this._commonService.getUserId();
         this.graphModal.userId = this._commonService.getUserId();
@@ -69,11 +82,11 @@ export class DashboardComponent {
     }
 
     getDashboardTransactions() {
-        console.log(this.graphModal);
+        // console.log(this.graphModal);
         this._dashboardService
             .getDashboardTransactions(this.graphModal)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );
@@ -92,7 +105,7 @@ export class DashboardComponent {
 
     getGraphData(value) {
         this.dashboardModal.duration = value;
-        console.log(this.dashboardModal);
+        // console.log(this.dashboardModal);
 
         if (value == 1) {
             const date = new Date();
@@ -104,29 +117,29 @@ export class DashboardComponent {
             );
             this.dashboardModal.startDate = firstDay;
             this.dashboardModal.endDate = lastDay;
-            console.log(this.dashboardModal);
+            // console.log(this.dashboardModal);
             this._dashboardService
                 .getAreaGraphData(this.dashboardModal)
                 .subscribe((res) => {
-                    console.log(this._commonService.decryptData(res));
+                    // console.log(this._commonService.decryptData(res));
                     this.areaGraphData = this._commonService.decryptData(res);
                     this.areaGraphData.graphChart.graphData.type = 'area';
-                    console.log(this.areaGraphData.graphChart.graphData.type);
-                    console.log(this.areaGraphData.graphChart.date);
+                    // console.log(this.areaGraphData.graphChart.graphData.type);
+                    // console.log(this.areaGraphData.graphChart.date);
 
                     if (this.areaGraphData.graphChart.duration == 1) {
                         this.areaGraphData.graphChart.date =
                             this.areaGraphData.graphChart.date.map((date) =>
                                 this.formatDateLabel(date)
                             );
-                        console.log(this.areaGraphData.graphChart.date);
+                        // console.log(this.areaGraphData.graphChart.date);
                     }
                     if (this.areaGraphData.graphChart.duration == 2) {
                         this.areaGraphData.graphChart.date =
                             this.areaGraphData.graphChart.date.map((date) =>
                                 this.formatMonthLabel(date)
                             );
-                        console.log(this.areaGraphData.graphChart.date);
+                        // console.log(this.areaGraphData.graphChart.date);
                     }
                     setTimeout(() => {
                         this.getChartData();
@@ -134,7 +147,7 @@ export class DashboardComponent {
                     this.changeDetection.markForCheck();
                     // this.changeDetection.detectChanges();
                 }, error => {
-                    console.log(error.status);
+                    // console.log(error.status);
 
                     if (error.status == 603) {
                         // location.reload();
@@ -148,8 +161,8 @@ export class DashboardComponent {
                 .getPolarGraphData(this.dashboardModal)
                 .subscribe((res) => {
                     this.polarGraphData = this._commonService.decryptData(res);
-                    console.log(this.polarGraphData);
-                    console.log(this.polarGraphData.graphChart.date);
+                    // console.log(this.polarGraphData);
+                    // console.log(this.polarGraphData.graphChart.date);
                     this.polarGraphData.graphChart.graphData.type = 'radar';
 
                     if (this.polarGraphData.graphChart.duration == 1) {
@@ -157,14 +170,14 @@ export class DashboardComponent {
                             this.polarGraphData.graphChart.date.map((date) =>
                                 this.formatDateLabel(date)
                             );
-                        console.log(this.polarGraphData.graphChart.date);
+                        // console.log(this.polarGraphData.graphChart.date);
                     }
                     if (this.areaGraphData.graphChart.duration == 2) {
                         this.polarGraphData.graphChart.date =
                             this.polarGraphData.graphChart.date.map((date) =>
                                 this.formatMonthLabel(date)
                             );
-                        console.log(this.polarGraphData.graphChart.date);
+                        // console.log(this.polarGraphData.graphChart.date);
                     }
                     // this.changeDetection.detectChanges();
                     setTimeout(() => {
@@ -180,31 +193,31 @@ export class DashboardComponent {
 
             this.dashboardModal.startDate = firstDateOfYear;
             this.dashboardModal.endDate = lastDateOfYear;
-            console.log(this.dashboardModal);
+            // console.log(this.dashboardModal);
 
             this._dashboardService
                 .getAreaGraphData(this.dashboardModal)
                 .subscribe((res) => {
                     this.areaGraphData = this._commonService.decryptData(res);
-                    console.log(this.areaGraphData);
-                    console.log(this.areaGraphData.graphChart.date);
+                    // console.log(this.areaGraphData);
+                    // console.log(this.areaGraphData.graphChart.date);
                     this.areaGraphData.graphChart.graphData.type = 'area';
 
-                    console.log(this.polarGraphData.graphChart.graphData.type);
+                    // console.log(this.polarGraphData.graphChart.graphData.type);
 
                     if (this.areaGraphData.graphChart.duration == 1) {
                         this.areaGraphData.graphChart.date =
                             this.areaGraphData.graphChart.date.map((date) =>
                                 this.formatDateLabel(date)
                             );
-                        console.log(this.areaGraphData.graphChart.date);
+                        // console.log(this.areaGraphData.graphChart.date);
                     }
                     if (this.areaGraphData.graphChart.duration == 2) {
                         this.areaGraphData.graphChart.date =
                             this.areaGraphData.graphChart.date.map((date) =>
                                 this.formatMonthLabel(date)
                             );
-                        console.log(this.areaGraphData.graphChart.date);
+                        // console.log(this.areaGraphData.graphChart.date);
                     }
 
                     // this.changeDetection.detectChanges();
@@ -218,8 +231,8 @@ export class DashboardComponent {
                 .getPolarGraphData(this.dashboardModal)
                 .subscribe((res) => {
                     this.polarGraphData = this._commonService.decryptData(res);
-                    console.log(this.polarGraphData);
-                    console.log(this.polarGraphData.graphChart.date);
+                    // console.log(this.polarGraphData);
+                    // console.log(this.polarGraphData.graphChart.date);
                     this.polarGraphData.graphChart.graphData.type = 'radar';
 
                     if (this.polarGraphData.graphChart.duration == 1) {
@@ -227,14 +240,14 @@ export class DashboardComponent {
                             this.polarGraphData.graphChart.date.map((date) =>
                                 this.formatDateLabel(date)
                             );
-                        console.log(this.polarGraphData.graphChart.date);
+                        // console.log(this.polarGraphData.graphChart.date);
                     }
                     if (this.areaGraphData.graphChart.duration == 2) {
                         this.polarGraphData.graphChart.date =
                             this.polarGraphData.graphChart.date.map((date) =>
                                 this.formatMonthLabel(date)
                             );
-                        console.log(this.polarGraphData.graphChart.date);
+                        // console.log(this.polarGraphData.graphChart.date);
                     }
                     // this.changeDetection.detectChanges();
                     setTimeout(() => {
@@ -249,7 +262,7 @@ export class DashboardComponent {
         this._dashboardService
             .getDashboardCards(this.graphModal)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.dashboardCardsData = this._commonService.decryptData(res);
 
                 this.changeDetection.detectChanges();
@@ -278,7 +291,7 @@ export class DashboardComponent {
         this.graphModal.endDate = null;
         this.getDashboardTransactions();
         this.getDashboardCards();
-        console.log(this.graphModal);
+        // console.log(this.graphModal);
     }
 
     formatDateLabel(date: Date): string {

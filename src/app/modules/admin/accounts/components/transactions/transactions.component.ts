@@ -13,6 +13,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { DatePipe } from '@angular/common';
 import { TableUtil } from 'app/shared/tableUtil';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-transactions',
@@ -114,7 +115,7 @@ export class TransactionsComponent {
 
     exportPdf() {
         const doc = new jsPDF('p', 'pt', 'a4');
-        console.log(this.transactionsData);
+        // console.log(this.transactionsData);
         let rows = []
         this.transactionsData.forEach((element, i) => {
             var temp = [i + 1, element.accountName, element.paymentMode == 0
@@ -163,13 +164,13 @@ export class TransactionsComponent {
     }
 
     getTransactions() {
-        console.log(this.getTransactionsModal);
+        // console.log(this.getTransactionsModal);
 
         this._accountService
             .getTransactions(this.getTransactionsModal)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );

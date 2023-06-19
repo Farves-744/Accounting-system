@@ -8,7 +8,7 @@
             </mat-icon>
             <p>Roles and Permission</p>
             <span>/</span>
-            <p class="font-semibold text-myAccent">Add User</p>
+            <p class="font-semibold text-myAccent">{{updateFormData != undefined ? "Update User" : "Add User"}}</p>
         </div>
 
         <img *ngIf="isAccessToManageUser" class="w-[30px] cursor-pointer" matTooltip="Go Back"
@@ -16,7 +16,8 @@
     </div>
 
     <!-- Title -->
-    <h3 class="font-bold text-[1.5rem] text-center sm:text-left">Add User</h3>
+    <h3 class="font-bold text-[1.5rem] text-center sm:text-left">
+        {{updateFormData != undefined ? "Update User" : "Add User"}}</h3>
 
     <!-- Content -->
     <form [formGroup]="addUserForm" (ngSubmit)="addOrEditUser()"
@@ -25,8 +26,9 @@
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="user-name">Name <span class="text-red-600">*</span></label>
 
-                <input id="user-name" name="name" type="text" required placeholder="Enter Name" formControlName="name"
-                    class="border border-myAccent p-2 rounded" />
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\., ]/g) === null"
+                    maxlength="50" id="user-name" name="name" type="text" required placeholder="Enter Name"
+                    formControlName="name" class="border border-myAccent p-2 rounded" />
 
                 <div *ngIf="
                             f.name.invalid &&
@@ -41,7 +43,9 @@
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="user-email">Email <span class="text-red-600">*</span></label>
 
-                <input autocomplete="off" id="user-email" type="email" (change)="validateEmail($event)"
+                <input maxlength="70"
+                    onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\.@ ]/g) === null"
+                    autocomplete="off" id="user-email" type="email" (change)="validateEmail($event)"
                     placeholder="Enter Email" formControlName="email" class="border border-myAccent p-2 rounded" />
 
                 <div *ngIf="
@@ -59,7 +63,7 @@
             <div class="flex flex-col gap-2" *ngIf="updateFormData == undefined">
                 <label class="font-medium" for="user-password">Password <span class="text-red-600">*</span></label>
                 <div class="flex items-center w-full relative">
-                    <input id="user-password" type="password" required placeholder="Enter Password"
+                    <input maxlength="80" id="user-password" type="password" required placeholder="Enter Password"
                         formControlName="password" class="border w-full border-myAccent p-2 rounded" #passwordField />
 
                     <button mat-icon-button type="button" (click)="
@@ -81,6 +85,13 @@
                         ">
                     <span class="text-[#dc2626]" *ngIf="f.password.errors?.['required']">
                         This field is required
+                    </span>
+                    <span class="text-[#dc2626]" *ngIf="f.password.errors?.['minlength']">
+                        Password should have at least 6 characters
+                    </span>
+                    <span class="text-[#dc2626]" *ngIf="f.password.errors?.['pattern']">
+                        Password must contain at least one uppercase letter, one lowercase letter, one number, and one
+                        special character
                     </span>
                 </div>
 
@@ -105,6 +116,19 @@
                             [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
                     </button>
                 </div>
+
+                <!-- <div *ngIf="
+                            
+                            (f.password.dirty || f.password.touched)
+                        "> -->
+                <!-- <span class="text-[#dc2626]" *ngIf="f.password.errors?.['minlength']">
+                        Password should have at least 6 characters
+                    </span> -->
+                <span class="text-[#dc2626]" *ngIf="f.editPassword.errors?.['pattern']">
+                    Password must contain at least one uppercase letter, one lowercase letter, one number, and one
+                    special character
+                </span>
+                <!-- </div> -->
 
                 <!-- <div *ngIf="
                             f.editPassword.invalid &&

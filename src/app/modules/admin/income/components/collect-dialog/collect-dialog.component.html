@@ -16,16 +16,16 @@
                 <div class="flex flex-col gap-2 w-full">
                     <label for="account{{ i }}" class="">Account <span class="text-red-600">*</span></label>
                     <mat-form-field class="w-full mt-0">
-                        <mat-select #account="ngModel" [disabled]="isEdit" required matInfix name="account{{ i }}"
-                            [(ngModel)]="payment.accountId" disableOptionCentering placeholder="Select Account"
-                            id="account{{ i }}">
+                        <mat-select (valueChange)="getAccountId($event,i)" #account="ngModel" [disabled]="isEdit"
+                            required matInfix name="account{{ i }}" [(ngModel)]="payment.accountId"
+                            disableOptionCentering placeholder="Select Account" id="account{{ i }}">
                             <mat-option *ngFor="let account of accounts" [value]="account.id">{{ account.accountName }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
 
                     <div *ngIf="
-                            (f.submitted && account.invalid) || account.touched
+                            (f.submitted && account.invalid) || account?.touched
                         ">
                         <div class="text-[#dc2626]" *ngIf="account.errors?.['required']">
                             This field is required
@@ -33,25 +33,54 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-2 w-full">
+                <div class="flex flex-col gap-2 w-full" *ngIf="accountType != 0">
                     <label for="payment-mode{{ i }}" class="">Payment Mode <span class="text-red-600">*</span></label>
                     <mat-form-field class="w-full mt-0">
-                        <mat-select #payMode="ngModel" required [disabled]="isEdit" name="payment{{ i }}" matInfix
-                            disableOptionCentering [(ngModel)]="payment.paymentMode" placeholder="Select Payment Mode"
-                            id="payment{{ i }}">
-                            <mat-option *ngFor="let payment of paymentMode" [value]="payment.id">{{ payment.name }}
+                        <mat-select #payMode="ngModel" required [disabled]="isEdit || accountType == undefined"
+                            name="payment{{ i }}" matInfix disableOptionCentering [(ngModel)]="payment.paymentMode"
+                            placeholder="Select Payment Mode" id="payment{{ i }}">
+                            <mat-option *ngFor="let payment of paymentMode" [value]="payment.id">{{ payment.name
+                                }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
 
                     <div *ngIf="
-                            (f.submitted && payMode.invalid) || payMode.touched
+                            (f.submitted && payMode.invalid) || payMode?.touched
                         ">
                         <div class="text-[#dc2626]" *ngIf="payMode.errors?.['required']">
                             This field is required
                         </div>
                     </div>
                 </div>
+                <!-- <div class="flex flex-col gap-2 w-full">
+                    <label for="payment-mode{{ i }}" class="">Payment Mode <span class="text-red-600">*</span></label>
+                    <mat-form-field class="w-full mt-0">
+                        <mat-select *ngIf="accountType === 0" #payMode="ngModel" required
+                            [disabled]="isEdit || accountType == undefined" name="payment{{ i }}" matInfix
+                            disableOptionCentering [(ngModel)]="payment.paymentMode" placeholder="Select Payment Mode"
+                            id="payment{{ i }}">
+                            <mat-option [value]="4">Cash
+                            </mat-option>
+                        </mat-select>
+                        <mat-select *ngIf="accountType != 0" #payMode="ngModel" required
+                            [disabled]="isEdit || accountType == undefined" name="payment{{ i }}" matInfix
+                            disableOptionCentering [(ngModel)]="payment.paymentMode" placeholder="Select Payment Mode"
+                            id="payment{{ i }}">
+                            <mat-option *ngFor="let payment of paymentMode" [value]="payment.id">{{ payment.name
+                                }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="
+                            (f.submitted && payMode.invalid) || payMode?.touched
+                        ">
+                        <div class="text-[#dc2626]" *ngIf="payMode.errors?.['required']">
+                            This field is required
+                        </div>
+                    </div>
+                </div> -->
 
                 <div class="flex flex-col gap-2 w-full">
                     <label class="font-medium" for="amount">Amount <span class="text-red-600">*</span></label>

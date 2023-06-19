@@ -13,6 +13,7 @@ import { MatSort } from '@angular/material/sort';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-manage-account',
@@ -83,13 +84,13 @@ export class ManageAccountComponent implements OnInit {
     }
 
     getAccount() {
-        console.log(this.getAccountModal);
+        // console.log(this.getAccountModal);
 
         this._accountService
             .getAccount(this.getAccountModal)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
 
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
@@ -120,7 +121,7 @@ export class ManageAccountComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+            // console.log(`Dialog result: ${result}`);
         });
         this.changeDetection.detectChanges();
     }

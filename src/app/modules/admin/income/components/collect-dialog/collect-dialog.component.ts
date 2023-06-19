@@ -26,7 +26,14 @@ export class CollectDialogComponent implements OnInit {
     imageId;
     any;
     accounts: any;
-
+    accountType: any;
+    paymentMode = [
+        { name: 'Gpay', id: 0 },
+        { name: 'Phone Pe', id: 1 },
+        { name: 'Credit Card/Debit Card', id: 2 },
+        { name: 'Cheque', id: 3 },
+        { name: 'Cash', id: 4 },
+    ];
     constructor(
         public dialogRef: MatDialogRef<CollectDialogComponent>,
         @Inject(MAT_DIALOG_DATA)
@@ -40,17 +47,40 @@ export class CollectDialogComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        console.log(this.data);
+        // console.log(this.data);
         this.userId = this._commonService.getUserId();
         this.getAccountsModel.userId = this._commonService.getUserId();
-        console.log(this.userId);
+        // console.log(this.userId);
         setTimeout(() => {
             this.getAccountName();
         });
     }
 
+    getAccountId(event, index) {
+        const req = {
+            userId: this.userId,
+            id: event
+        }
+        this._accountService
+            .getAccountById(req)
+            .subscribe((res) => {
+                // console.log(this._commonService.decryptData(res));
+                let result = this._commonService.decryptData(res)
+                this.accountType = result.accountType
+                if (this.accountType == 0) {
+                    this.paymentsModal[index].paymentMode = 4
+                } else {
+                    this.paymentsModal[index].paymentMode = null
+                }
+                // console.log(this.accountType);
+                this.changeDetection.detectChanges();
+            }, (error) => {
+                // console.log(error);
+            });
+    }
+
     async formatImage(file: any) {
-        console.log(file);
+        // console.log(file);
         this.fileToUpload = file;
         this.formData = new FormData();
         this.formData.append('image', this.fileToUpload);
@@ -72,33 +102,33 @@ export class CollectDialogComponent implements OnInit {
         if (history.state.data) {
             this.data.userId = this.userId;
             this.data.payments = this.paymentsModal;
-            console.log(this.data);
-            console.log(this.data.file);
+            // console.log(this.data);
+            // console.log(this.data.file);
             this.formatImage(this.data.file);
             this.data.userId = this.userId;
 
-            console.log(this.data);
-            console.log(this.formData);
+            // console.log(this.data);
+            // console.log(this.formData);
             if (this.data.file != undefined) {
                 this._incomeService
                     .addCategoryImage(this.formData)
                     .subscribe((res) => {
-                        console.log(res);
+                        // console.log(res);
                         let reData = JSON.parse(JSON.stringify(res));
                         this.imageId = reData.imageId;
                         this.data.deleteImageId = this.data.imageId;
                         this.data.imageId = this.imageId;
-                        console.log(this.data.imageId);
-                        console.log(this.data.deleteImageId);
+                        // console.log(this.data.imageId);
+                        // console.log(this.data.deleteImageId);
                         this.updateIncome();
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully' });
-                        console.log(this.data.imageId);
-                        console.log(this.data);
+                        // console.log(this.data.imageId);
+                        // console.log(this.data);
                     }, error => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                     });
             } else {
-                console.log(this.data);
+                // console.log(this.data);
                 this.updateIncome();
 
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income updated successfully' });
@@ -106,22 +136,22 @@ export class CollectDialogComponent implements OnInit {
         } else {
             this.data.userId = this.userId;
             this.data.payments = this.paymentsModal;
-            console.log(this.data);
+            // console.log(this.data);
 
-            console.log(this.data.file);
+            // console.log(this.data.file);
 
             if (this.data.file != null) {
                 this.formatImage(this.data.file);
                 this._incomeService.addCategoryImage(this.formData).subscribe(
                     (res) => {
-                        console.log(res);
+                        // console.log(res);
                         let reData = JSON.parse(JSON.stringify(res));
                         this.imageId = reData.imageId;
                         this.data.imageId = this.imageId;
                         this.addIncome();
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income added successfully' });
-                        console.log(this.data.imageId);
-                        console.log(this.data);
+                        // console.log(this.data.imageId);
+                        // console.log(this.data);
                     },
                     (error) => {
                         this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
@@ -137,7 +167,7 @@ export class CollectDialogComponent implements OnInit {
 
     addIncome() {
         this._incomeService.addIncome(this.data).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             this.dialogRef.close(true);
             this.changeDetection.detectChanges();
         }, (error) => {
@@ -147,7 +177,7 @@ export class CollectDialogComponent implements OnInit {
 
     updateIncome() {
         this._incomeService.updateIncome(this.data).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             this.dialogRef.close(true);
             this.changeDetection.detectChanges();
         }, (error) => {
@@ -156,7 +186,7 @@ export class CollectDialogComponent implements OnInit {
     }
 
     addForm() {
-        console.log(this.data);
+        // console.log(this.data);
 
         this.paymentsModal.push({
             paymentMode: null,
@@ -164,17 +194,11 @@ export class CollectDialogComponent implements OnInit {
             accountId: null,
         });
 
-        console.log(this.paymentsModal);
-        console.log(this.data);
+        // console.log(this.paymentsModal);
+        // console.log(this.data);
     }
 
-    paymentMode = [
-        { name: 'Gpay', id: 0 },
-        { name: 'Phone Pe', id: 1 },
-        { name: 'Credit Card/Debit Card', id: 2 },
-        { name: 'Cheque', id: 3 },
-        { name: 'Cash', id: 4 },
-    ];
+
 
     removeForm(index: number) {
         if (this.paymentsModal.length > 1) {
@@ -185,26 +209,26 @@ export class CollectDialogComponent implements OnInit {
     ngAfterContentInit() {
         if (history.state.data) {
             this.isEdit = true;
-            console.log(history.state.data);
-            console.log(this.data);
+            // console.log(history.state.data);
+            // console.log(this.data);
             this.paymentsModal = this.data.payments;
-            console.log(this.paymentsModal);
+            // console.log(this.paymentsModal);
         }
     }
 
     getAccountName() {
-        console.log(this.getAccountsModel);
+        // console.log(this.getAccountsModel);
 
 
         this._accountService
             .getAccountsByUserId(this.getAccountsModel)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.accounts = this._commonService.decryptData(res);
-                console.log(this.accounts);
+                // console.log(this.accounts);
                 this.changeDetection.detectChanges();
             }, (error) => {
-                console.log(error);
+                // console.log(error);
             });
     }
 }

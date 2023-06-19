@@ -8,15 +8,15 @@
             </mat-icon>
             <p>Tax</p>
             <span>/</span>
-            <p class="font-semibold text-myAccent">Add Tax</p>
+            <p class="font-semibold text-myAccent">{{updateFormData != undefined ? "Update Tax" : "Add Tax"}}</p>
         </div>
 
         <img *ngIf="isAccessToManageTax" class="w-[30px] cursor-pointer" matTooltip="Go Back"
             src="assets/icons/back-arrow.svg" alt="Back" (click)="back()">
     </div>
-
     <!-- Title -->
-    <h3 class="font-bold text-[1.5rem] text-center sm:text-left">Add Tax</h3>
+    <h3 class="font-bold text-[1.5rem] text-center sm:text-left">{{updateFormData != undefined ? "Update Tax" : "Add
+        Tax"}}</h3>
 
     <!-- Content -->
     <form [formGroup]="addTaxForm" (ngSubmit)="addOrEditTax()"
@@ -24,8 +24,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full justify-center">
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="tax-name">Tax Name <span class="text-red-600">*</span></label>
-                <input id="tax-name" type="text" required placeholder="Enter Tax Name" formControlName="taxName"
-                    class="border border-myAccent p-2 rounded" />
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\., ]/g) === null"
+                    maxlength="50" id="tax-name" type="text" required placeholder="Enter Tax Name"
+                    formControlName="taxName" class="border border-myAccent p-2 rounded" />
 
                 <div *ngIf="
                             f.taxName.invalid &&

@@ -34,7 +34,7 @@ export class DeleteDialogComponent implements OnInit {
 
         this._expenseService.deleteCategory(req).subscribe(
             (res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Income deleted successfully' });
             },
             (err) => {

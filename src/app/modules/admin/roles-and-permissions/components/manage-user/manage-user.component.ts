@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GetUser } from 'app/shared/modals/user';
 import { UserService } from 'app/shared/services/user.service';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-manage-user',
@@ -80,11 +81,11 @@ export class ManageUserComponent implements OnInit {
     }
 
     getUser() {
-        console.log(this.getUserModal);
+        // console.log(this.getUserModal);
 
         this._userService.getUser(this.getUserModal).subscribe((res) => {
             // const decryptedData = this._commonService.decryptData(res);
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
 
             this.dataSource = new MatTableDataSource(
                 this._commonService.decryptData(res)
@@ -101,6 +102,8 @@ export class ManageUserComponent implements OnInit {
     }
 
     editUser(element: any) {
+        console.log('hello');
+
         this.router.navigate(['/roles-and-permissions/new-user'], {
             state: { data: element },
         });

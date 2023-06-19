@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 import { AccountService } from 'app/shared/services/account.service';
 import { CommonService } from 'app/shared/services/common.service';
 import { MessageService } from 'primeng/api';
@@ -49,10 +50,10 @@ export class NewAccountComponent {
             "userId": this.userId,
         }
 
-        console.log(req);
+        // console.log(req);
 
         this._commonService.uniqueCheck(req).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             const response = this._commonService.decryptData(res);
             this.changeDetection.detectChanges();
         }, err => {
@@ -96,11 +97,11 @@ export class NewAccountComponent {
     ngOnInit() {
         this.userId = this._commonService.getUserId();
         this.addAccountForm = this._formBuilder.group({
-            accountName: ['', Validators.required],
-            accountNo: ['', Validators.required],
-            bankName: ['', Validators.required],
+            accountName: ['', [Validators.required, Validators.maxLength(50)]],
+            accountNo: ['', [Validators.required, Validators.maxLength(30)]],
+            bankName: ['', [Validators.required, Validators.maxLength(50)]],
             accountType: ['', Validators.required],
-            ifscCode: ['', Validators.required],
+            ifscCode: ['', [Validators.required, Validators.maxLength(50)]],
             initialAmount: null,
             userId: this.userId,
         });
@@ -115,7 +116,7 @@ export class NewAccountComponent {
             this.updateFormData = history.state.data;
             this.isEdit = true;
             this.addAccountForm.patchValue(this.updateFormData);
-            console.log(this.updateFormData);
+            // console.log(this.updateFormData);
         }
     }
 
@@ -136,7 +137,7 @@ export class NewAccountComponent {
                 this._accountService
                     .updateAccount(this.addAccountForm.value)
                     .subscribe((res) => {
-                        console.log(this._commonService.decryptData(res));
+                        // console.log(this._commonService.decryptData(res));
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account updated successfully' });
                         this.addAccountForm.reset();
                         setTimeout(() => {
@@ -154,10 +155,12 @@ export class NewAccountComponent {
                 this._accountService
                     .addAccount(this.addAccountForm.value)
                     .subscribe((res) => {
-                        console.log(this._commonService.decryptData(res));
+                        // console.log(this._commonService.decryptData(res));
                         this.addAccountForm.reset();
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account added successfully' });
                         setTimeout(() => {
+                            // console.log(this.isAccessToManageAccounts);
+
                             if (this.isAccessToManageAccounts) {
                                 this._route.navigateByUrl('accounts/manage-account');
                             } else {

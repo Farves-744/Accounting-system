@@ -13,6 +13,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { DatePipe } from '@angular/common';
 import { TableUtil } from 'app/shared/tableUtil';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-tax-report',
@@ -100,13 +101,13 @@ export class TaxReportComponent {
     }
 
     getTaxReports() {
-        console.log(this.getTaxReportsModal);
+        // console.log(this.getTaxReportsModal);
 
         this._reportService
             .getTaxReports(this.getTaxReportsModal)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
 
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
@@ -122,7 +123,7 @@ export class TaxReportComponent {
 
     exportPdf() {
         const doc = new jsPDF('p', 'pt', 'a4');
-        console.log(this.taxReportsData);
+        // console.log(this.taxReportsData);
         let rows = []
         this.taxReportsData.forEach((element, i) => {
             var temp = [i + 1, element.accountName, element.paymentMode == 0

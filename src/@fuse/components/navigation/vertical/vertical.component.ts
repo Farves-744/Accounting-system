@@ -274,17 +274,19 @@ export class FuseVerticalNavigationComponent implements OnChanges, OnInit, After
     checkMenus() {
         let logName
         let filteredChild = []
+        // console.log(this.privileges);
+
         for (let nav of this.navigation) {
             if (nav.hasOwnProperty('children')) {
                 for (let c of nav.children) {
                     for (let pri of this.privileges) {
                         if (pri.includes(c.tag)) {
-                            console.log(c);
+                            // console.log(c);
                             if (c.parentId === nav.parentId) {
                                 filteredChild.push(c)
                             }
                             if (pri.includes('logs')) {
-                                console.log('yes it has logs');
+                                // console.log('yes it has logs');
                                 logName = 'logs'
                             }
                         }
@@ -292,24 +294,24 @@ export class FuseVerticalNavigationComponent implements OnChanges, OnInit, After
                 }
             }
         }
-        console.log(filteredChild);
-        console.log(this.navigation);
+        // console.log(filteredChild);
+        // console.log(this.navigation);
 
         for (let m of this.navigation) {
             if (m.hasOwnProperty('children')) {
                 m.children = []
                 for (let fc of filteredChild) {
                     if (m.parentId == fc.parentId) {
-                        console.log(fc);
+                        // console.log(fc);
                         //console.log(m);
                         m.children.push(fc)
                     }
                 }
             }
         }
-        console.log(this.navigation);
+        // console.log(this.navigation);
         this.navigation = this.navigation.filter(item => (item.children && item.children.length > 0) || item.tag == logName || (!item.children && item.tag == 'dashboards'));
-        console.log(this.navigation);
+        // console.log(this.navigation);
     }
 
 
@@ -318,9 +320,9 @@ export class FuseVerticalNavigationComponent implements OnChanges, OnInit, After
      */
     ngOnInit(): void {
         this.privileges.push(localStorage.getItem('privileges'))
-        console.log(this.privileges);
-        console.log(typeof this.privileges);
-        console.log(this.navigation);
+        // console.log(this.privileges);
+        // console.log(typeof this.privileges);
+        // console.log(this.navigation);
         this.checkMenus()
 
         // Make sure the name input is not an empty string

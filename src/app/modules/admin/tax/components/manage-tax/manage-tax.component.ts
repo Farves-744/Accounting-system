@@ -9,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { GetTax } from 'app/shared/modals/tax';
 import { MatPaginator } from '@angular/material/paginator';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-manage-tax',
@@ -80,11 +81,11 @@ export class ManageTaxComponent {
     }
 
     getTax() {
-        console.log(this.getTaxModal);
+        // console.log(this.getTaxModal);
 
         this._taxService.getTax(this.getTaxModal).subscribe((res) => {
             // const decryptedData = this._commonService.decryptData(res);
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
 
             this.dataSource = new MatTableDataSource(
                 this._commonService.decryptData(res)

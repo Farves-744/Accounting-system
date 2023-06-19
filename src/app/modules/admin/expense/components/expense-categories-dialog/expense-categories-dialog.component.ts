@@ -60,7 +60,7 @@ export class ExpenseCategoriesDialogComponent {
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
         this.addCategoryForm = this._formBuilder.group({
-            categoryName: ['', Validators.required],
+            categoryName: ['', [Validators.required, Validators.maxLength(75)]],
             categoryType: 1,
             imageId: this.imageId,
             userId: this.userId,
@@ -78,15 +78,15 @@ export class ExpenseCategoriesDialogComponent {
 
     editCategory(data: any) {
         if (data) {
-            console.log(data);
+            // console.log(data);
             this.updateFormData = data;
             this.isEdit = true;
             this.addCategoryForm.patchValue(this.updateFormData);
-            console.log(this.addCategoryForm.value);
-            console.log(this.addCategoryForm.value.imageUrl);
+            // console.log(this.addCategoryForm.value);
+            // console.log(this.addCategoryForm.value.imageUrl);
             this.imageUrl = this.env.BASE_URL + '/' + data.imageUrl;
-            console.log(this.updateFormData);
-            console.log(this.url);
+            // console.log(this.updateFormData);
+            // console.log(this.url);
         }
     }
 
@@ -98,10 +98,10 @@ export class ExpenseCategoriesDialogComponent {
             return;
         }
 
-        console.log(this.file);
+        // console.log(this.file);
         if (this.addCategoryForm.valid) {
             if (this.data) {
-                console.log(this.data);
+                // console.log(this.data);
                 // console.log(this.addTaxForm.value);
                 this.formatImage(this.file);
                 this.addCategoryForm.value.userId = this.userId;
@@ -112,7 +112,7 @@ export class ExpenseCategoriesDialogComponent {
                     this._expenseService
                         .addCategoryImage(this.formData)
                         .subscribe((res) => {
-                            console.log(res);
+                            // console.log(res);
                             let reData = JSON.parse(JSON.stringify(res));
                             this.imageId = reData.imageId;
                             this.addCategoryForm.value.deleteImageId =
@@ -120,10 +120,10 @@ export class ExpenseCategoriesDialogComponent {
                             this.addCategoryForm.value.imageId = this.imageId;
                             this.updateCategory();
                             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense updated successfully' });
-                            console.log(this.addCategoryForm.value);
+                            // console.log(this.addCategoryForm.value);
                         });
                 } else {
-                    console.log(this.addCategoryForm.value);
+                    // console.log(this.addCategoryForm.value);
                     this.updateCategory();
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense updated successfully' });
                 }
@@ -134,13 +134,13 @@ export class ExpenseCategoriesDialogComponent {
                     this._expenseService
                         .addCategoryImage(this.formData)
                         .subscribe((res) => {
-                            console.log(res);
+                            // console.log(res);
                             let reData = JSON.parse(JSON.stringify(res));
                             this.imageId = reData.imageId;
                             this.addCategoryForm.value.imageId = this.imageId;
                             this.addCategory();
                             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Expense added successfully' });
-                            console.log(this.addCategoryForm.value.imageId);
+                            // console.log(this.addCategoryForm.value.imageId);
                         }, error => {
                             this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something went wrong' });
                         });
@@ -170,7 +170,7 @@ export class ExpenseCategoriesDialogComponent {
 
     onFileDropped(event) {
         this.file = event[0];
-        console.log(this.file);
+        // console.log(this.file);
         let reader = new FileReader();
         reader.onload = (event: any) => {
             this.imageUrl = event.target.result;
@@ -180,7 +180,7 @@ export class ExpenseCategoriesDialogComponent {
 
     saveImage(event: any) {
         this.file = event.target.files[0];
-        console.log(this.file);
+        // console.log(this.file);
         let reader = new FileReader();
         reader.onload = (event: any) => {
             this.imageUrl = event.target.result;
@@ -191,7 +191,7 @@ export class ExpenseCategoriesDialogComponent {
     }
 
     async formatImage(file: any) {
-        console.log(file);
+        // console.log(file);
         this.fileToUpload = file;
         this.formData = new FormData();
         // console.log(this.fileToUpload.size);
@@ -228,7 +228,7 @@ export class ExpenseCategoriesDialogComponent {
         this._expenseService
             .addCategory(this.addCategoryForm.value)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.addCategoryForm.reset();
                 this.dialogRef.close(true);
                 this.changeDetection.detectChanges();
@@ -242,7 +242,7 @@ export class ExpenseCategoriesDialogComponent {
             .updateCategory(this.addCategoryForm.value)
             .subscribe((res) => {
                 // console.log(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.addCategoryForm.reset();
                 this.dialogRef.close(true);
                 this.changeDetection.detectChanges();

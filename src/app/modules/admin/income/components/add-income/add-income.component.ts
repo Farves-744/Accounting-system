@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from 'app/shared/services/common.service';
 import { CollectDialogComponent } from '../collect-dialog/collect-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { GetTax } from 'app/shared/modals/tax';
 import { PaymentDialogComponent } from '../payment-dialog/payment-dialog.component';
 import { environment } from 'environments/environment';
 import { MessageService } from 'primeng/api';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 import { AppComponent } from 'app/app.component';
 
 @Component({
@@ -54,7 +55,8 @@ export class AddIncomeComponent {
         private _route: Router,
         private changeDetection: ChangeDetectorRef,
         public dialog: MatDialog,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private el: ElementRef
     ) {
         this.isAccessToManageIncome = (AppComponent.checkUrl("manageIncomes"))
         this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
@@ -64,7 +66,7 @@ export class AddIncomeComponent {
         this.userId = this._commonService.getUserId();
         this.addIncomeForm = this._formBuilder.group({
             totalAmount: [null, [Validators.required, Validators.min(100)]],
-            description: ['', Validators.minLength(1)],
+            description: ['', Validators.maxLength(70)],
             taxApplicable: 0,
             taxId: [{ value: null, disabled: true }],
             imageId: this.imageId,
@@ -81,8 +83,10 @@ export class AddIncomeComponent {
         this.getCategoryName();
         this.getTaxNameModal.userId = this.userId;
         this.getTaxName();
-        console.log(this.addIncomeForm.value.taxApplicable);
+        // console.log(this.addIncomeForm.value.taxApplicable);
     }
+
+
 
     get f() {
         return this.addIncomeForm.controls;
@@ -93,9 +97,9 @@ export class AddIncomeComponent {
     }
 
     calculateTax(value) {
-        console.log(value);
+        // console.log(value);
 
-        console.log(this.addIncomeForm.value.taxApplicable);
+        // console.log(this.addIncomeForm.value.taxApplicable);
         if (this.addIncomeForm.value.taxApplicable == 1) {
             this.addIncomeForm.patchValue({
                 taxAmount:
@@ -103,19 +107,19 @@ export class AddIncomeComponent {
                     (this.addIncomeForm.value.totalAmount * 100) /
                     (100 + value),
             });
-            console.log(this.addIncomeForm.value.taxAmount);
+            // console.log(this.addIncomeForm.value.taxAmount);
 
             this.addIncomeForm.value.totalAmount =
                 (this.addIncomeForm.value.totalAmount * 100) /
                 (100 + parseInt(value));
 
             this.addIncomeForm.value.totalAmount = this.addIncomeForm.value.totalAmount + this.addIncomeForm.value.taxAmount;
-            console.log(this.addIncomeForm.value.totalAmount);
+            // console.log(this.addIncomeForm.value.totalAmount);
             this.addIncomeForm.value.finalAmount =
                 this.addIncomeForm.value.totalAmount
             this.finalAmount = this.addIncomeForm.value.finalAmount;
 
-            console.log(this.addIncomeForm.value.finalAmount);
+            // console.log(this.addIncomeForm.value.finalAmount);
         } else if (this.addIncomeForm.value.taxApplicable == 2) {
             this.addIncomeForm.patchValue({
                 taxAmount:
@@ -123,7 +127,7 @@ export class AddIncomeComponent {
                     (this.addIncomeForm.value.totalAmount * 100) /
                     (100 + value),
             });
-            console.log(this.addIncomeForm.value.taxAmount);
+            // console.log(this.addIncomeForm.value.taxAmount);
 
             this.addIncomeForm.value.totalAmount =
                 this.addIncomeForm.value.totalAmount;
@@ -132,27 +136,27 @@ export class AddIncomeComponent {
                 this.addIncomeForm.value.taxAmount
             );
             this.finalAmount = this.addIncomeForm.value.finalAmount;
-            console.log(this.addIncomeForm.value.finalAmount);
+            // console.log(this.addIncomeForm.value.finalAmount);
 
             // this.addIncomeForm.value.totalAmount = this.finalAmount
-            console.log(this.addIncomeForm.value.totalAmount);
+            // console.log(this.addIncomeForm.value.totalAmount);
 
         }
     }
 
     calculateTaxBySelect(event) {
-        console.log(event);
+        // console.log(event);
         for (let tax of this.taxData) {
             if (tax.id == event) {
                 this.taxRate = tax.taxRate;
 
-                console.log(this.taxRate);
-                console.log(tax);
+                // console.log(this.taxRate);
+                // console.log(tax);
 
                 this.calculateTax(this.taxRate);
             }
         }
-        console.log(this.addIncomeForm.value.taxAmount);
+        // console.log(this.addIncomeForm.value.taxAmount);
     }
 
     calculateTaxByRadio(event) {
@@ -160,37 +164,37 @@ export class AddIncomeComponent {
         if (this.finalAmount != null) {
             this.calculateTax(this.taxRate);
         }
-        console.log(event);
+        // console.log(event);
     }
 
     ngAfterContentInit() {
         if (history.state.data) {
-            console.log(history.state.data);
+            // console.log(history.state.data);
 
-            console.log(this.taxRate);
+            // console.log(this.taxRate);
 
             this.addIncomeForm.value.userId = this.userId;
             this.addIncomeForm.value.id = history.state.data;
-            console.log(this.addIncomeForm.value);
+            // console.log(this.addIncomeForm.value);
 
             this._incomeService
                 .getIncomeById(this.addIncomeForm.value)
                 .subscribe((res) => {
-                    console.log(this._commonService.decryptData(res));
+                    // console.log(this._commonService.decryptData(res));
 
                     this.updateFormData = this._commonService.decryptData(res);
 
-                    console.log(this.updateFormData);
+                    // console.log(this.updateFormData);
 
                     this.addIncomeForm.patchValue(this.updateFormData);
                     this.taxRate = this.updateFormData.taxId;
-                    console.log(this.taxRate);
+                    // console.log(this.taxRate);
                     this.calculateTaxBySelect(this.taxRate);
 
                     this.addIncomeForm.value.id = history.state.data;
                     this.imageUrl =
                         this.env.BASE_URL + '/' + this.updateFormData.imageUrl;
-                    console.log(this.imageUrl);
+                    // console.log(this.imageUrl);
                     if (this.updateFormData.taxApplicable == 1) {
                         // this.textInputDisabled = false;
                         // console.log(this.textInputDisabled);
@@ -240,13 +244,13 @@ export class AddIncomeComponent {
                     }
 
                     this.changeDetection.detectChanges();
-                    console.log(this.updateFormData);
+                    // console.log(this.updateFormData);
                 });
         }
     }
 
     toggleTaxInput(event) {
-        console.log(event);
+        // console.log(event);
 
         if (event.checked == true) {
             this.showFinal = true;
@@ -266,7 +270,7 @@ export class AddIncomeComponent {
         } else {
             this.showFinal = false;
             this.addIncomeForm.patchValue({ taxApplicable: 0 });
-            console.log(this.addIncomeForm.value.taxApplicable);
+            // console.log(this.addIncomeForm.value.taxApplicable);
             // this.taxInputDisabled = true;
             this.includeInputDisabled = true;
             this.includeInputChecked = false;
@@ -277,14 +281,14 @@ export class AddIncomeComponent {
             this.addIncomeForm.controls.taxId.disable();
             this.addIncomeForm.value.totalAmount =
                 this.addIncomeForm.value.totalAmount;
-            console.log(this.addIncomeForm.value.totalAmount);
+            // console.log(this.addIncomeForm.value.totalAmount);
 
             this.addIncomeForm.value.finalAmount =
                 this.addIncomeForm.value.totalAmount;
-            console.log(this.addIncomeForm.value.finalAmount);
+            // console.log(this.addIncomeForm.value.finalAmount);
             this.addIncomeForm.value.taxAmount = null;
 
-            console.log(this.addIncomeForm.value.taxAmount);
+            // console.log(this.addIncomeForm.value.taxAmount);
         }
 
         if (this.addIncomeForm.value.taxApplicable == 0) {
@@ -295,7 +299,7 @@ export class AddIncomeComponent {
             this.excludeInputChecked = false;
         }
 
-        console.log(this.addIncomeForm.value.taxApplicable);
+        // console.log(this.addIncomeForm.value.taxApplicable);
         // this.textInputDisabled = !this.textInputDisabled;
         // this.disabledTax = !this.disabledTax;
     }
@@ -312,7 +316,7 @@ export class AddIncomeComponent {
     }
 
     getTaxApplicableValue(event) {
-        console.log(event);
+        // console.log(event);
 
         if (event.source._checked == false) {
             this.addIncomeForm.patchValue({ taxApplicable: 0 });
@@ -323,8 +327,8 @@ export class AddIncomeComponent {
             });
             event.source._checked = true;
         }
-        console.log(this.addIncomeForm.value.taxApplicable);
-        console.log(this.taxData);
+        // console.log(this.addIncomeForm.value.taxApplicable);
+        // console.log(this.taxData);
     }
 
     navigateToHome() {
@@ -342,7 +346,7 @@ export class AddIncomeComponent {
 
     onFileDropped(event) {
         this.file = event[0];
-        console.log(this.file);
+        // console.log(this.file);
         let reader = new FileReader();
         reader.onload = (event: any) => {
             this.imageUrl = event.target.result;
@@ -355,7 +359,7 @@ export class AddIncomeComponent {
 
     saveImage(event: any) {
         this.file = event.target.files[0];
-        console.log(this.file);
+        // console.log(this.file);
         let reader = new FileReader();
         reader.onload = (event: any) => {
             this.imageUrl = event.target.result;
@@ -369,9 +373,9 @@ export class AddIncomeComponent {
         this._incomeService
             .getCategory(this.getCategoryNameModal)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.categoryData = this._commonService.decryptData(res);
-                console.log(this.categoryData);
+                // console.log(this.categoryData);
 
                 this.changeDetection.detectChanges();
             });
@@ -379,9 +383,9 @@ export class AddIncomeComponent {
 
     getTaxName() {
         this._taxService.getTax(this.getTaxNameModal).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             this.taxData = this._commonService.decryptData(res);
-            console.log(this.taxData);
+            // console.log(this.taxData);
 
             this.changeDetection.detectChanges();
         });
@@ -396,24 +400,24 @@ export class AddIncomeComponent {
         }
 
         if (this.addIncomeForm.valid) {
-            console.log(this.updateFormData);
-            console.log(this.addIncomeForm.value.taxAmount);
-            console.log(this.file);
-            console.log(this.addIncomeForm.value.file);
+            // console.log(this.updateFormData);
+            // console.log(this.addIncomeForm.value.taxAmount);
+            // console.log(this.file);
+            // console.log(this.addIncomeForm.value.file);
 
             this.addIncomeForm.value.file = this.file;
             // this.addIncomeForm.patchValue({ file: this.file });
 
-            console.log(this.addIncomeForm.value);
+            // console.log(this.addIncomeForm.value);
             if (history.state.data) {
                 // this.addIncomeForm.patchValue({
                 //     imageId: this.updateFormData.imageId,
                 // });
-                console.log(this.addIncomeForm.value);
+                // console.log(this.addIncomeForm.value);
                 // return;
 
                 this.addIncomeForm.value.id = history.state.data;
-                console.log(this.addIncomeForm.value);
+                // console.log(this.addIncomeForm.value);
                 const dialogRef = this.dialog.open(CollectDialogComponent, {
                     width: '900px',
                     data: this.addIncomeForm.value,
@@ -433,7 +437,7 @@ export class AddIncomeComponent {
                     }
                 });
             } else {
-                console.log(this.addIncomeForm.value);
+                // console.log(this.addIncomeForm.value);
 
                 const dialogRef = this.dialog.open(CollectDialogComponent, {
                     width: '900px',

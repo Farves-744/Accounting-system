@@ -74,7 +74,8 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
     <div class="flex w-full flex-col md:flex-row gap-4 justify-center items-center">
         <!-- Search -->
         <div class="border border-myAccent w-full flex items-center justify-between rounded pr-2">
-            <input type="search" name="account-search" (keyup)="searchIncome($event)" id="account-search"
+            <input onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\., ]/g) === null"
+                type="search" name="account-search" (keyup)="searchIncome($event)" id="account-search"
                 placeholder="Search " class="px-4 py-2 w-full rounded caret-myAccent" />
 
             <mat-icon class="text-myAccent w-[24px] h-[24px] cursor-pointer search-icon"
@@ -83,10 +84,10 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
 
         <mat-form-field appearance="fill" class="mt-0 w-full">
             <mat-date-range-input [rangePicker]="picker" placeholder="Select Date">
-                <input matStartDate placeholder="Start date" [(ngModel)]="getIncomeModal.startDate"
-                    (dateChange)="dateFilter()" />
-                <input matEndDate placeholder="End date" [(ngModel)]="getIncomeModal.endDate"
-                    (dateChange)="dateFilter()" />
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^0-9/]/g) === null" matStartDate
+                    placeholder="Start date" [(ngModel)]="getIncomeModal.startDate" (dateChange)="dateFilter()" />
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^0-9/]/g) === null" matEndDate
+                    placeholder="End date" [(ngModel)]="getIncomeModal.endDate" (dateChange)="dateFilter()" />
             </mat-date-range-input>
 
             <mat-icon matDatepickerToggleIcon class="cursor-pointer" (click)="clearDate()" *ngIf="
@@ -178,7 +179,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                 </td>
             </ng-container>
 
-            <ng-container matColumnDef="actions" *ngIf="checkEdit">
+            <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                 <td mat-cell *matCellDef="let element">
                     <!-- <mat-icon
@@ -188,7 +189,7 @@ l-40 0 0 60 0 60 40 0 c33 0 40 3 40 20 0 17 -7 20 -40 20 l-40 0 0 50 0 50
                         class="text-green-600 cursor-pointer ml-5"
                     ></mat-icon> -->
 
-                    <img src="assets/icons/edit.svg" matTooltip="Edit Income" alt="Edit"
+                    <img src="assets/icons/edit.svg" *ngIf="checkEdit" matTooltip="Edit Income" alt="Edit"
                         (click)="editIncome(element.id)" class="w-[24px] h-[24px] cursor-pointer ml-5" />
                 </td>
             </ng-container>

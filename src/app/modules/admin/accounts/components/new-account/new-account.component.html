@@ -29,7 +29,8 @@
                 <label class="font-medium" for="holder-name">Account Holder Name
 
                     <span class="text-red-600">*</span></label>
-                <input id="holder-name" type="text" required placeholder="Enter Holder Name"
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\., ]/g) === null"
+                    maxlength="50" id="holder-name" type="text" required placeholder="Enter Holder Name"
                     formControlName="accountName" class="border border-myAccent p-2 rounded" />
 
                 <div *ngIf="
@@ -45,7 +46,9 @@
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="account-number">Account Number <span
                         class="text-red-600">*</span></label>
-                <input id="account-number" type="text" required (change)="validateAccountNumber($event)"
+                <input maxlength="30"
+                    onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\ ]/g) === null"
+                    id="account-number" type="text" required (change)="validateAccountNumber($event)"
                     formControlName="accountNo" placeholder="Enter Account Number"
                     class="border border-myAccent p-2 rounded" />
 
@@ -62,8 +65,9 @@
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="bank-name">
                     Bank Name <span class="text-red-600">*</span></label>
-                <input id="bank-name" type="text" required placeholder="Enter Bank Name" formControlName="bankName"
-                    class="border border-myAccent p-2 rounded" />
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\., ]/g) === null"
+                    maxlength="50" id="bank-name" type="text" required placeholder="Enter Bank Name"
+                    formControlName="bankName" class="border border-myAccent p-2 rounded" />
 
                 <div *ngIf="
                         f.bankName.invalid &&
@@ -99,8 +103,9 @@
             <div class="flex flex-col gap-2">
                 <label class="font-medium" for="ifsc-code">
                     IFSC Code <span class="text-red-600">*</span></label>
-                <input id="ifsc-code" type="text" required formControlName="ifscCode" placeholder="Enter IFSC Code"
-                    class="border border-myAccent p-2 rounded" />
+                <input onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\ ]/g) === null"
+                    maxlength="50" id="ifsc-code" type="text" required formControlName="ifscCode"
+                    placeholder="Enter IFSC Code" class="border border-myAccent p-2 rounded" />
 
                 <div *ngIf="
                         f.ifscCode.invalid &&

@@ -8,6 +8,7 @@ import { GetAccountName } from 'app/shared/modals/reports';
 import { ReportsService } from 'app/shared/services/reports.service';
 import { AccountTransactionsComponent } from '../account-transactions/account-transactions.component';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-accounts-statement',
@@ -63,13 +64,13 @@ export class AccountsStatementComponent {
     }
 
     getAccountName() {
-        console.log(this.getAccountNameModel);
+        // console.log(this.getAccountNameModel);
 
         this._reportService
             .getAccountsName(this.getAccountNameModel)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
 
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)

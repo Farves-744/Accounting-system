@@ -34,7 +34,7 @@ export class ExpensePaymentDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.userId = this._commonService.getUserId();
-        console.log(this.data);
+        // console.log(this.data);
         setTimeout(() => {
             this.getPaymentById(this.data);
         });
@@ -45,10 +45,10 @@ export class ExpensePaymentDialogComponent implements OnInit {
             id: JSON.parse(JSON.stringify(id)).id,
             userId: this.userId,
         };
-        console.log(req);
+        // console.log(req);
 
         this._reportService.getExpenseReportsById(req).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             this.dataSource = new MatTableDataSource(
                 this._commonService.decryptData(res)
             );

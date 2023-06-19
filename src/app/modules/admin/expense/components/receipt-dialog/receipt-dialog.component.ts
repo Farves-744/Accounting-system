@@ -20,10 +20,10 @@ export class ReceiptDialogComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        console.log(this.data);
+        // console.log(this.data);
 
         this.imageUrl = environment.BASE_URL + '/' + this.data.imageUrl;
-        console.log(this.imageUrl);
+        // console.log(this.imageUrl);
     }
 
     prinkReceipt() {

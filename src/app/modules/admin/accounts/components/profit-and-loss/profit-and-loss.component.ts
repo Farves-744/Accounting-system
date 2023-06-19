@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 import {
     GetProfitAndLoss,
     ProfitAndLossData,
@@ -51,7 +52,7 @@ export class ProfitAndLossComponent implements OnInit {
     }
 
     getProfitAndLoss() {
-        console.log(this.getProfitAndLossModal);
+        // console.log(this.getProfitAndLossModal);
 
         this.getProfitAndLossModal.userId = this.userId;
 
@@ -59,7 +60,7 @@ export class ProfitAndLossComponent implements OnInit {
             .getProfitAndLoss(this.getProfitAndLossModal)
             .subscribe((res) => {
                 this.profitAndLossData = this._commonService.decryptData(res);
-                console.log(this.profitAndLossData);
+                // console.log(this.profitAndLossData);
 
                 this.changeDetection.detectChanges();
             });

@@ -9,6 +9,7 @@ import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component'
 import { RoleService } from 'app/shared/services/role.service';
 import { GetRole } from 'app/shared/modals/role';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-manage-roles',
@@ -80,11 +81,11 @@ export class ManageRolesComponent {
     }
 
     getRole() {
-        console.log(this.getRoleModal);
+        // console.log(this.getRoleModal);
 
         this._roleService.getRole(this.getRoleModal).subscribe((res) => {
             // const decryptedData = this._commonService.decryptData(res);
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
 
             this.dataSource = new MatTableDataSource(
                 this._commonService.decryptData(res)

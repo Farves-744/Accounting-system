@@ -68,21 +68,22 @@ export class AuthSignInComponent implements OnInit {
     signIn() {
         this._authService.signIn(this.signInForm.value).subscribe((res) => {
             this.result = this._commonService.decryptData(res);
-            console.log(this.result);
+            window.location.reload()
+            // console.log(this.result);
             localStorage.clear()
             localStorage.setItem('token', this.result.token);
             localStorage.setItem('userId', this.result.userId);
             localStorage.setItem('userName', this.result.name);
             localStorage.setItem('userMail', this.result.email);
             localStorage.setItem('privileges', this.result.permissions);
-            console.log(this.result);
+            // console.log(this.result);
 
             this._router.navigateByUrl('dashboard');
         }, error => {
             this._router.navigateByUrl('/sign-in')
-            if (error.status === 601) {
-                this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Email and password mismatch' });
-            }
+            // if (error.status === 601) {
+            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Email and password mismatch' });
+            // }
         });
     }
 
@@ -101,7 +102,7 @@ export class AuthSignInComponent implements OnInit {
         // Sign in
         this._authService.signIn(this.signInForm.value).subscribe(
             (res) => {
-                console.log(res);
+                // console.log(res);
 
                 // Set the redirect url.
                 // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user

@@ -35,11 +35,11 @@ export class DeleteDialogComponent implements OnInit {
 
         this._userService.deleteUser(req).subscribe(
             (res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User deleted successfully' });
             },
             (err) => {
-                console.log(err.status);
+                // console.log(err.status);
 
                 if (err.status === 605) {
                     this.messageService.add({ severity: 'info', summary: 'You cannot delete', detail: 'This User is being used' });

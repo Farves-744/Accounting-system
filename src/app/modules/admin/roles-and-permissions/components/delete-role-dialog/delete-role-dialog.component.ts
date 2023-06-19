@@ -35,14 +35,14 @@ export class DeleteRoleDialogComponent implements OnInit {
 
         this._roleService.deleteRole(req).subscribe(
             (res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role deleted successfully' });
             },
             (err) => {
 
                 // if (err.status === 605) {
                 this.messageService.add({ severity: 'info', summary: 'You cannot delete', detail: 'This Role is being used' });
-                console.log(err.status);
+                // console.log(err.status);
 
                 // }
             }

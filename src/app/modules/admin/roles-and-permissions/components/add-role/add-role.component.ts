@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 import { AddRole, GetRoleById, privilege } from 'app/shared/modals/role';
 import { CommonService } from 'app/shared/services/common.service';
 import { RoleService } from 'app/shared/services/role.service';
@@ -64,7 +65,7 @@ export class AddRoleComponent implements OnInit {
         'manageExpenses',
         'manageExpensesAdd',
         'manageExpensesEdit',
-        'manageIncomesDelete',
+        'manageExpensesDelete',
         'ExpenseCategories',
         'ExpenseCategoriesAdd',
         'ExpenseCategoriesEdit',
@@ -124,6 +125,10 @@ export class AddRoleComponent implements OnInit {
         'manageUsersAdd',
         'manageUsersEdit',
         'manageUsersDelete',
+        'newRoles',
+        'newRolesAdd',
+        'newRolesEdit',
+        'newRolesDelete',
         'manageRoles',
         'manageRolesAdd',
         'manageRolesEdit',
@@ -144,10 +149,10 @@ export class AddRoleComponent implements OnInit {
         // });
 
         this.getPrivileges()
-        console.log(this.isDisabled);
+        // console.log(this.isDisabled);
 
         // this.privileges = this.sample
-        console.log(this.privileges);
+        // console.log(this.privileges);
 
         // this.addRoleForm = this._formBuilder.group({
         //     roleName: ['', Validators.required],
@@ -155,7 +160,6 @@ export class AddRoleComponent implements OnInit {
         //     userId: this.userId,
         // });
     }
-
 
     // getRoleById() {
     //     this._roleService.getRoleById(history.state.data).subscribe((res) => {
@@ -199,8 +203,8 @@ export class AddRoleComponent implements OnInit {
     }
 
     addPermission(event) {
-        console.log(event.checked);
-        console.log(event.source.name);
+        // console.log(event.checked);
+        // console.log(event.source.name);
         if (event.checked) {
             this.permissions = this.roleModal.permissions.filter((value, index, self) => {
                 return self.indexOf(value) === index;
@@ -208,7 +212,7 @@ export class AddRoleComponent implements OnInit {
 
             this.permissions.push(event.source.name);
             this.roleModal.permissions = this.permissions
-            console.log(this.roleModal.permissions);
+            // console.log(this.roleModal.permissions);
 
         } else {
             if (this.permissions != null) {
@@ -221,7 +225,7 @@ export class AddRoleComponent implements OnInit {
                     1
                 );
                 this.roleModal.permissions = this.permissions
-                console.log(this.roleModal.permissions);
+                // console.log(this.roleModal.permissions);
             }
         }
     }
@@ -238,14 +242,14 @@ export class AddRoleComponent implements OnInit {
 
         // if (this.addRoleForm.valid) {
         if (this.updateFormData) {
-            console.log(this.updateFormData);
-            console.log(this.roleModal);
+            // console.log(this.updateFormData);
+            // console.log(this.roleModal);
             this.roleModal.userId = this.userId;
             this.roleModal.id = this.updateFormData.id;
             this._roleService
                 .updateRole(this.roleModal)
                 .subscribe((res) => {
-                    console.log(this._commonService.decryptData(res));
+                    // console.log(this._commonService.decryptData(res));
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role updated successfully' });
                     // this.addRoleForm.reset();
                     this.roleModal = new AddRole()
@@ -259,11 +263,11 @@ export class AddRoleComponent implements OnInit {
                     });
         } else {
             this.roleModal.userId = this.userId
-            console.log(this.roleModal);
+            // console.log(this.roleModal);
             this._roleService
                 .addRole(this.roleModal)
                 .subscribe((res) => {
-                    console.log(this._commonService.decryptData(res));
+                    // console.log(this._commonService.decryptData(res));
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role added successfully' });
                     this.roleModal = new AddRole()
 
@@ -301,15 +305,15 @@ export class AddRoleComponent implements OnInit {
                     this.permissions.push(String(i));
                 }
 
-                console.log(this.permissions);
+                // console.log(this.permissions);
                 this.roleModal.permissions = this.permissions;
-                console.log(this.roleModal.permissions);
+                // console.log(this.roleModal.permissions);
                 this.isDisabled = true;
-                console.log(this.isDisabled);
+                // console.log(this.isDisabled);
 
             } else {
                 this.isDisabled = true;
-                console.log(this.isDisabled);
+                // console.log(this.isDisabled);
                 for (let i = 1; i <= 40; i++) {
                     if (!this.permissions.includes(i)) {
                         this.permissions.push(String(i));
@@ -320,7 +324,7 @@ export class AddRoleComponent implements OnInit {
                 })
                 this.roleModal.permissions = this.permissions
 
-                console.log(this.roleModal.permissions);
+                // console.log(this.roleModal.permissions);
 
             }
         } else {
@@ -329,7 +333,7 @@ export class AddRoleComponent implements OnInit {
             }
 
             this.roleModal.permissions = this.permissions;
-            console.log(this.roleModal.permissions);
+            // console.log(this.roleModal.permissions);
             this.isDisabled = false;
 
         }
@@ -337,7 +341,7 @@ export class AddRoleComponent implements OnInit {
 
     getPermissions() {
         this._roleService.getPermissions({}).subscribe((res) => {
-            console.log(res);
+            // console.log(res);
             this.permissionData = res
         })
     }
@@ -347,21 +351,21 @@ export class AddRoleComponent implements OnInit {
         // var req = { userId: this.userId, token: this.token }
         this._roleService.getPermissions({}).subscribe(data => {
             this.menuRows = data;
-            console.log(this.menuRows)
+            // console.log(this.menuRows)
             var menus = []
             var sno = 0;
             var parentId = 1
             for (let menu of this.menuRows) {
                 if (menu.isChild == 0 && menu.actions == 1) {
                     parentId = menu.id
-                    console.log(parentId);
-                    console.log(menu.privileges);
+                    // console.log(parentId);
+                    // console.log(menu.privileges);
                     if (this.checkPrivilege(menu.privileges)) {
                         var viewAccess = false
                         if (menu.id == 1)
                             viewAccess = true
                         menus.push({ sno: ++sno, 'id': menu.id, 'privilege': menu.privileges, 'isChild': menu.isChild, 'parentId': parentId, 'length': menu.length, 'name': menu.name, view: viewAccess, add: false, edit: false, delete: false })
-                        console.log(menus);
+                        // console.log(menus);
                     }
                 }
 
@@ -369,18 +373,16 @@ export class AddRoleComponent implements OnInit {
                     if (menu.actions == 1)
                         if (this.checkPrivilege(menu.privileges))
                             menus.push({ sno: ++sno, 'id': menu.id, 'privilege': menu.privileges, 'isChild': menu.isChild, 'parentId': parentId, 'length': menu.length, 'name': menu.name, view: false, add: false, edit: false, delete: false })
-                    console.log(menus);
+                    // console.log(menus);
                 }
-
-
             }
-            console.log(this.menuRows)
-            console.log(menus)
+            // console.log(this.menuRows)
+            // console.log(menus)
             this.menuRows = menus
             this.selected.push(this.menuRows[0])
             this.changeDetection.detectChanges();
-            console.log(this.menuRows);
-            console.log(this.selected);
+            // console.log(this.menuRows);
+            // console.log(this.selected);
         })
     }
 
@@ -405,11 +407,11 @@ export class AddRoleComponent implements OnInit {
     }
 
     onCheck(field, index) {
-        console.log(this.menuRows);
+        // console.log(this.menuRows);
 
-        console.log(field + "--" + index + "--" + this.menuRows[index][field]);
+        // console.log(field + "--" + index + "--" + this.menuRows[index][field]);
         if (field == 'view' && this.menuRows[index]['view'] == false) {
-            console.log("ViewFalse")
+            // console.log("ViewFalse")
             this.menuRows[index]['add'] = false
             this.menuRows[index]['edit'] = false
             this.menuRows[index]['delete'] = false
@@ -421,20 +423,20 @@ export class AddRoleComponent implements OnInit {
 
             if (parentId == Id) {
                 var parentIndex = this.menuRows.findIndex(x => x.id == parentId)
-                console.log(parentIndex)
-                console.log(this.menuRows[parentIndex])
+                // console.log(parentIndex)
+                // console.log(this.menuRows[parentIndex])
                 var childTrue = 0;
                 if (this.menuRows[parentIndex]['length'] > 0) {
                     for (let i = parentIndex + 1; i <= (this.menuRows[parentIndex]['length'] + parentIndex - 1); i++) {
-                        console.log(i)
-                        console.log(this.menuRows[i])
+                        // console.log(i)
+                        // console.log(this.menuRows[i])
                         if (this.menuRows[i]['view'] == true) {
                             childTrue = 1;
                         }
                     }
                 }
                 if (childTrue == 0) {
-                    console.log('view')
+                    // console.log('view')
                     this.menuRows[parentIndex]['view'] = false
                     var selectedParentIndex = this.selected.findIndex(x => x.sno == this.menuRows[parentIndex]['sno'])
                     this.selected.splice(selectedParentIndex, 1)
@@ -474,7 +476,7 @@ export class AddRoleComponent implements OnInit {
                 }
             }
         }
-        console.log(this.selected);
+        // console.log(this.selected);
         this.changeDetection.detectChanges();
     }
 
@@ -492,18 +494,18 @@ export class AddRoleComponent implements OnInit {
             if (row.delete == true)
                 privilegeArray.push(row.id + 3)
         }
-        console.log(privilegeArray)
+        // console.log(privilegeArray)
         privilegeArray.sort(function (a, b) { return a - b });
         this.roleModal.permissions = privilegeArray
         if (this.updateFormData) {
-            console.log(this.updateFormData);
-            console.log(this.roleModal);
+            // console.log(this.updateFormData);
+            // console.log(this.roleModal);
             this.roleModal.userId = this.userId;
             this.roleModal.id = this.updateFormData.id;
             this._roleService
                 .updateRole(this.roleModal)
                 .subscribe((res) => {
-                    console.log(this._commonService.decryptData(res));
+                    // console.log(this._commonService.decryptData(res));
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role updated successfully' });
                     // this.addRoleForm.reset();
                     this.roleModal = new AddRole()
@@ -518,11 +520,11 @@ export class AddRoleComponent implements OnInit {
         }
         else {
             this.roleModal.userId = this.userId
-            console.log(this.roleModal);
+            // console.log(this.roleModal);
             this._roleService
                 .addRole(this.roleModal)
                 .subscribe((res) => {
-                    console.log(this._commonService.decryptData(res));
+                    // console.log(this._commonService.decryptData(res));
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Role added successfully' });
                     this.roleModal = new AddRole()
                     this._route.navigateByUrl(
@@ -556,14 +558,14 @@ export class AddRoleComponent implements OnInit {
             this.selected.push(this.menuRows[0])
         }
 
-        console.log(this.menuRows);
+        // console.log(this.menuRows);
     }
 
     serviceCall() {
         this.getRoleByIdModal.userId = this.userId;
         this.getRoleByIdModal.id = history.state.data;
         this._roleService.getRoleById(this.getRoleByIdModal).subscribe(res => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             var retData = this._commonService.decryptData(res)
             // var retData = JSON.parse(JSON.stringify(data))
             this.roleModal.permissions = retData.permissions
@@ -571,7 +573,7 @@ export class AddRoleComponent implements OnInit {
             this.updateFormData = retData
 
 
-            console.log(this.menuRows)
+            // console.log(this.menuRows)
             for (let menu of this.menuRows) {
                 if (menu.isChild == 0) {
                     if (menu.id == 1)
@@ -594,7 +596,7 @@ export class AddRoleComponent implements OnInit {
                     menu.add = this.checkRolePrivilegeById(menu.id + 1)
                     menu.edit = this.checkRolePrivilegeById(menu.id + 2)
                     menu.delete = this.checkRolePrivilegeById(menu.id + 3)
-                    console.log(menu);
+                    // console.log(menu);
 
                     if (menu.view)
                         this.selected.push(menu)

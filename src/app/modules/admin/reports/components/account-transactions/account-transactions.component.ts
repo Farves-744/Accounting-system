@@ -12,6 +12,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { DatePipe } from '@angular/common';
 import { TableUtil } from 'app/shared/tableUtil';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-account-transactions',
@@ -55,7 +56,7 @@ export class AccountTransactionsComponent implements OnInit {
     ngOnInit(): void {
         this.getAccountStatementModel.userId = this._commonService.getUserId();
         this.getAccountStatement();
-        console.log(history.state.data);
+        // console.log(history.state.data);
 
         this.cols = [
             { field: "sn", header: "SN" },
@@ -85,13 +86,13 @@ export class AccountTransactionsComponent implements OnInit {
 
     getAccountStatement() {
         this.getAccountStatementModel.id = history.state.data;
-        console.log(this.getAccountStatementModel);
+        // console.log(this.getAccountStatementModel);
 
         this._reportService
             .getAccountStatements(this.getAccountStatementModel)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
 
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
@@ -111,7 +112,7 @@ export class AccountTransactionsComponent implements OnInit {
 
     exportPdf() {
         const doc = new jsPDF('p', 'pt', 'a4');
-        console.log(this.accountTransactionsData);
+        // console.log(this.accountTransactionsData);
         let rows = []
 
         this.accountTransactionsData.forEach((element, i) => {

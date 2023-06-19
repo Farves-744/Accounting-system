@@ -41,8 +41,10 @@ export class ShowDialogComponent {
             id: this.data.id,
         };
         this._accountService.getAccountById(req).subscribe((res) => {
-            this.response = this._commonService.decryptData(res)[0];
-            console.log(this.response);
+            // console.log(this._commonService.decryptData(res));
+
+            this.response = this._commonService.decryptData(res);
+            // console.log(this.response);
             this.changeDetection.detectChanges();
         });
     }

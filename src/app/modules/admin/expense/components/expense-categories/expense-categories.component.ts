@@ -20,6 +20,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'environments/environment';
 import { AppComponent } from 'app/app.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-expense-categories',
@@ -40,6 +41,7 @@ export class ExpenseCategoriesComponent implements OnInit {
     checkAdd: any;
     checkEdit: any;
     checkDelete: any;
+    urlList: any = []
 
     constructor(
         private router: Router,
@@ -49,6 +51,10 @@ export class ExpenseCategoriesComponent implements OnInit {
         // private datePipe: DatePipe,
         private _expenseService: ExpenseService
     ) {
+        if (localStorage.getItem('privileges')) {
+            var menusFilterList = localStorage.getItem('privileges').toString()
+            this.urlList = menusFilterList.split(',')
+        }
 
         this.dashboardAccess = (AppComponent.checkUrl("dashboards"))
         this.checkAdd = (AppComponent.checkUrl("expenseCategoriesAdd"))
@@ -100,16 +106,16 @@ export class ExpenseCategoriesComponent implements OnInit {
     }
 
     getCategory() {
-        console.log(this.getCategoryModal);
+        // console.log(this.getCategoryModal);
         this._expenseService
             .getCategory(this.getCategoryModal)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(
-                    JSON.parse(
-                        JSON.stringify(this._commonService.decryptData(res))
-                    )
-                );
+                // console.log(
+                //     JSON.parse(
+                //         JSON.stringify(this._commonService.decryptData(res))
+                //     )
+                // );
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );

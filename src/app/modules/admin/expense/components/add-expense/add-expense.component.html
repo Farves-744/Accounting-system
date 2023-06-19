@@ -49,7 +49,9 @@
                 <label class="font-medium" for="description">
                     Description</label>
 
-                <input id="description" formControlName="description" type="text" placeholder="Enter Description"
+                <input maxlength="70"
+                    onkeypress="return String.fromCharCode(event.charCode).match(/[^a-zA-Z0-9\., ]/g) === null"
+                    id="description" formControlName="description" type="text" placeholder="Enter Description"
                     class="border border-myAccent p-2 rounded" />
             </div>
 
@@ -130,7 +132,8 @@
                 <div class="flex flex-col gap-2 w-full">
                     <label for="tax-type" class="font-medium">Date <span class="text-red-600">*</span></label>
                     <mat-form-field>
-                        <input class="date" formControlName="actualDate" matInput [matDatepicker]="picker"
+                        <input onkeypress="return String.fromCharCode(event.charCode).match(/[^0-9/]/g) === null"
+                            class="date" formControlName="actualDate" matInput [matDatepicker]="picker"
                             placeholder="Choose date">
                         <mat-datepicker-toggle class="text-myAccent w-7" matIconSuffix
                             [for]="picker"></mat-datepicker-toggle>

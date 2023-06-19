@@ -33,7 +33,7 @@ export class DeleteDialogComponent implements OnInit {
 
         this._accountService.deleteAccount(req).subscribe(
             (res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Account deleted successfully' });
             },
             (err) => {

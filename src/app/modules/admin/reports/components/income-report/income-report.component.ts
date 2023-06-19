@@ -17,6 +17,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { DatePipe } from '@angular/common';
 import { TableUtil } from 'app/shared/tableUtil';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-income-report',
@@ -89,7 +90,7 @@ export class IncomeReportComponent implements OnInit {
 
     exportPdf() {
         const doc = new jsPDF('p', 'pt', 'a4');
-        console.log(this.incomeReportsData);
+        // console.log(this.incomeReportsData);
         let rows = []
         this.incomeReportsData.forEach((element, i) => {
             var temp = [i + 1, element.categoryName, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actualDate), 'dd-MM-yyyy'), element.taxAmount ? element.taxAmount : '-', element.totalAmount];
@@ -120,13 +121,13 @@ export class IncomeReportComponent implements OnInit {
     }
 
     getIncomeReports() {
-        console.log(this.getIncomeReportsModal);
+        // console.log(this.getIncomeReportsModal);
 
         this._reportService
             .getIncomeReports(this.getIncomeReportsModal)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
 
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
@@ -156,7 +157,7 @@ export class IncomeReportComponent implements OnInit {
             data: { imageUrl },
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+            // console.log(`Dialog result: ${result}`);
         });
     }
 
@@ -166,7 +167,7 @@ export class IncomeReportComponent implements OnInit {
             data: { id },
         });
         dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
+            // console.log(`Dialog result: ${result}`);
         });
     }
 
@@ -174,22 +175,22 @@ export class IncomeReportComponent implements OnInit {
         this._incomeService
             .getCategory(this.getCategoryNameModal)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.categoryData = this._commonService.decryptData(res);
-                console.log(this.categoryData);
+                // console.log(this.categoryData);
 
                 this.changeDetection.detectChanges();
             });
     }
 
     filterByCategory(id) {
-        console.log(id);
+        // console.log(id);
         const req = {
             id: id,
             userId: this.getIncomeReportsModal.userId,
         };
         this._incomeService.filterByCategory(req).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             this.dataSource = new MatTableDataSource(
                 this._commonService.decryptData(res)
             );

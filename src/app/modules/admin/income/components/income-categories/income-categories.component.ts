@@ -19,6 +19,7 @@ import { IncomeService } from 'app/shared/services/income.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { environment } from 'environments/environment';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 import { AppComponent } from 'app/app.component';
 
 @Component({
@@ -99,16 +100,16 @@ export class IncomeCategoriesComponent {
     }
 
     getCategory() {
-        console.log(this.getCategoryModal);
+        // console.log(this.getCategoryModal);
         this._incomeService
             .getCategory(this.getCategoryModal)
             .subscribe((res) => {
                 // const decryptedData = this._commonService.decryptData(res);
-                console.log(
-                    JSON.parse(
-                        JSON.stringify(this._commonService.decryptData(res))
-                    )
-                );
+                // console.log(
+                //     JSON.parse(
+                //         JSON.stringify(this._commonService.decryptData(res))
+                //     )
+                // );
                 this.dataSource = new MatTableDataSource(
                     this._commonService.decryptData(res)
                 );

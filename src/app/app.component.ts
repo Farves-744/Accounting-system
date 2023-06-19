@@ -19,7 +19,7 @@ export class AppComponent {
             var menusFilterList = localStorage.getItem('privileges').toString()
             AppComponent.urlList = menusFilterList.split(',')
         }
-        console.log(AppComponent.urlList);
+        // console.log(AppComponent.urlList);
     }
 
     static checkUrl(option) {

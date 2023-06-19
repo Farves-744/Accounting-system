@@ -9,6 +9,7 @@ import { ExpenseService } from 'app/shared/services/expense.service';
 import { TaxService } from 'app/shared/services/tax.service';
 import { Router } from '@angular/router';
 import { CollectDialogComponent } from '../collect-dialog/collect-dialog.component';
+import { DashboardComponent } from 'app/modules/admin/dashboard/dashboard.component';
 import { AppComponent } from 'app/app.component';
 
 @Component({
@@ -60,10 +61,12 @@ export class AddExpenseComponent implements OnInit {
     }
 
     ngOnInit() {
+        // window.location.reload()
+        // return
         this.userId = this._commonService.getUserId();
         this.addExpenseForm = this._formBuilder.group({
             totalAmount: [null, [Validators.required, Validators.min(100)]],
-            description: ['', Validators.minLength(1)],
+            description: ['', Validators.maxLength(70)],
             taxApplicable: 0,
             taxId: [{ value: null, disabled: true }],
             imageId: this.imageId,
@@ -80,7 +83,7 @@ export class AddExpenseComponent implements OnInit {
         this.getCategoryName();
         this.getTaxNameModal.userId = this.userId;
         this.getTaxName();
-        console.log(this.addExpenseForm.value.taxApplicable);
+        // console.log(this.addExpenseForm.value.taxApplicable);
     }
 
     get f() {
@@ -92,9 +95,9 @@ export class AddExpenseComponent implements OnInit {
     }
 
     calculateTax(value) {
-        console.log(value);
+        // console.log(value);
 
-        console.log(this.addExpenseForm.value.taxApplicable);
+        // console.log(this.addExpenseForm.value.taxApplicable);
         if (this.addExpenseForm.value.taxApplicable == 1) {
             this.addExpenseForm.patchValue({
                 taxAmount:
@@ -103,19 +106,19 @@ export class AddExpenseComponent implements OnInit {
                     (100 + value),
             });
 
-            console.log(this.addExpenseForm.value.taxAmount);
+            // console.log(this.addExpenseForm.value.taxAmount);
 
             this.addExpenseForm.value.totalAmount =
                 (this.addExpenseForm.value.totalAmount * 100) /
                 (100 + parseInt(value));
             // this.addExpenseForm.value.totalAmount = this.addExpenseForm.value.totalAmount + this.addExpenseForm.value.taxAmount;
-            console.log(this.addExpenseForm.value.totalAmount);
+            // console.log(this.addExpenseForm.value.totalAmount);
             this.addExpenseForm.value.finalAmount =
                 this.addExpenseForm.value.totalAmount +
                 this.addExpenseForm.value.taxAmount;
             this.finalAmount = this.addExpenseForm.value.finalAmount;
 
-            console.log(this.addExpenseForm.value.finalAmount);
+            // console.log(this.addExpenseForm.value.finalAmount);
         } else if (this.addExpenseForm.value.taxApplicable == 2) {
             this.addExpenseForm.patchValue({
                 taxAmount:
@@ -124,7 +127,7 @@ export class AddExpenseComponent implements OnInit {
                     (100 + value),
             });
 
-            console.log(this.addExpenseForm.value.taxAmount);
+            // console.log(this.addExpenseForm.value.taxAmount);
 
             this.addExpenseForm.value.totalAmount =
                 this.addExpenseForm.value.totalAmount;
@@ -133,23 +136,23 @@ export class AddExpenseComponent implements OnInit {
                 this.addExpenseForm.value.taxAmount
             );
             this.finalAmount = this.addExpenseForm.value.finalAmount;
-            console.log(this.addExpenseForm.value.finalAmount);
+            // console.log(this.addExpenseForm.value.finalAmount);
         }
     }
 
     calculateTaxBySelect(event) {
-        console.log(event);
+        // console.log(event);
         for (let tax of this.taxData) {
             if (tax.id == event) {
                 this.taxRate = tax.taxRate;
 
-                console.log(this.taxRate);
-                console.log(tax);
+                // console.log(this.taxRate);
+                // console.log(tax);
 
                 this.calculateTax(this.taxRate);
             }
         }
-        console.log(this.addExpenseForm.value.taxAmount);
+        // console.log(this.addExpenseForm.value.taxAmount);
     }
 
     calculateTaxByRadio(event) {
@@ -157,37 +160,37 @@ export class AddExpenseComponent implements OnInit {
         if (this.finalAmount != null) {
             this.calculateTax(this.taxRate);
         }
-        console.log(event);
+        // console.log(event);
     }
 
     ngAfterContentInit() {
         if (history.state.data) {
-            console.log(history.state.data);
+            // console.log(history.state.data);
 
-            console.log(this.taxRate);
+            // console.log(this.taxRate);
 
             this.addExpenseForm.value.userId = this.userId;
             this.addExpenseForm.value.id = history.state.data;
-            console.log(this.addExpenseForm.value);
+            // console.log(this.addExpenseForm.value);
 
             this._expenseService
                 .getExpenseById(this.addExpenseForm.value)
                 .subscribe((res) => {
-                    console.log(this._commonService.decryptData(res));
+                    // console.log(this._commonService.decryptData(res));
 
                     this.updateFormData = this._commonService.decryptData(res);
 
-                    console.log(this.updateFormData);
+                    // console.log(this.updateFormData);
 
                     this.addExpenseForm.patchValue(this.updateFormData);
                     this.taxRate = this.updateFormData.taxId;
-                    console.log(this.taxRate);
+                    // console.log(this.taxRate);
                     this.calculateTaxBySelect(this.taxRate);
 
                     this.addExpenseForm.value.id = history.state.data;
                     this.imageUrl =
                         this.env.BASE_URL + '/' + this.updateFormData.imageUrl;
-                    console.log(this.imageUrl);
+                    // console.log(this.imageUrl);
                     if (this.updateFormData.taxApplicable == 1) {
                         // this.textInputDisabled = false;
                         // console.log(this.textInputDisabled);
@@ -237,13 +240,13 @@ export class AddExpenseComponent implements OnInit {
                     }
 
                     this.changeDetection.detectChanges();
-                    console.log(this.updateFormData);
+                    // console.log(this.updateFormData);
                 });
         }
     }
 
     toggleTaxInput(event) {
-        console.log(event);
+        // console.log(event);
 
         if (event.checked == true) {
             this.showFinal = true;
@@ -263,7 +266,7 @@ export class AddExpenseComponent implements OnInit {
         } else {
             this.showFinal = false;
             this.addExpenseForm.patchValue({ taxApplicable: 0 });
-            console.log(this.addExpenseForm.value.taxApplicable);
+            // console.log(this.addExpenseForm.value.taxApplicable);
             // this.taxInputDisabled = true;
             this.includeInputDisabled = true;
             this.includeInputChecked = false;
@@ -274,14 +277,14 @@ export class AddExpenseComponent implements OnInit {
             this.addExpenseForm.controls.taxId.disable();
             this.addExpenseForm.value.totalAmount =
                 this.addExpenseForm.value.totalAmount;
-            console.log(this.addExpenseForm.value.totalAmount);
+            // console.log(this.addExpenseForm.value.totalAmount);
 
             this.addExpenseForm.value.finalAmount =
                 this.addExpenseForm.value.totalAmount;
-            console.log(this.addExpenseForm.value.finalAmount);
+            // console.log(this.addExpenseForm.value.finalAmount);
             this.addExpenseForm.value.taxAmount = null;
 
-            console.log(this.addExpenseForm.value.taxAmount);
+            // console.log(this.addExpenseForm.value.taxAmount);
         }
 
         if (this.addExpenseForm.value.taxApplicable == 0) {
@@ -292,7 +295,7 @@ export class AddExpenseComponent implements OnInit {
             this.excludeInputChecked = false;
         }
 
-        console.log(this.addExpenseForm.value.taxApplicable);
+        // console.log(this.addExpenseForm.value.taxApplicable);
         // this.textInputDisabled = !this.textInputDisabled;
         // this.disabledTax = !this.disabledTax;
     }
@@ -309,7 +312,7 @@ export class AddExpenseComponent implements OnInit {
     }
 
     getTaxApplicableValue(event) {
-        console.log(event);
+        // console.log(event);
 
         if (event.source._checked == false) {
             this.addExpenseForm.patchValue({ taxApplicable: 0 });
@@ -320,8 +323,8 @@ export class AddExpenseComponent implements OnInit {
             });
             event.source._checked = true;
         }
-        console.log(this.addExpenseForm.value.taxApplicable);
-        console.log(this.taxData);
+        // console.log(this.addExpenseForm.value.taxApplicable);
+        // console.log(this.taxData);
     }
 
     navigateToHome() {
@@ -330,7 +333,7 @@ export class AddExpenseComponent implements OnInit {
 
     onFileDropped(event) {
         this.file = event[0];
-        console.log(this.file);
+        // console.log(this.file);
         let reader = new FileReader();
         reader.onload = (event: any) => {
             this.imageUrl = event.target.result;
@@ -357,9 +360,9 @@ export class AddExpenseComponent implements OnInit {
         this._expenseService
             .getCategory(this.getCategoryNameModal)
             .subscribe((res) => {
-                console.log(this._commonService.decryptData(res));
+                // console.log(this._commonService.decryptData(res));
                 this.categoryData = this._commonService.decryptData(res);
-                console.log(this.categoryData);
+                // console.log(this.categoryData);
 
                 this.changeDetection.detectChanges();
             });
@@ -367,9 +370,9 @@ export class AddExpenseComponent implements OnInit {
 
     getTaxName() {
         this._taxService.getTax(this.getTaxNameModal).subscribe((res) => {
-            console.log(this._commonService.decryptData(res));
+            // console.log(this._commonService.decryptData(res));
             this.taxData = this._commonService.decryptData(res);
-            console.log(this.taxData);
+            // console.log(this.taxData);
 
             this.changeDetection.detectChanges();
         });
@@ -383,25 +386,25 @@ export class AddExpenseComponent implements OnInit {
             return;
         }
         if (this.addExpenseForm.valid) {
-            console.log(this.updateFormData);
-            console.log(this.addExpenseForm.value.taxAmount);
-            console.log(this.file);
-            console.log(this.addExpenseForm.value.file);
+            // console.log(this.updateFormData);
+            // console.log(this.addExpenseForm.value.taxAmount);
+            // console.log(this.file);
+            // console.log(this.addExpenseForm.value.file);
 
             this.addExpenseForm.value.file = this.file;
             // this.addExpenseForm.patchValue({ file: this.file });
 
-            console.log(this.addExpenseForm.value);
+            // console.log(this.addExpenseForm.value);
 
             if (history.state.data) {
                 // this.addExpenseForm.patchValue({
                 //     imageId: this.updateFormData.imageId,
                 // });
-                console.log(this.addExpenseForm.value);
+                // console.log(this.addExpenseForm.value);
                 // return;
 
                 this.addExpenseForm.value.id = history.state.data;
-                console.log(this.addExpenseForm.value);
+                // console.log(this.addExpenseForm.value);
                 const dialogRef = this.dialog.open(CollectDialogComponent, {
                     width: '900px',
                     data: this.addExpenseForm.value,
@@ -422,7 +425,7 @@ export class AddExpenseComponent implements OnInit {
                     }
                 });
             } else {
-                console.log(this.addExpenseForm.value);
+                // console.log(this.addExpenseForm.value);
 
                 const dialogRef = this.dialog.open(CollectDialogComponent, {
                     width: '900px',

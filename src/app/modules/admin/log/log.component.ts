@@ -13,6 +13,7 @@ import { TableUtil } from 'app/shared/tableUtil';
 import { AppComponent } from 'app/app.component';
 import { GetLogs } from 'app/shared/modals/logs';
 import { LogService } from 'app/shared/services/log.service';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-log',
@@ -55,7 +56,7 @@ export class LogComponent implements OnInit {
 
   exportPdf() {
     const doc = new jsPDF('p', 'pt', 'a4');
-    console.log(this.logsData);
+    // console.log(this.logsData);
     let rows = []
     this.logsData.forEach((element, i) => {
       var temp = [i + 1, element.userName, element.action, element.description ? element.description : '-', this.datePipe.transform(new Date(element.actionDate), 'dd-MM-yyyy'), this.datePipe.transform(new Date(element.actionDate), 'hh:mm:ss a')];
@@ -105,12 +106,12 @@ export class LogComponent implements OnInit {
   }
 
   getLogs() {
-    console.log(this.getLogsModal);
+    // console.log(this.getLogsModal);
 
     this._logService
       .getLogs(this.getLogsModal)
       .subscribe((res) => {
-        console.log(this._commonService.decryptData(res));
+        // console.log(this._commonService.decryptData(res));
 
         this.dataSource = new MatTableDataSource(
           this._commonService.decryptData(res)
